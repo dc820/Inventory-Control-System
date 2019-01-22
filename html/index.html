@@ -1,164 +1,189 @@
 <!doctype html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title>Inventory Control</title>
-		<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
-		<link rel="stylesheet" type="text/css" href="../css/stylesheet.css">
-	</head>
-	<body>
-		<div class="container-fluid">
-			<header id="headstyle">
-				<h1>Telesource Room - Inventory Control</h1>
-			</header>
-			<section class="row">
-				<nav class="col-sm-12">
-					<ul class="nav nav-tabs">
-					  <li class="nav-item">
-					    <a class="nav-link active" href="#">Current Inventory</a>
-					  </li>
-					  <li class="nav-item">
-					    <a class="nav-link" href="#">Incoming Purchase</a>
-					  </li>
-					  <li class="nav-item">
-					    <a class="nav-link" href="#">Outgoing Orders</a>
-					  </li>
-					  <li class="nav-item">
-					    <a class="nav-link" href="#">Reports</a>
-					  </li>
-					</ul>
-				</nav>
-				<!--Products Table-->
-				<article class="col-sm-12">
-					<table class="table table-striped">
-					  <thead>
-					    <tr>
-						   <th scope="col" colspan="100%"><header><h4>Products</h4></header></th>
-					    </tr>
-					    <tr>
-					      <th scope="col"><a href="#">Name<img src="../img/google-mat-design/upArrow.svg"><a/></th>
-					      <th scope="col"><a href="#">Part Number<img src="../img/google-mat-design/upArrow.svg"><a/></th>
-					      <th scope="col"><a href="#">Label<img src="../img/google-mat-design/upArrow.svg"><a/></th>
-					      <th scope="col"><a href="#">Starting Inventory<img src="../img/google-mat-design/upArrow.svg"><a/></th>
-					      <th scope="col"><a href="#">Inventory Recieved<img src="../img/google-mat-design/upArrow.svg"><a/></th>
-					      <th scope="col"><a href="#">Inventory Shipped<img src="../img/google-mat-design/upArrow.svg"><a/></th>
-					      <th scope="col"><a href="#">Inventory On-hand<img src="../img/google-mat-design/upArrow.svg"><a/></th>
-					      <th scope="col"><a href="#">Minimum Required<img src="../img/google-mat-design/upArrow.svg"><a/></th>
-					    </tr>
-					  </thead>
-					  <tbody>
-					    <tr>
-					      <td>Cisco Router</td>
-					      <td>10x</td>
-					      <td>Cisco Router- 10X</td>
-					      <td>45</td>
-					      <td>143</td>
-					      <td>76</td>
-					      <td>86</td>
-					      <td>88</td>
-					    </tr>
-					    <tr>
-					      <td>Cisco Router</td>
-					      <td>10x</td>
-					      <td>Cisco Router- 10X</td>
-					      <td>45</td>
-					      <td>143</td>
-					      <td>76</td>
-					      <td>86</td>
-					      <td>88</td>
-					    </tr>
-					    <tr>
-					      <td>Cisco Router</td>
-					      <td>10x</td>
-					      <td>Cisco Router- 10X</td>
-					      <td>45</td>
-					      <td>143</td>
-					      <td>76</td>
-					      <td>86</td>
-					      <td>88</td>
-					    </tr>
-					  </tbody>
-					  <tfoot>
-					    <tr>
-					      <td colspan="100%"><a href="#"><img src="../img/google-mat-design/add.svg"></a> <a href="#"><img src="../img/google-mat-design/edit.svg"></a> <a href="#"><img src="../img/google-mat-design/delete.svg"></a> <a href="#"><img src="../img/google-mat-design/refresh.svg"></a></td>
-					    </tr>
-					  </tfoot>
-					</table>
-				</article>
-				<!--Incoming Purchases Table-->
-				<article class="col-sm-12">
-					<table class="table table-striped">
-					  <thead>
-					    <tr>
-						   <th scope="col" colspan="100%"><header><h4>Incoming Purchases</h4></header></th> <!--Apply CSS for adding color and rounding borders-->
-					    </tr>
-					    <tr>
-					      <th scope="col"><a href="#">Purchase Date<img src="../img/google-mat-design/upArrow.svg"><a/></th>
-					      <th scope="col"><a href="#">Product ID<img src="../img/google-mat-design/upArrow.svg"><a/></th>
-					      <th scope="col"><a href="#">Number Recieved<img src="../img/google-mat-design/upArrow.svg"><a/></th>
-					      <th scope="col"><a href="#">Supplier ID<img src="../img/google-mat-design/upArrow.svg"><a/></th>
-					    </tr>
-					  </thead>
-					  <tbody>
-					    <tr> <!--Apply CSS for centering inventory numbers-->
-					      <td>2016-11-02</td>
-					      <td>Cisco Router- 10X</td>
-					      <td>143</td>
-					      <td>CISCO</td>
-					    </tr>
-					  </tbody>
-					  <tfoot> <!--Apply CSS to Table Footers-->
-					    <tr>
-					      <td colspan="100%"><a href="#"><img src="../img/google-mat-design/refresh.svg"></a></td>
-					    </tr>
-					  </tfoot>
-					</table>
-				</article>
-				<!--Outgoing Orders Table-->
-				<article class="col-sm-12">
-					<table class="table table-striped">
-					  <thead>
-					    <tr>
-						   <th scope="col" colspan="100%"><header><h4>Outgoing Orders</h4></header></th> <!--Apply CSS for adding color and rounding borders-->
-					    </tr>
-					    <tr>
-					      <th scope="col"><a href="#">Order Date<img src="../img/google-mat-design/upArrow.svg"><a/></th>
-					      <th scope="col"><a href="#">Product ID<img src="../img/google-mat-design/upArrow.svg"><a/></th>
-					      <th scope="col"><a href="#">Number Recieved<img src="../img/google-mat-design/upArrow.svg"><a/></th>
-					      <th scope="col"><a href="#">First<img src="../img/google-mat-design/upArrow.svg"><a/></th>
-					      <th scope="col"><a href="#">Last<img src="../img/google-mat-design/upArrow.svg"><a/></th>
-					    </tr>
-					  </thead>
-					  <tbody>
-					    <tr> <!--Apply CSS for centering inventory numbers-->
-					      <td>2015-04-07</td>
-					      <td>Cisco Router- 10X</td>
-					      <td>76</td>
-					      <td>Dan</td>
-					      <td>Colon</td>
-					    </tr>
-					  </tbody>
-					  <tfoot> <!--Apply CSS to Table Footers-->
-					    <tr>
-					      <td colspan="100%"><a href="#"><img src="../img/google-mat-design/refresh.svg"></a></td>
-					    </tr>
-					  </tfoot>
-					</table>
-				</article>
-			</section>
-		</div>
-		<footer>
-			<p>Last Update Today<br>Created by Dan Colon</p>
-		</footer>
-	</body>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Inventory Control</title>
+	<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css">
+</head>
+
+<body>
+	<div class="container-fluid">
+		<header id="headstyle">
+			<h1>Inventory Control Management System</h1>
+		</header>
+		<section class="row">
+			<nav class="col-sm-12">
+				<ul class="nav nav-tabs">
+					<li class="nav-item">
+						<a class="nav-link active" href="#" id="InventoryButton">Current Inventory</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#" id="IncomingButton">Incoming Purchase</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#" id="OutgoingButton">Outgoing Orders</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#" id="ReportsButton">Reports</a>
+					</li>
+				</ul>
+			</nav>
+			<!--Products Table-->
+			<article class="col-sm-12" id="ProductsTable">
+				<table class="table table-striped border">
+					<thead>
+						<tr>
+							<th scope="col" colspan="100%">
+								<header>
+									<h4>Products</h4>
+								</header>
+							</th>
+						</tr>
+						<tr>
+							<th scope="col"><a href="#">Name<img src="../img/google-mat-design/upArrow.svg"><a /></th>
+							<th scope="col"><a href="#">Part Number<img src="../img/google-mat-design/upArrow.svg"><a /></th>
+							<th scope="col"><a href="#">Label<img src="../img/google-mat-design/upArrow.svg"><a /></th>
+							<th scope="col"><a href="#">Starting Inventory<img src="../img/google-mat-design/upArrow.svg"><a /></th>
+							<th scope="col"><a href="#">Inventory Recieved<img src="../img/google-mat-design/upArrow.svg"><a /></th>
+							<th scope="col"><a href="#">Inventory Shipped<img src="../img/google-mat-design/upArrow.svg"><a /></th>
+							<th scope="col"><a href="#">Inventory On-hand<img src="../img/google-mat-design/upArrow.svg"><a /></th>
+							<th scope="col"><a href="#">Minimum Required<img src="../img/google-mat-design/upArrow.svg"><a /></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Cisco Router</td>
+							<td>10x</td>
+							<td>Cisco Router- 10X</td>
+							<td>45</td>
+							<td>143</td>
+							<td>76</td>
+							<td>86</td>
+							<td>88</td>
+						</tr>
+						<tr>
+							<td>Cisco Router</td>
+							<td>10x</td>
+							<td>Cisco Router- 10X</td>
+							<td>45</td>
+							<td>143</td>
+							<td>76</td>
+							<td>86</td>
+							<td>88</td>
+						</tr>
+						<tr>
+							<td>Cisco Router</td>
+							<td>10x</td>
+							<td>Cisco Router- 10X</td>
+							<td>45</td>
+							<td>143</td>
+							<td>76</td>
+							<td>86</td>
+							<td>88</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="100%"><a href="#"><img src="../img/google-mat-design/add.svg"></a> <a href="#"><img src="../img/google-mat-design/edit.svg"></a>
+								<a href="#"><img src="../img/google-mat-design/delete.svg"></a> <a href="#"><img src="../img/google-mat-design/refresh.svg"></a></td>
+						</tr>
+					</tfoot>
+				</table>
+			</article>
+			<!--Incoming Purchases Table-->
+			<article class="col-sm" id="IncomingTable">
+				<table class="table table-striped border">
+					<thead>
+						<tr>
+							<th scope="col" colspan="100%">
+								<header>
+									<h4>Incoming Purchases</h4>
+								</header>
+							</th>
+							<!--Apply CSS for adding color and rounding borders-->
+						</tr>
+						<tr>
+							<th scope="col"><a href="#">Purchase Date<img src="../img/google-mat-design/upArrow.svg"><a /></th>
+							<th scope="col"><a href="#">Product ID<img src="../img/google-mat-design/upArrow.svg"><a /></th>
+							<th scope="col"><a href="#">Number Recieved<img src="../img/google-mat-design/upArrow.svg"><a /></th>
+							<th scope="col"><a href="#">Supplier ID<img src="../img/google-mat-design/upArrow.svg"><a /></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<!--Apply CSS for centering inventory numbers-->
+							<td>2016-11-02</td>
+							<td>Cisco Router- 10X</td>
+							<td>143</td>
+							<td>CISCO</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<!--Apply CSS to Table Footers-->
+						<tr>
+							<td colspan="100%"><a href="#"><img src="../img/google-mat-design/refresh.svg"></a></td>
+						</tr>
+					</tfoot>
+				</table>
+			</article>
+			<!--Outgoing Orders Table-->
+			<article class="col-sm" id="OutgoingTable">
+				<table class="table table-striped border">
+					<thead>
+						<tr>
+							<th scope="col" colspan="100%">
+								<header>
+									<h4>Outgoing Orders</h4>
+								</header>
+							</th>
+							<!--Apply CSS for adding color and rounding borders-->
+						</tr>
+						<tr>
+							<th scope="col"><a href="#">Order Date<img src="../img/google-mat-design/upArrow.svg"><a /></th>
+							<th scope="col"><a href="#">Product ID<img src="../img/google-mat-design/upArrow.svg"><a /></th>
+							<th scope="col"><a href="#">Number Recieved<img src="../img/google-mat-design/upArrow.svg"><a /></th>
+							<th scope="col"><a href="#">First<img src="../img/google-mat-design/upArrow.svg"><a /></th>
+							<th scope="col"><a href="#">Last<img src="../img/google-mat-design/upArrow.svg"><a /></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<!--Apply CSS for centering inventory numbers-->
+							<td>2015-04-07</td>
+							<td>Cisco Router- 10X</td>
+							<td>76</td>
+							<td>Dan</td>
+							<td>Colon</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<!--Apply CSS to Table Footers-->
+						<tr>
+							<td colspan="100%"><a href="#"><img src="../img/google-mat-design/refresh.svg"></a></td>
+						</tr>
+					</tfoot>
+				</table>
+			</article>
+		</section>
+	</div>
+	<footer>
+		<p>Last Updated Today<br>Created by Dan Colon</p>
+	</footer>
+	<script src="../bootstrap/js/jQuery.js"></script>
+	<script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="../js/script.js"></script>
+</body>
+
 </html>
-
-
 <!--
 WORK TO BE DONE
-	Using Javascript
+	Javascript
 	1. Add functionality to navigation links to filter based on active tab
 	2. Add functionailty to add, edit, delete, and refresh inventory items
+		2A. Make modul popup for adding new inventory
 		2B.If adding to inventory exceeds certain height, add HTML/CSS to wrap the content of <tbody> in a div and create scrollbar  
 
 	3. Add functionality to sort by table categories from A-Z/ lowest to highest/ alarming state

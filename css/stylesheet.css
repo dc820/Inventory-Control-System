@@ -10,7 +10,8 @@
 nav{
 	background-color: hsla(0,0%,85%,0.5);
 	text-align: center;
-		border-top: 1px solid black;
+	border-top: 1px solid black;
+	margin-bottom: 1em;
 }
 
 table thead tr:first-child, tfoot{
@@ -23,8 +24,8 @@ tfoot{
 }
 
 article{
-	margin-top: 1em;
-	margin-bottom: 2em;
+	margin-bottom: 1em;
+
 }
 
 footer p{
