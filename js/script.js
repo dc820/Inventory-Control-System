@@ -26,4 +26,8 @@ $(document).ready(function () {
             console.log("Not Sure What Report Button Does Yet");
         }
     });
+
+    $("#AddItem").click(function(){
+        $("#AddItemModal").modal();
+    });
 });

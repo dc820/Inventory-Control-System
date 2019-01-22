@@ -31,6 +31,7 @@
 					</li>
 				</ul>
 			</nav>
+
 			<!--Products Table-->
 			<article class="col-sm-12" id="ProductsTable">
 				<table class="table table-striped border">
@@ -55,7 +56,12 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td>Cisco Router</td>
+							<td>
+								<div class="custom-control custom-radio">
+									<input type="radio" id="RadioProduct1" name="RadioName" class="custom-control-input">
+									<label class="custom-control-label" for="RadioProduct1">Cisco Router</label>
+								</div>
+							</td>
 							<td>10x</td>
 							<td>Cisco Router- 10X</td>
 							<td>45</td>
@@ -65,7 +71,12 @@
 							<td>88</td>
 						</tr>
 						<tr>
-							<td>Cisco Router</td>
+							<td>
+								<div class="custom-control custom-radio">
+									<input type="radio" id="RadioProduct2" name="RadioName" class="custom-control-input">
+									<label class="custom-control-label" for="RadioProduct2">Cisco Router</label>
+							  </div>
+							</td>
 							<td>10x</td>
 							<td>Cisco Router- 10X</td>
 							<td>45</td>
@@ -75,7 +86,12 @@
 							<td>88</td>
 						</tr>
 						<tr>
-							<td>Cisco Router</td>
+							<td>
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="CheckProduct1">
+									<label class="custom-control-label" for="CheckProduct1">Cisco Router</label>
+								</div>
+							</td>
 							<td>10x</td>
 							<td>Cisco Router- 10X</td>
 							<td>45</td>
@@ -84,15 +100,91 @@
 							<td>86</td>
 							<td>88</td>
 						</tr>
+						<tr>
+								<td>
+									<div class="custom-control custom-checkbox">
+										<input type="checkbox" class="custom-control-input" id="CheckProduct2">
+										<label class="custom-control-label" for="CheckProduct2">Cisco Router</label>
+									</div>
+								</td>
+								<td>10x</td>
+								<td>Cisco Router- 10X</td>
+								<td>45</td>
+								<td>143</td>
+								<td>76</td>
+								<td>86</td>
+								<td>88</td>
+							</tr>
 					</tbody>
 					<tfoot>
 						<tr>
-							<td colspan="100%"><a href="#"><img src="../img/google-mat-design/add.svg"></a> <a href="#"><img src="../img/google-mat-design/edit.svg"></a>
+							<td colspan="100%"><a href="#" id="AddItem"><img src="../img/google-mat-design/add.svg"></a> <a href="#"><img src="../img/google-mat-design/edit.svg"></a>
 								<a href="#"><img src="../img/google-mat-design/delete.svg"></a> <a href="#"><img src="../img/google-mat-design/refresh.svg"></a></td>
 						</tr>
 					</tfoot>
 				</table>
+				<p>highlight row by clicking before pressing edit button instead of radio/check buttons?</p>
+				<!-- Add Item Modal -->
+				<div class="modal fade" id="AddItemModal" role="dialog">
+					<div class="modal-dialog">
+					
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+						<h4 class="modal-title">Add Product to Inventory</h4>
+						</div>
+						<div class="modal-body">
+						<p>Modal for adding items. Needs form and required fields. Add Button creates new last row in table body. Scan Button fills fields out with scanner hardware.(Needs Test)</p>
+
+						<form>
+							<!--Radio Boxes for Inventory-->
+							<p>Make Fields Appear After Selecting Radio Box</p>
+							<div class="custom-control custom-radio custom-control-inline">
+								<input type="radio" id="RadioOnhand" name="RadioInventory" class="custom-control-input">
+								<label class="custom-control-label" for="RadioOnhand">On-Hand</label>
+							</div>
+							<div class="custom-control custom-radio custom-control-inline">
+								<input type="radio" id="RadioIncoming" name="RadioInventory" class="custom-control-input">
+								<label class="custom-control-label" for="RadioIncoming">Incoming</label>
+							</div>
+							<div class="custom-control custom-radio custom-control-inline">
+								<input type="radio" id="RadioOutgoing" name="RadioInventory" class="custom-control-input">
+								<label class="custom-control-label" for="RadioOutgoing">Outgoing</label>
+							</div>
+
+							<div class="form-group">
+								<label for="FormAddName">Name</label>
+								<input type="text" class="form-control" id="FormAddName" placeholder="Enter Product Name">
+								<!--aria-describedby= attribute for input tag. Refers to small tag ID that describes input-->
+								<!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+								<!--Small Tag can be used to display required information-->
+							</div>
+							<div class="form-group">
+								<label for="FormAddPartNumber">Part Number</label>
+								<input type="text" class="form-control" id="FormAddPartNumber" placeholder="Enter Part Number">
+							</div>
+							<div class="form-group">
+								<label for="FormAddLabel">Label</label>
+								<input type="text" class="form-control" id="FormAddLabel" placeholder="Enter Label">
+							</div>
+							<div class="form-group">
+									<label for="FormAddQuantity">Quantity</label>
+									<input type="number" class="form-control" id="FormAddQuantity" placeholder="Quantity">
+								</div>
+							<div class="form-group">
+								<label for="FormAddMinimum">Minimum</label>
+								<input type="number" class="form-control" id="FormAddMinimum" placeholder="Probably Set Minimum on Edit?">
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary" data-dismiss="modal" value="Submit">Add Item</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Scan Item</button>
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					</div>
+				</div>
 			</article>
+
 			<!--Incoming Purchases Table-->
 			<article class="col-sm" id="IncomingTable">
 				<table class="table table-striped border">
@@ -103,7 +195,6 @@
 									<h4>Incoming Purchases</h4>
 								</header>
 							</th>
-							<!--Apply CSS for adding color and rounding borders-->
 						</tr>
 						<tr>
 							<th scope="col"><a href="#">Purchase Date<img src="../img/google-mat-design/upArrow.svg"><a /></th>
@@ -114,7 +205,6 @@
 					</thead>
 					<tbody>
 						<tr>
-							<!--Apply CSS for centering inventory numbers-->
 							<td>2016-11-02</td>
 							<td>Cisco Router- 10X</td>
 							<td>143</td>
@@ -122,7 +212,6 @@
 						</tr>
 					</tbody>
 					<tfoot>
-						<!--Apply CSS to Table Footers-->
 						<tr>
 							<td colspan="100%"><a href="#"><img src="../img/google-mat-design/refresh.svg"></a></td>
 						</tr>
@@ -139,7 +228,6 @@
 									<h4>Outgoing Orders</h4>
 								</header>
 							</th>
-							<!--Apply CSS for adding color and rounding borders-->
 						</tr>
 						<tr>
 							<th scope="col"><a href="#">Order Date<img src="../img/google-mat-design/upArrow.svg"><a /></th>
@@ -151,7 +239,6 @@
 					</thead>
 					<tbody>
 						<tr>
-							<!--Apply CSS for centering inventory numbers-->
 							<td>2015-04-07</td>
 							<td>Cisco Router- 10X</td>
 							<td>76</td>
@@ -160,7 +247,6 @@
 						</tr>
 					</tbody>
 					<tfoot>
-						<!--Apply CSS to Table Footers-->
 						<tr>
 							<td colspan="100%"><a href="#"><img src="../img/google-mat-design/refresh.svg"></a></td>
 						</tr>
@@ -170,7 +256,7 @@
 		</section>
 	</div>
 	<footer>
-		<p>Last Updated Today<br>Created by Dan Colon</p>
+		<p>Last Updated Today<br>Add Time Somewhere in Bottom<br>Created by Dan Colon</p>
 	</footer>
 	<script src="../bootstrap/js/jQuery.js"></script>
 	<script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -180,11 +266,11 @@
 </html>
 <!--
 WORK TO BE DONE
-	Javascript
-	1. Add functionality to navigation links to filter based on active tab
-	2. Add functionailty to add, edit, delete, and refresh inventory items
-		2A. Make modul popup for adding new inventory
-		2B.If adding to inventory exceeds certain height, add HTML/CSS to wrap the content of <tbody> in a div and create scrollbar  
+	1. Add some functionailty to edit, delete, and refresh inventory items
 
-	3. Add functionality to sort by table categories from A-Z/ lowest to highest/ alarming state
+	2. Add functionality to sort by table categories from A-Z/ lowest to highest/ alarming state
+
+	3. Finish functionality on adding inems so that new rows are added
+
+	4. Add scrollbar by wrapping the content of <tbody> in a div if table gets too large  
 -->
