@@ -11,7 +11,7 @@
 
 <body>
 	<div class="container-fluid">
-		<header id="headstyle">
+		<header class="centerText">
 			<h1>Inventory Control Management System</h1>
 		</header>
 		<section class="row">
@@ -54,133 +54,120 @@
 							<th scope="col"><a href="#">Minimum Required<img src="../img/google-mat-design/upArrow.svg"><a /></th>
 						</tr>
 					</thead>
-					<tbody>
-						<tr>
-							<td>
-								<div class="custom-control custom-radio">
-									<input type="radio" id="RadioProduct1" name="RadioName" class="custom-control-input">
-									<label class="custom-control-label" for="RadioProduct1">Cisco Router</label>
-								</div>
-							</td>
-							<td>10x</td>
-							<td>Cisco Router- 10X</td>
-							<td>45</td>
-							<td>143</td>
-							<td>76</td>
-							<td>86</td>
-							<td>88</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="custom-control custom-radio">
-									<input type="radio" id="RadioProduct2" name="RadioName" class="custom-control-input">
-									<label class="custom-control-label" for="RadioProduct2">Cisco Router</label>
-							  </div>
-							</td>
-							<td>10x</td>
-							<td>Cisco Router- 10X</td>
-							<td>45</td>
-							<td>143</td>
-							<td>76</td>
-							<td>86</td>
-							<td>88</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="custom-control custom-checkbox">
-									<input type="checkbox" class="custom-control-input" id="CheckProduct1">
-									<label class="custom-control-label" for="CheckProduct1">Cisco Router</label>
-								</div>
-							</td>
-							<td>10x</td>
-							<td>Cisco Router- 10X</td>
-							<td>45</td>
-							<td>143</td>
-							<td>76</td>
-							<td>86</td>
-							<td>88</td>
-						</tr>
-						<tr>
-								<td>
-									<div class="custom-control custom-checkbox">
-										<input type="checkbox" class="custom-control-input" id="CheckProduct2">
-										<label class="custom-control-label" for="CheckProduct2">Cisco Router</label>
-									</div>
-								</td>
-								<td>10x</td>
-								<td>Cisco Router- 10X</td>
-								<td>45</td>
-								<td>143</td>
-								<td>76</td>
-								<td>86</td>
-								<td>88</td>
-							</tr>
+					<tbody class="addNewRow">
 					</tbody>
 					<tfoot>
 						<tr>
-							<td colspan="100%"><a href="#" id="AddItem"><img src="../img/google-mat-design/add.svg"></a> <a href="#"><img src="../img/google-mat-design/edit.svg"></a>
-								<a href="#"><img src="../img/google-mat-design/delete.svg"></a> <a href="#"><img src="../img/google-mat-design/refresh.svg"></a></td>
+							<td colspan="100%"><a href="#AddToTabele" id="AddToTable"><img src="../img/google-mat-design/add.svg"></a> <a href="#Edit" id="Edit"><img
+									 src="../img/google-mat-design/edit.svg"></a>
+								<a href="#Delete" id="Delete"><img src="../img/google-mat-design/delete.svg"></a> <a href="#"><img src="../img/google-mat-design/refresh.svg"></a></td>
 						</tr>
 					</tfoot>
 				</table>
-				<p>highlight row by clicking before pressing edit button instead of radio/check buttons?</p>
+
 				<!-- Add Item Modal -->
-				<div class="modal fade" id="AddItemModal" role="dialog">
+				<div class="modal fade" id="AddModal" role="dialog">
 					<div class="modal-dialog">
-					
-					<!-- Modal content-->
-					<div class="modal-content">
-						<div class="modal-header">
-						<h4 class="modal-title">Add Product to Inventory</h4>
+
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title">Add Product to Inventory</h4>
+							</div>
+							<div class="modal-body">
+								<p>Modal for adding items. Needs form and required fields. Add Button creates new last row in table body. Scan
+									Button fills fields out with scanner hardware.(Needs Test)</p>
+
+								<form>
+									<!--Radio Boxes for Inventory-->
+									<p>Make Fields Appear After Selecting Radio Box</p>
+									<div class="custom-control custom-radio custom-control-inline">
+										<input type="radio" id="RadioOnhand" name="RadioInventory" class="custom-control-input">
+										<label class="custom-control-label" for="RadioOnhand">On-Hand</label>
+									</div>
+									<div class="custom-control custom-radio custom-control-inline">
+										<input type="radio" id="RadioIncoming" name="RadioInventory" class="custom-control-input">
+										<label class="custom-control-label" for="RadioIncoming">Incoming</label>
+									</div>
+									<div class="custom-control custom-radio custom-control-inline">
+										<input type="radio" id="RadioOutgoing" name="RadioInventory" class="custom-control-input">
+										<label class="custom-control-label" for="RadioOutgoing">Outgoing</label>
+									</div>
+
+									<div class="form-group">
+										<label for="FormAddName">Name</label>
+										<input type="text" class="form-control" id="FormAddName" placeholder="Enter Product Name">
+										<!--aria-describedby= attribute for input tag. Refers to small tag ID that describes input-->
+										<!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+										<!--Small Tag can be used to display required information-->
+									</div>
+									<div class="form-group">
+										<label for="FormAddPartNumber">Part Number</label>
+										<input type="text" class="form-control" id="FormAddPartNumber" placeholder="Enter Part Number">
+									</div>
+									<div class="form-group">
+										<label for="FormAddLabel">Label</label>
+										<input type="text" class="form-control" id="FormAddLabel" placeholder="Enter Label">
+									</div>
+									<div class="form-group">
+										<label for="FormAddQuantity">Quantity</label>
+										<input type="number" class="form-control" id="FormAddQuantity" placeholder="Quantity">
+									</div>
+									<div class="form-group">
+										<label for="FormAddMinimum">Minimum</label>
+										<input type="number" class="form-control" id="FormAddMinimum" placeholder="Probably Set Minimum on Edit?">
+									</div>
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="submit" class="btn btn-primary" data-dismiss="modal" id="ModalAddButton" value="Submit">Add</button>
+								<button type="button" class="btn btn-primary" data-dismiss="modal">Scan</button>
+								<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+							</div>
 						</div>
-						<div class="modal-body">
-						<p>Modal for adding items. Needs form and required fields. Add Button creates new last row in table body. Scan Button fills fields out with scanner hardware.(Needs Test)</p>
-
-						<form>
-							<!--Radio Boxes for Inventory-->
-							<p>Make Fields Appear After Selecting Radio Box</p>
-							<div class="custom-control custom-radio custom-control-inline">
-								<input type="radio" id="RadioOnhand" name="RadioInventory" class="custom-control-input">
-								<label class="custom-control-label" for="RadioOnhand">On-Hand</label>
-							</div>
-							<div class="custom-control custom-radio custom-control-inline">
-								<input type="radio" id="RadioIncoming" name="RadioInventory" class="custom-control-input">
-								<label class="custom-control-label" for="RadioIncoming">Incoming</label>
-							</div>
-							<div class="custom-control custom-radio custom-control-inline">
-								<input type="radio" id="RadioOutgoing" name="RadioInventory" class="custom-control-input">
-								<label class="custom-control-label" for="RadioOutgoing">Outgoing</label>
-							</div>
-
-							<div class="form-group">
-								<label for="FormAddName">Name</label>
-								<input type="text" class="form-control" id="FormAddName" placeholder="Enter Product Name">
-								<!--aria-describedby= attribute for input tag. Refers to small tag ID that describes input-->
-								<!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
-								<!--Small Tag can be used to display required information-->
-							</div>
-							<div class="form-group">
-								<label for="FormAddPartNumber">Part Number</label>
-								<input type="text" class="form-control" id="FormAddPartNumber" placeholder="Enter Part Number">
-							</div>
-							<div class="form-group">
-								<label for="FormAddLabel">Label</label>
-								<input type="text" class="form-control" id="FormAddLabel" placeholder="Enter Label">
-							</div>
-							<div class="form-group">
-									<label for="FormAddQuantity">Quantity</label>
-									<input type="number" class="form-control" id="FormAddQuantity" placeholder="Quantity">
-								</div>
-							<div class="form-group">
-								<label for="FormAddMinimum">Minimum</label>
-								<input type="number" class="form-control" id="FormAddMinimum" placeholder="Probably Set Minimum on Edit?">
-							</div>
-						</form>
 					</div>
-					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary" data-dismiss="modal" value="Submit">Add Item</button>
-						<button type="button" class="btn btn-primary" data-dismiss="modal">Scan Item</button>
-						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				</div>;
+
+				<!-- Edit Modal -->
+				<div class="modal fade" id="EditModal" role="dialog">
+					<div class="modal-dialog">
+
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title">Edit Selection</h4>
+							</div>
+							<div class="modal-body">
+								<p>Modal for editing inventory. What fields are being edited here? Maybe better to be able to edit
+									without modal. Edit Button and delete button could toggle checkboxes.</p>
+							</div>
+							<div class="modal-footer">
+								<button type="submit" class="btn btn-primary" data-dismiss="modal" value="Submit">Save Changes</button>
+								<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Deletion Modal -->
+				<div class="modal fade" id="DeleteModal" role="dialog">
+					<div class="modal-dialog">
+
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title">Delete Selection</h4>
+							</div>
+							<div class="modal-body">
+								<p>Are you sure you want to delete selection?</p>
+								<p>Show Yes or No Radio Box? Defaults to No</p>
+								<p class ="centerText">Show Inventory Selections Here</p>
+							</div>
+							<div class="modal-footer">
+								<button type="submit" class="btn btn-danger" data-dismiss="modal" value="Submit" id="ConfirmDelete">Confirm</button>
+								<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</article>
