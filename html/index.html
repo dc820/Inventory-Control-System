@@ -18,13 +18,13 @@
 			<nav class="col-sm-12">
 				<ul class="nav nav-tabs">
 					<li class="nav-item">
-						<a class="nav-link active" href="#" id="InventoryButton">Current Inventory</a>
+						<a class="nav-link active" href="#" id="InventoryButton">All Inventory</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#" id="IncomingButton">Incoming Purchase</a>
+						<a class="nav-link" href="#" id="IncomingButton">Inbound Inventory</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#" id="OutgoingButton">Outgoing Orders</a>
+						<a class="nav-link" href="#" id="OutgoingButton">Outbound Inventory</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="#" id="ReportsButton">Reports</a>
@@ -34,12 +34,12 @@
 
 			<!--Products Table-->
 			<article class="col-sm-12" id="Products">
-				<table class="table table-striped border" id="ProductsTable">
+				<table class="table table-striped border" id="InventoryTable">
 					<thead>
 						<tr>
 							<th scope="col" colspan="100%">
 								<header>
-									<h4>Storage</h4>
+									<h4>Inventory</h4>
 								</header>
 							</th>
 						</tr>
@@ -55,6 +55,19 @@
 						</tr>
 					</thead>
 					<tbody class="addNewRow">
+						<tr id="tableRow">
+							<td>
+								<div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="CheckRow">
+								<label class="custom-control-label" for="CheckRow">Cisco Router</label></div>
+							</td>
+							<td>10x</td>
+							<td>Cisco Router- 10X</td>
+							<td>45</td>
+							<td>143</td>
+							<td>76</td>
+							<td>86</td>
+							<td>88</td>
+						</tr>
 					</tbody>
 					<tfoot>
 						<tr>
@@ -106,7 +119,9 @@
 									</div>
 									<div>&nbsp;</div>
 									<div class="form-group">
-										<label for="FormType"><h5>Device</h5></label>
+										<label for="FormType">
+											<h5>Device</h5>
+										</label>
 										<select id="FormType" class="form-control">
 											<option value="Router">Router</option>
 											<option value="Switch">Switch</option>
@@ -114,22 +129,30 @@
 											<option value="AccessPoint">Access Point</option>
 											<option value="LoadBalancer">Load Balancer</option>
 											<option value="OtherPart">Other</option>
-										</select> 
+										</select>
 									</div>
 									<div class="form-group">
-										<label for="FormManufacturer"><h5>Manufacturer</h5></label>
+										<label for="FormManufacturer">
+											<h5>Manufacturer</h5>
+										</label>
 										<input type="text" class="form-control" id="FormManufacturer" placeholder="Manufacturer">
 									</div>
 									<div class="form-group">
-										<label for="FormModel"><h5>Model</h5></label>
+										<label for="FormModel">
+											<h5>Model</h5>
+										</label>
 										<input type="text" class="form-control" id="FormModel" placeholder="Model Number">
 									</div>
 									<div class="form-group">
-										<label for="FormSerial"><h5>Serial</h5></label>
+										<label for="FormSerial">
+											<h5>Serial</h5>
+										</label>
 										<input type="text" class="form-control" id="FormSerial" placeholder="Serial Number">
 									</div>
 									<div class="form-group" id="ToggleRMA">
-										<label for="FormRMA"><h5>RMA</h5></label>
+										<label for="FormRMA">
+											<h5>RMA</h5>
+										</label>
 										<input type="text" class="form-control" id="FormRMA" placeholder="RMA Number">
 									</div>
 								</form>
@@ -176,7 +199,7 @@
 							<div class="modal-body">
 								<p>Are you sure you want to delete selection?</p>
 								<p>Show Yes or No Radio Box? Defaults to No</p>
-								<p class ="centerText">Show Inventory Selections Here</p>
+								<p class="centerText">Show Inventory Selections Here</p>
 							</div>
 							<div class="modal-footer">
 								<button type="submit" class="btn btn-danger" data-dismiss="modal" value="Submit" id="ConfirmDelete">Confirm</button>

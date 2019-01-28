@@ -4,16 +4,7 @@ $(document).ready(function () {
     //VARIABLES
     var rowCount = 0;
     var status;
-
-    function productObject(part, status, type, manufacturer, model, serial, rma) {
-        this.part = part;  
-        this.status = status;
-        this.type = type;
-        this.manufacturer = manufacturer; 
-        this.model = model; 
-        this.serial = serial;
-        this.rma = rma;
-    };
+    var r;
 
     //Navigation Table Toggles  
     $("nav > ul > li > a").click(function () {
@@ -39,7 +30,7 @@ $(document).ready(function () {
         }
     });
 
-    //Add Button on Products Table
+    //Add Button on Inventory Table
     $("#Entry").click(function () {
         $("#EntryModal").modal();
         $("#ToggleRMA").toggle(false);
@@ -70,28 +61,40 @@ $(document).ready(function () {
     $("#SubmitButton").click(function() { 
         var device = new productObject(status, $("#FormType").val(), $("#FormManufacturer").val(), $("#FormModel").val(), $("#FormSerial").val(), $("#FormRMA").val());
         console.log(device);
-        //Sample Code for Testing
-    /*  rowCount++;
+        
+        //Row Counter
+        rowCount++;
         console.log("row count " + rowCount);
-        $(".addNewRow").append(
-            '<tr id="tableRow' + rowCount + '"><td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="CheckRow' + rowCount + '"><label class="custom-control-label" for="CheckRow' + rowCount + '">Cisco Router</label></div></td><td>10x</td><td>Cisco Router- 10X</td><td>45</td><td>143</td><td>76</td><td>86</td><td>88</td></tr>'
-        );*/
-        $("#SubmitButton").submit(function () {
 
+        $("#SubmitButton").submit(function () {
+            //Data to submit here
         });
     });
 
     //Edit Button on Products Table
     $("#Edit").click(function () {
         $("#EditModal").modal();
+        //Check Selected
     });
 
     //Delete Button on Products Table
     $("#Delete").click(function () {
         $("#DeleteModal").modal();
+        //Check Selected
     });
 
     $("#ConfirmDelete").click(function () {
         //Delete Selected Table Rows
     });
+
+    //Constructor for Devices
+    function productObject(part, status, type, manufacturer, model, serial, rma) {
+        this.part = part;  
+        this.status = status;
+        this.type = type;
+        this.manufacturer = manufacturer; 
+        this.model = model; 
+        this.serial = serial;
+        this.rma = rma;
+    };
 });
