@@ -33,19 +33,19 @@
 			</nav>
 
 			<!--Products Table-->
-			<article class="col-sm-12" id="ProductsTable">
-				<table class="table table-striped border">
+			<article class="col-sm-12" id="Products">
+				<table class="table table-striped border" id="ProductsTable">
 					<thead>
 						<tr>
 							<th scope="col" colspan="100%">
 								<header>
-									<h4>Products</h4>
+									<h4>Storage</h4>
 								</header>
 							</th>
 						</tr>
 						<tr>
 							<th scope="col"><a href="#">Name<img src="../img/google-mat-design/upArrow.svg"><a /></th>
-							<th scope="col"><a href="#">Part Number<img src="../img/google-mat-design/upArrow.svg"><a /></th>
+							<th scope="col"><a href="#">Model<img src="../img/google-mat-design/upArrow.svg"><a /></th>
 							<th scope="col"><a href="#">Label<img src="../img/google-mat-design/upArrow.svg"><a /></th>
 							<th scope="col"><a href="#">Starting Inventory<img src="../img/google-mat-design/upArrow.svg"><a /></th>
 							<th scope="col"><a href="#">Inventory Recieved<img src="../img/google-mat-design/upArrow.svg"><a /></th>
@@ -58,69 +58,84 @@
 					</tbody>
 					<tfoot>
 						<tr>
-							<td colspan="100%"><a href="#AddToTabele" id="AddToTable"><img src="../img/google-mat-design/add.svg"></a> <a href="#Edit" id="Edit"><img
+							<td colspan="100%"><a href="#" id="Entry"><img src="../img/google-mat-design/add.svg"></a> <a href="#" id="Edit"><img
 									 src="../img/google-mat-design/edit.svg"></a>
-								<a href="#Delete" id="Delete"><img src="../img/google-mat-design/delete.svg"></a> <a href="#"><img src="../img/google-mat-design/refresh.svg"></a></td>
+								<a href="#" id="Delete"><img src="../img/google-mat-design/delete.svg"></a> <a href="#"><img src="../img/google-mat-design/refresh.svg"></a></td>
 						</tr>
 					</tfoot>
 				</table>
 
 				<!-- Add Item Modal -->
-				<div class="modal fade" id="AddModal" role="dialog">
+				<div class="modal fade" id="EntryModal" role="dialog">
 					<div class="modal-dialog">
 
 						<!-- Modal content-->
 						<div class="modal-content">
 							<div class="modal-header">
-								<h4 class="modal-title">Add Product to Inventory</h4>
+								<h4 class="modal-title">Add Device to Inventory</h4>
 							</div>
 							<div class="modal-body">
-								<p>Modal for adding items. Needs form and required fields. Add Button creates new last row in table body. Scan
-									Button fills fields out with scanner hardware.(Needs Test)</p>
-
 								<form>
 									<!--Radio Boxes for Inventory-->
-									<p>Make Fields Appear After Selecting Radio Box</p>
+									<h5>Status</h5>
 									<div class="custom-control custom-radio custom-control-inline">
-										<input type="radio" id="RadioOnhand" name="RadioInventory" class="custom-control-input">
-										<label class="custom-control-label" for="RadioOnhand">On-Hand</label>
-									</div>
-									<div class="custom-control custom-radio custom-control-inline">
-										<input type="radio" id="RadioIncoming" name="RadioInventory" class="custom-control-input">
-										<label class="custom-control-label" for="RadioIncoming">Incoming</label>
+										<input type="radio" id="StatusStorage" name="RadioStatus" class="custom-control-input" value="Spare">
+										<label class="custom-control-label" for="StatusStorage">On-hand</label>
 									</div>
 									<div class="custom-control custom-radio custom-control-inline">
-										<input type="radio" id="RadioOutgoing" name="RadioInventory" class="custom-control-input">
-										<label class="custom-control-label" for="RadioOutgoing">Outgoing</label>
+										<input type="radio" id="StatusInbound" name="RadioStatus" class="custom-control-input" value="Recycling">
+										<label class="custom-control-label" for="StatusInbound">Inbound</label>
 									</div>
-
+									<div class="custom-control custom-radio custom-control-inline">
+										<input type="radio" id="StatusOutbound" name="RadioStatus" class="custom-control-input" value="Replacement">
+										<label class="custom-control-label" for="StatusOutbound">Outbound</label>
+									</div>
+									<div>&nbsp;</div>
+									<h5>Part</h5>
+									<div class="custom-control custom-radio custom-control-inline">
+										<input type="radio" id="PartSpare" name="RadioPart" class="custom-control-input" value="Spare">
+										<label class="custom-control-label" for="PartSpare">Spare</label>
+									</div>
+									<div class="custom-control custom-radio custom-control-inline">
+										<input type="radio" id="PartRecycling" name="RadioPart" class="custom-control-input" value="Recycling">
+										<label class="custom-control-label" for="PartRecycling">Recycling</label>
+									</div>
+									<div class="custom-control custom-radio custom-control-inline">
+										<input type="radio" id="PartReplacement" name="RadioPart" class="custom-control-input" value="Replacement">
+										<label class="custom-control-label" for="PartReplacement">Replacement</label>
+									</div>
+									<div>&nbsp;</div>
 									<div class="form-group">
-										<label for="FormAddName">Name</label>
-										<input type="text" class="form-control" id="FormAddName" placeholder="Enter Product Name">
-										<!--aria-describedby= attribute for input tag. Refers to small tag ID that describes input-->
-										<!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
-										<!--Small Tag can be used to display required information-->
+										<label for="FormType"><h5>Device</h5></label>
+										<select id="FormType" class="form-control">
+											<option value="Router">Router</option>
+											<option value="Switch">Switch</option>
+											<option value="Firewall">Firewall</option>
+											<option value="AccessPoint">Access Point</option>
+											<option value="LoadBalancer">Load Balancer</option>
+											<option value="OtherPart">Other</option>
+										</select> 
 									</div>
 									<div class="form-group">
-										<label for="FormAddPartNumber">Part Number</label>
-										<input type="text" class="form-control" id="FormAddPartNumber" placeholder="Enter Part Number">
+										<label for="FormManufacturer"><h5>Manufacturer</h5></label>
+										<input type="text" class="form-control" id="FormManufacturer" placeholder="Manufacturer">
 									</div>
 									<div class="form-group">
-										<label for="FormAddLabel">Label</label>
-										<input type="text" class="form-control" id="FormAddLabel" placeholder="Enter Label">
+										<label for="FormModel"><h5>Model</h5></label>
+										<input type="text" class="form-control" id="FormModel" placeholder="Model Number">
 									</div>
 									<div class="form-group">
-										<label for="FormAddQuantity">Quantity</label>
-										<input type="number" class="form-control" id="FormAddQuantity" placeholder="Quantity">
+										<label for="FormSerial"><h5>Serial</h5></label>
+										<input type="text" class="form-control" id="FormSerial" placeholder="Serial Number">
 									</div>
-									<div class="form-group">
-										<label for="FormAddMinimum">Minimum</label>
-										<input type="number" class="form-control" id="FormAddMinimum" placeholder="Probably Set Minimum on Edit?">
+									<div class="form-group" id="ToggleRMA">
+										<label for="FormRMA"><h5>RMA</h5></label>
+										<input type="text" class="form-control" id="FormRMA" placeholder="RMA Number">
 									</div>
 								</form>
 							</div>
 							<div class="modal-footer">
-								<button type="submit" class="btn btn-primary" data-dismiss="modal" id="ModalAddButton" value="Submit">Add</button>
+								<button type="submit" class="btn btn-primary" data-dismiss="modal" id="SubmitButton" value="Submit">Submit</button>
 								<button type="button" class="btn btn-primary" data-dismiss="modal">Scan</button>
 								<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 							</div>
@@ -173,13 +188,13 @@
 			</article>
 
 			<!--Incoming Purchases Table-->
-			<article class="col-sm" id="IncomingTable">
-				<table class="table table-striped border">
+			<article class="col-sm" id="Incoming">
+				<table class="table table-striped border" id="IncomingTable">
 					<thead>
 						<tr>
 							<th scope="col" colspan="100%">
 								<header>
-									<h4>Incoming Purchases</h4>
+									<h4>Inbound</h4>
 								</header>
 							</th>
 						</tr>
@@ -206,13 +221,13 @@
 				</table>
 			</article>
 			<!--Outgoing Orders Table-->
-			<article class="col-sm" id="OutgoingTable">
-				<table class="table table-striped border">
+			<article class="col-sm" id="Outgoing">
+				<table class="table table-striped border" id="OutgoingTable">
 					<thead>
 						<tr>
 							<th scope="col" colspan="100%">
 								<header>
-									<h4>Outgoing Orders</h4>
+									<h4>Outbound</h4>
 								</header>
 							</th>
 						</tr>
@@ -251,13 +266,7 @@
 </body>
 
 </html>
+
 <!--
-WORK TO BE DONE
-	1. Add some functionailty to edit, delete, and refresh inventory items
-
-	2. Add functionality to sort by table categories from A-Z/ lowest to highest/ alarming state
-
-	3. Finish functionality on adding inems so that new rows are added
-
-	4. Add scrollbar by wrapping the content of <tbody> in a div if table gets too large  
+	Add scrollbar by wrapping the content of <tbody> in a div if table gets too large  
 -->
