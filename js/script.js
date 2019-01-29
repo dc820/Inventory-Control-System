@@ -59,36 +59,39 @@ $(document).ready(function () {
 
     //Adds New Row Defined by Form Input
     $("#SubmitButton").click(function() { 
-        var device = new productObject(status, $("#FormType").val(), $("#FormManufacturer").val(), $("#FormModel").val(), $("#FormSerial").val(), $("#FormRMA").val());
+        var device = new deviceObject(status, $("#FormType").val(), $("#FormManufacturer").val(), $("#FormModel").val(), $("#FormSerial").val(), $("#FormRMA").val());
         console.log(device);
         
         //Row Counter
         rowCount++;
         console.log("row count " + rowCount);
 
+        //Append HTML
+        $(".tableBody").append("<tr id='TableRow" + rowCount + "'><td><div class='custom-control custom-checkbox'><input type='checkbox' class='custom-control-input' id='CheckRow" + rowCount + "'><label class='custom-control-label' for='CheckRow" + rowCount + "'>Cisco Router</label></div></td></tr>")
+
         $("#SubmitButton").submit(function () {
             //Data to submit here
         });
     });
 
-    //Edit Button on Products Table
+    //Edit Button on Inventory Table
     $("#Edit").click(function () {
         $("#EditModal").modal();
-        //Check Selected
+        checkSelected();
     });
 
-    //Delete Button on Products Table
+    //Delete Button on Inventory Table
     $("#Delete").click(function () {
         $("#DeleteModal").modal();
-        //Check Selected
+        checkSelected();
     });
 
     $("#ConfirmDelete").click(function () {
-        //Delete Selected Table Rows
+        $(".selected").remove();
     });
 
     //Constructor for Devices
-    function productObject(part, status, type, manufacturer, model, serial, rma) {
+    function deviceObject(part, status, type, manufacturer, model, serial, rma) {
         this.part = part;  
         this.status = status;
         this.type = type;
@@ -97,4 +100,19 @@ $(document).ready(function () {
         this.serial = serial;
         this.rma = rma;
     };
+    //Adds Class "selected" to table row using row counter - Probably need to find another way to edit/delete selections later
+    function checkSelected(){
+        console.log("example row:" + $("#CheckRow").prop("checked"));
+        for(r=1;r<=rowCount;r++){
+            if($("#CheckRow"+r).prop("checked") == true){
+                $("#TableRow"+r).addClass("selected");
+                console.log(true)
+            } else {
+                $("#TableRow"+r).removeClass("selected");
+                console.log(false)
+            }
+        }
+    }
 });
+
+//Need to Create Object Group for Holding Same Kinds of Items
