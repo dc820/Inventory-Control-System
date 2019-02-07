@@ -1,0 +1,35 @@
+*{
+	font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.centerText{
+	text-align: center;
+}
+
+nav{
+	background-color: hsla(0,0%,85%,0.5);
+	text-align: center;
+	border-top: 1px solid black;
+	margin-bottom: 1em;
+}
+
+table thead tr:first-child, tfoot{
+	border: 2px double hsla(0,0%,50%,0.5);
+	/*background-color: hsla(0,0%,85%,0.5);*/
+}
+
+tfoot{
+	background-color: hsla(0,0%,85%,0.5);
+}
+
+article{
+	margin-bottom: 1em;
+
+}
+
+footer p{
+	text-align: center;
+}
+
+
+/*!important*/

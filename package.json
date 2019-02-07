@@ -1,0 +1,26 @@
+{
+  "name": "inventory-control-system",
+  "version": "1.0.0",
+  "description": "Inventory Management App",
+  "main": "app.js",
+  
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node ./bin/www",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dc820/Inventory-Control-System.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dc820/Inventory-Control-System/issues"
+  },
+  "homepage": "https://github.com/dc820/Inventory-Control-System#readme"
+}

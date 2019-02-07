@@ -60,7 +60,7 @@ $(document).ready(function () {
     //Adds New Row Defined by Form Input
     $("#SubmitButton").click(function() { 
         var device = new deviceObject(status, $("#FormType").val(), $("#FormManufacturer").val(), $("#FormModel").val(), $("#FormSerial").val(), $("#FormRMA").val());
-        console.log(device);
+        console.log("Send new device object to server /n" + device);
         
         //Row Counter
         rowCount++;
@@ -100,7 +100,7 @@ $(document).ready(function () {
         this.serial = serial;
         this.rma = rma;
     };
-    //Adds Class "selected" to table row using row counter - Probably need to find another way to edit/delete selections later
+    //Adds Class "selected" to table row using row counter - Probably will have row ID from SQL table
     function checkSelected(){
         console.log("example row:" + $("#CheckRow").prop("checked"));
         for(r=1;r<=rowCount;r++){
