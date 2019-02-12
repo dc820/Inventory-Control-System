@@ -3,14 +3,13 @@
   "version": "1.0.0",
   "description": "Inventory Management App",
   "main": "app.js",
-  
   "dependencies": {
     "ejs": "^2.6.1",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "mongoose": "^5.4.11"
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
