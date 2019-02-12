@@ -67,10 +67,23 @@ $(document).ready(function () {
         console.log("row count " + rowCount);
 
         //Append HTML
-        $(".tableBody").append("<tr id='TableRow" + rowCount + "'><td><div class='custom-control custom-checkbox'><input type='checkbox' class='custom-control-input' id='CheckRow" + rowCount + "'><label class='custom-control-label' for='CheckRow" + rowCount + "'>Cisco Router</label></div></td></tr>")
+        //$(".tableBody").append("<tr id='TableRow" + rowCount + "'><td><div class='custom-control custom-checkbox'><input type='checkbox' class='custom-control-input' id='CheckRow" + rowCount + "'><label class='custom-control-label' for='CheckRow" + rowCount + "'>Cisco Router</label></div></td></tr>")
 
         $("#SubmitButton").submit(function () {
             //Data to submit here
+            $.ajax({
+                url: "http://localhost:3000/api/addDevice",
+                method: "POST",
+                dataType: "JSON",
+                data: device
+                },
+                success, function(serverResponse)
+                {
+                    console.log(serverResponse);
+                    //$('#output').append(serverResponse);
+                    
+                }
+            );
         });
     });
 
