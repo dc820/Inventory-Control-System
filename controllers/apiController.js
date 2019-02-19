@@ -40,7 +40,7 @@ module.exports = function(app){
     });
 
     //Delete Device By _ID
-    app.post('/api/deleteDevice', function (req, res){
+    app.delete('/api/deleteDevice', function (req, res){
         Devices.findByIdAndDelete(req.body._id, function(err, result){
             res.send('Success');
         });
