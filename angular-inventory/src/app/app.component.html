@@ -1,4 +1,7 @@
-<app-header></app-header>
+<app-header (setActiveTab)="onActive($event)"></app-header>
 <div class="container-fluid">
-  <app-main></app-main>
+  <app-inventory *ngIf="activeTabId === 'AllTab'"></app-inventory>
+  <!--app inbound *ngIf="activeTabId === 'InboundTab'"-->
+  <!--app outbound *ngIf="activeTabId === 'OutboundTab'"-->
+  <!--app reports *ngIf="activeTabId === 'ReportsTab'"-->
 </div>

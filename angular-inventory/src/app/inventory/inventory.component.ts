@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-main',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.css']
+  selector: 'app-inventory',
+  templateUrl: './inventory.component.html',
+  styleUrls: ['./inventory.component.css']
 })
-export class MainComponent implements OnInit {
+export class InventoryComponent implements OnInit {
   // Heading for each cell can be modified here
   headings = ['Device', 'Model', 'Label', 'Starting', 'Recieved', 'Shipped', 'On-hand', 'Minimum' ];
 
