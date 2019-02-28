@@ -1,31 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
+import { NavigationService } from './navigation.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit, DoCheck {
   title = 'angular-inventory';
-  activeTabId = 'AllTab';
-  activeTabObj: {id: string, name: string, active: boolean};
 
-  onActive(data) {
-    this.activeTabObj = data;
-    if (this.activeTabObj.id === 'AllTab') {
-      this.activeTabId = this.activeTabObj.id;
-    }
+  constructor(private navigationService: NavigationService) {}
+  activeTab: {id: string, name: string, active: boolean};
 
-    if (this.activeTabObj.id === 'InboundTab') {
-      this.activeTabId = this.activeTabObj.id;
-    }
-
-    if (this.activeTabObj.id === 'OutboundTab') {
-      this.activeTabId = this.activeTabObj.id;
-    }
-
-    if (this.activeTabObj.id === 'ReportsTab') {
-      this.activeTabId = this.activeTabObj.id;
-    }
+  ngOnInit() {
+    this.activeTab = this.navigationService.activeTab;
   }
+
+  ngDoCheck() {
+    this.activeTab = this.navigationService.activeTab;
+    console.log('Active Tab: ' + this.activeTab.name);
+  }
+
 }

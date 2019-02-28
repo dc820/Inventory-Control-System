@@ -2,8 +2,8 @@
   <nav class="navbar navbar-expand-lg navbar-light">
     <a class="navbar-brand" href="https://github.com/dc820/Inventory-Control-System"  target="_blank">ICMS</a>
     <ul class="nav nav-tabs mr-auto">
-      <li class="nav-item" *ngFor="let tab of tabs; let i = index">
-        <a class="nav-link" href="#" [id]="tabs[i].id" [ngClass]="{active: tabs[i].active === true}" (click)="onNavTab($event)">{{ tabs[i].name }}</a>
+      <li class="nav-item" *ngFor="let tab of tabs">
+        <a class="nav-link" href="#" [id]="tab.id" [ngClass]="{active: tab.active === true}" (click)="onNavTab($event)">{{ tab.name }}</a>
       </li>
     </ul>
       

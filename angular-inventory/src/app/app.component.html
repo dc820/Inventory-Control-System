@@ -1,7 +1,12 @@
-<app-header (setActiveTab)="onActive($event)"></app-header>
-<div class="container-fluid">
-  <app-inventory *ngIf="activeTabId === 'AllTab'"></app-inventory>
-  <!--app inbound *ngIf="activeTabId === 'InboundTab'"-->
-  <!--app outbound *ngIf="activeTabId === 'OutboundTab'"-->
-  <!--app reports *ngIf="activeTabId === 'ReportsTab'"-->
+<app-header></app-header>
+<div class="container-fluid" [ngSwitch]="activeTab.id">
+  <app-inventory *ngSwitchCase="'AllTab'"></app-inventory>
+  <!--app inbound *ngSwitchCase="'InboundTab'"-->
+  <!--app outbound *ngSwitchCase="'OutboundTab'"-->
+  <!--app reports *ngSwitchCase="'ReportsTab'"-->
+  <p *ngSwitchCase="'AllTab'">All Inventory Here</p>
+  <p *ngSwitchCase="'InboundTab'">Inbound Here</p>
+  <p *ngSwitchCase="'OutboundTab'">Outbound Here</p>
+  <p *ngSwitchCase="'ReportsTab'">Reports Here</p>
+  <p *ngSwitchDefault>Nothing Here</p>
 </div>
