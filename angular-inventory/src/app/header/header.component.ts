@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NavigationService } from '../navigation.service';
 
 @Component({
   selector: 'app-header',
@@ -7,10 +6,22 @@ import { NavigationService } from '../navigation.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
-  tabs = this.navigationService.tabs;
-  constructor(private navigationService: NavigationService) { }
+  tabs = [
+    {id: 'AllTab', name: 'All Inventory', active: true, path: ''},
+    {id: 'InboundTab', name: 'Inbound Inventory', active: false, path: 'inbound'},
+    {id: 'OutboundTab', name: 'Outbound Inventory', active: false, path: 'outbound'},
+    {id: 'ReportsTab', name: 'Reports', active: false, path: 'reports'}
+  ];
+  constructor() { }
 
   onNavTab(event: any) {
-    this.navigationService.onNavTab(event);
+    this.tabs.forEach((tab) => {
+      if (event.target.id === tab.id) {
+        tab.active = true;
+        console.log('Active Tab: ' + tab.name);
+      } else {
+        tab.active = false;
+      }
+    });
   }
 }
