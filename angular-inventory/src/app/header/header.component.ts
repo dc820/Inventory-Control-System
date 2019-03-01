@@ -7,21 +7,11 @@ import { Component } from '@angular/core';
 })
 export class HeaderComponent {
   tabs = [
-    {id: 'AllTab', name: 'All Inventory', active: true, path: ''},
-    {id: 'InboundTab', name: 'Inbound Inventory', active: false, path: 'inbound'},
-    {id: 'OutboundTab', name: 'Outbound Inventory', active: false, path: 'outbound'},
-    {id: 'ReportsTab', name: 'Reports', active: false, path: 'reports'}
+    {id: 'AllTab', name: 'All Inventory', path: ''},
+    {id: 'InboundTab', name: 'Inbound Inventory', path: 'inbound'},
+    {id: 'OutboundTab', name: 'Outbound Inventory', path: 'outbound'},
+    {id: 'ReportsTab', name: 'Reports', path: 'reports'}
   ];
   constructor() { }
 
-  onNavTab(event: any) {
-    this.tabs.forEach((tab) => {
-      if (event.target.id === tab.id) {
-        tab.active = true;
-        console.log('Active Tab: ' + tab.name);
-      } else {
-        tab.active = false;
-      }
-    });
-  }
 }

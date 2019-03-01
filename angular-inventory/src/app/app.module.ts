@@ -1,29 +1,28 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { InventoryComponent } from './inventory/inventory.component';
-import { AddModalComponent } from './inventory/add-modal/add-modal.component';
-
-const appRoutes: Routes = [
-  { path: '', component: InventoryComponent },
-  { path: 'inbound', component: HeaderComponent },
-  { path: 'outbound', component: HeaderComponent },
-  { path: 'reports', component: HeaderComponent }
-];
+import { AppRoutingModule } from './app-routing.module';
+import { InboundComponent } from './inbound/inbound.component';
+import { OutboundComponent } from './outbound/outbound.component';
+import { ReportsComponent } from './reports/reports.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     InventoryComponent,
-    AddModalComponent
+    InboundComponent,
+    OutboundComponent,
+    ReportsComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes)
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
