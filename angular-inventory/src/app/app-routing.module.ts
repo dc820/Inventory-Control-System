@@ -6,13 +6,8 @@ import { InboundComponent } from './inbound/inbound.component';
 import { OutboundComponent } from './outbound/outbound.component';
 import { ReportsComponent } from './reports/reports.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-
 const appRoutes: Routes = [
-    { path: '', component: InventoryComponent, children: [
-        { path: 'Add', component: InboundComponent },
-        { path: 'Edit', component: OutboundComponent },
-        { path: 'Remove', component: ReportsComponent },
-    ] },
+    { path: '', component: InventoryComponent },
     { path: 'inbound', component: InboundComponent },
     { path: 'outbound', component: OutboundComponent },
     { path: 'reports', component: ReportsComponent },

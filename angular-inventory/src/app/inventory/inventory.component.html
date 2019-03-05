@@ -28,11 +28,128 @@
 			<tfoot>
 				<tr>
 					<td colspan="100%">
-						<a *ngFor="let button of footing" [routerLink]="'/'+button.id" [id]="button.id" (click)="selectOption(button.id)"><i [class]="button.icon"></i></a>
+						<a *ngFor="let button of footing" href="#" [id]="button.id" (click)="selectOption(button.id, content)"><i [class]="button.icon"></i></a>
 					</td>
 				</tr>
 			</tfoot>
 		</table>
-		<router-outlet></router-outlet>
+		<!--Modal Content-->
+		<ng-template #content let-modal>
+			<div class="modal-header">
+				<h4 class="modal-title">Add Device to Inventory</h4>
+				<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form (ngSubmit)="onSubmit(addForm)" #addForm="ngForm">
+				<div class="modal-body" ngModelGroup="deviceAdded" #deviceAdded='ngModelGroup'>
+					<!--Status Form Group-->
+					<h5>Status</h5>
+					<div class="form-group">
+					<div class="custom-control custom-radio custom-control-inline" *ngFor="let option of status">
+						<input 
+							class="custom-control-input" 
+							type="radio" 
+							name="RadioStatus" 
+							[value]="option.value" 
+							[id]="option.id" 
+							[ngModel]="defaultStatus"
+							required>
+						<label class="custom-control-label" [for]="option.id">{{ option.label }}</label>
+					</div>
+				</div>
+					<!--Status Form Group-->
+					<h5>Part Type</h5>
+					<div class="form-group">
+						<div class="custom-control custom-radio custom-control-inline" *ngFor="let option of part">
+							<input 
+								class="custom-control-input" 
+								type="radio" 
+								name="RadioPart"
+								[id]="option.id" 
+								[value]="option.value"
+								[ngModel]="defaultPart"
+								required>
+							<label class="custom-control-label" [for]="option.id">{{ option.label }}</label>
+						</div>
+					</div>
+					<!--Devices Form Group-->
+					<div class="form-group">
+						<label for="FormDevice">
+							<h5>Device</h5>
+						</label>
+						<select id="FormDevice" class="form-control" [ngModel]="defaultDevice" name="selectDevice" required>
+							<option [value]="option.value" *ngFor="let option of device">{{ option.label }}</option>
+						</select>
+					</div>
+					<!--Manufacturer Form Group-->
+					<div class="form-group">
+						<label for="FormManufacturer">
+							<h5>Manufacturer</h5>
+						</label>
+						<input 
+							class="form-control" 
+							type="text" 
+							id="FormManufacturer"
+							placeholder="Manufacturer"
+							name="manufacturer"
+							[ngModel]="defaultManufacturer"
+							required>
+					</div>
+					<!--Model Form Group-->
+					<div class="form-group">
+						<label for="FormModel">
+							<h5>Model</h5>
+						</label>
+						<input 
+							class="form-control"
+							type="text"  
+							id="FormModel" 
+							placeholder="Model Number"
+							name="model"
+							ngModel
+							required>
+							<span class="help-block">Enter Model Number</span>
+					</div>
+					<!--Serial Form Group-->
+					<div class="form-group">
+						<label for="FormSerial">
+							<h5>Serial</h5>
+						</label>
+						<input 
+							class="form-control"
+							type="text" 
+							id="FormSerial" 
+							placeholder="Serial Number"
+							name="serial"
+							ngModel
+							required
+							#serial="ngModel">
+							<span class="help-block">Enter Serial Number</span>
+					</div>
+					<!--RMA Form Group-->
+					<div class="form-group" id="ToggleRMA">
+						<label for="FormRMA">
+							<h5>RMA</h5>
+						</label>
+						<input 
+							class="form-control"
+							type="text" 
+							id="FormRMA" 
+							placeholder="RMA Number"
+							name="rma"
+							ngModel>
+							<span class="help-block">Enter RMA If Applicable</span>
+					</div>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success" data-dismiss="modal" id="SubmitButton" value="Submit" [disabled]="!addForm.valid">Add</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Scan</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal" (click)="modal.close('Close click')">Close</button>
+				</div>
+				<h4 *ngIf="!deviceAdded.valid && deviceAdded.touched">Fields Still Required</h4>
+			</form>
+		</ng-template>
   </div>
 </div>

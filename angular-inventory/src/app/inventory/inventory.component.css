@@ -1,3 +1,7 @@
 td a {
     padding-right: 1em;
 }
+
+.ng-invalid.ng-touched {
+    border-color: red
+}
