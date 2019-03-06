@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation  } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NgForm } from '@angular/forms';
+import { InventoryControlService } from '../inventory-control.service';
 
 @Component({
   selector: 'app-inventory',
@@ -11,60 +11,9 @@ import { NgForm } from '@angular/forms';
 export class InventoryComponent implements OnInit {
   headings: [string, string, string, string, string, string, string, string];
   footing: [ { id: string, icon: string }, { id: string, icon: string }, { id: string, icon: string }, { id: string, icon: string } ];
-  defaultStatus: string;
-  defaultPart: string;
-  defaultDevice: string;
-  defaultManufacturer: string;
 
-  // Dummy Data
-  tRow = [
-    { id: '1',
-      checkbox: 'u1',
-      device: 'Router',
-      model: '4300',
-      label: 'Cisco Router- 4300',
-      start: '45',
-      recieved: '143',
-      shipped: '76',
-      onhand: '86',
-      minimum: '88' },
-
-    { id: '2',
-      checkbox: 'u2',
-      device: 'Router',
-      model: '4300',
-      label: 'Cisco Router- 4300',
-      start: '45',
-      recieved: '143',
-      shipped: '76',
-      onhand: '86',
-      minimum: '88' }
-    ];
-
-  status = [
-    {value: 'onhand', id: 'statusStorage', label: 'Onhand'},
-    {value: 'inbound', id: 'statusInbound', label: 'Inbound'},
-    {value: 'outbound', id: 'statusOutbound', label: 'Outbound'}
-  ];
-
-  part = [
-    {value: 'storage', id: 'partStorage', label: 'Storage'},
-    {value: 'recycle', id: 'partRecycle', label: 'Recycle'},
-    {value: 'rma', id: 'partRMA', label: 'RMA'}
-  ];
-
-  device = [
-    { value: 'router', label: 'Router' },
-    {value: 'switch', label: 'Switch'},
-    {value: 'firewall', label: 'Firewall'},
-    {value: 'accessPoint', label: 'Access Point'},
-    {value: 'loadBalancer', label: 'Load Balancer'},
-    {value: 'Other', label: 'Other'}
-  ];
-
-  closeResult: string;
-
-  constructor(private modalService: NgbModal) {}
+  constructor(private modalService: NgbModal, private inventoryControlService: InventoryControlService) {}
+  deviceGroup;
 
   ngOnInit() {
     // Retrieve Inventory Table From MongoDB Database
@@ -77,11 +26,7 @@ export class InventoryComponent implements OnInit {
                 { id: 'Remove', icon: 'fas fa-trash' },
                 { id: 'Resync', icon: 'fas fa-sync-alt' } ];
 
-    // Default Options For Add Modal
-    this.defaultStatus = this.status[0].value;
-    this.defaultPart = this.part[0].value;
-    this.defaultDevice = this.device[0].value;
-    this.defaultManufacturer = 'Cisco';
+    this.deviceGroup = this.inventoryControlService.device;
   }
 
   selectOption(id, content) {
@@ -102,16 +47,6 @@ export class InventoryComponent implements OnInit {
         break;
       default:
         console.log('Error: No Selection');
-    }
-  }
-  onSubmit(form: NgForm) {
-    console.log(form);
-    if (form.invalid === true) {
-      console.log('Form Not Valid');
-    } else {
-    console.log('Form Valid');
-    this.tRow.push(form.value);
-    console.log(this.tRow);
     }
   }
 }

@@ -6,8 +6,11 @@ import { InboundComponent } from './inbound/inbound.component';
 import { OutboundComponent } from './outbound/outbound.component';
 import { ReportsComponent } from './reports/reports.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AddGroupComponent } from './inventory/modal/add-group.component';
 const appRoutes: Routes = [
-    { path: '', component: InventoryComponent },
+    { path: '', component: InventoryComponent, children:
+        [{path: 'Add', component: AddGroupComponent}]
+    },
     { path: 'inbound', component: InboundComponent },
     { path: 'outbound', component: OutboundComponent },
     { path: 'reports', component: ReportsComponent },

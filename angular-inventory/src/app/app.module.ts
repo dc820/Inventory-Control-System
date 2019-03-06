@@ -11,6 +11,7 @@ import { InboundComponent } from './inbound/inbound.component';
 import { OutboundComponent } from './outbound/outbound.component';
 import { ReportsComponent } from './reports/reports.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AddGroupComponent } from './inventory/modal/add-group.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     InboundComponent,
     OutboundComponent,
     ReportsComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    AddGroupComponent
   ],
   imports: [
     BrowserModule,
