@@ -1,24 +1,24 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { InventoryComponent } from './inventory/inventory.component';
-import { InboundComponent } from './inbound/inbound.component';
-import { OutboundComponent } from './outbound/outbound.component';
-import { ReportsComponent } from './reports/reports.component';
+import { AllInvComponent } from './inventory/all/all-inv.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AddGroupComponent } from './inventory/modal/add-group.component';
+import { HomeComponent } from './core/home/home.component';
+
 const appRoutes: Routes = [
-    { path: '', component: InventoryComponent, children:
+    { path: '', component: AllInvComponent, children:
         [{path: 'Add', component: AddGroupComponent}]
     },
-    { path: 'inbound', component: InboundComponent },
-    { path: 'outbound', component: OutboundComponent },
-    { path: 'reports', component: ReportsComponent },
+    { path: 'home', component: HomeComponent},
     { path: 'not-found', component: PageNotFoundComponent},
     { path: '**', redirectTo: 'not-found' }
   ];
 
 @NgModule({
+    declarations: [
+        PageNotFoundComponent
+    ],
     imports: [
         RouterModule.forRoot(appRoutes)
     ],

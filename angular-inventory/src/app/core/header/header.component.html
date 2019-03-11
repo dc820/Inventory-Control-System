@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <nav class="navbar navbar-expand-lg navbar-light">
     <ul class="nav nav-tabs mr-auto">
-      <a class="navbar-brand" href="https://github.com/dc820/Inventory-Control-System"  target="_blank">ICMS</a>
+      <a class="navbar-brand" routerLink="/home">ICMS</a>
       <li class="nav-item" *ngFor="let tab of tabs">
         <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="'/' + tab.path" [id]="tab.id">{{ tab.name }}</a>
       </li>

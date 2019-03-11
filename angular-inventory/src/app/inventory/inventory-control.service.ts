@@ -3,10 +3,11 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
+
 export class InventoryControlService {
 
-  // This Should Display Group Information From Query 
-  deviceGroup: [{}];
+  // This Should Display Group Information From Query
+  deviceGroup: Array<object>;
 
   // Dummy Data. This Should Display Individual Device Information From Query
   device = [

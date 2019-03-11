@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { InventoryControlService } from 'src/app/inventory-control.service';
+import { InventoryControlService } from 'src/app/inventory/inventory-control.service';
 
 @Component({
   selector: 'app-add-group-modal',

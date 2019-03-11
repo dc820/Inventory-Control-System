@@ -3,12 +3,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InventoryControlService } from '../inventory-control.service';
 
 @Component({
-  selector: 'app-inventory',
-  templateUrl: './inventory.component.html',
+  selector: 'app-all-inv',
+  templateUrl: './all-inv.component.html',
   encapsulation: ViewEncapsulation.None,
-  styleUrls: ['./inventory.component.css']
+  styleUrls: ['./all-inv.component.css']
 })
-export class InventoryComponent implements OnInit {
+export class AllInvComponent implements OnInit {
   headings: [string, string, string, string, string, string, string, string];
   footing: [ { id: string, icon: string }, { id: string, icon: string }, { id: string, icon: string }, { id: string, icon: string } ];
 
