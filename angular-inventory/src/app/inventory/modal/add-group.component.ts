@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InventoryControlService } from 'src/app/inventory/inventory-control.service';
+import { Device } from '../../shared/device.model';
 
 @Component({
   selector: 'app-add-group-modal',
@@ -13,6 +14,8 @@ export class AddGroupComponent implements OnInit {
   defaultPart: string;
   defaultDevice: string;
   defaultManufacturer: string;
+  deviceGroup: Array<object>;
+  newDevice: Device;
 
   status = [
     {value: 'Onhand', id: 'statusStorage' },
@@ -53,27 +56,25 @@ export class AddGroupComponent implements OnInit {
 
   //
   onSubmit(form: NgForm) {
+    this.newDevice = new Device(
+      'Test',
+      'Test',
+      'Test',
+      'Serial Here',
+      0,
+      1,
+      2,
+      3,
+      4
+    );
     console.log(form);
     if (form.valid) {
       console.log('Form Valid');
+      console.log(this.newDevice);
 
-      // Pushing Dummy Data At the Moment.
-      // Need To Send Request To Update DB With Device, Model, Etc. Need To Recieve DB Generated IDs
-      this.inventoryControlService.device.push({
 
-        rowId: '2', // Retrive Unique ID From Database
-        checkboxId: 'u2', // Retrive Unique ID From Database
-        device: form.value.device,
-        model: form.value.model,
-        label: form.value.manufacturer + ' ' + form.value.device + '- ' + form.value.model,
-        start: '45', // User Defined Starting Inventory For Group  <----------NEED TO ADD THIS OPTION IN HTML MODAL
-        recieved: '143', // Counter For When Devices Are Set To Incoming
-        shipped: '76', // Counter For When Devices Are Set To Outgoing
-        onhand: '86', // Counter For Current Stock When Devices Are Set To Onhand
-        minimum: '88' } // User Defined Minimum For Group <----------NEED TO ADD THIS OPTION IN HTML MODAL
-
-      );
-      console.log(this.inventoryControlService.device);
+      this.inventoryControlService.deviceGroup.push(this.newDevice);
+      console.log(this.inventoryControlService.deviceGroup);
     }
   }
 }

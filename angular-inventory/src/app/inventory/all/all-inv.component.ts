@@ -9,24 +9,22 @@ import { InventoryControlService } from '../inventory-control.service';
   styleUrls: ['./all-inv.component.css']
 })
 export class AllInvComponent implements OnInit {
-  headings: [string, string, string, string, string, string, string, string];
-  footing: [ { id: string, icon: string }, { id: string, icon: string }, { id: string, icon: string }, { id: string, icon: string } ];
+  headings: Array<string>;
+  footing: Array<object>;
+  deviceGroup = this.inventoryControlService.deviceGroup;
 
   constructor(private modalService: NgbModal, private inventoryControlService: InventoryControlService) {}
-  deviceGroup;
 
   ngOnInit() {
     // Retrieve Inventory Table From MongoDB Database
     // Heading for each cell can be modified here
-    this.headings = ['Device', 'Model', 'Label', 'Starting', 'Recieved', 'Shipped', 'On-hand', 'Minimum' ];
+    this.headings = ['Device', 'Model', 'Manufacturer', 'Starting', 'Recieved', 'Shipped', 'On-hand', 'Minimum' ];
 
     // Footer icons on table
     this.footing = [ { id: 'Add', icon: 'fas fa-plus' },
                 { id: 'Edit', icon: 'fas fa-pencil-alt' },
                 { id: 'Remove', icon: 'fas fa-trash' },
                 { id: 'Resync', icon: 'fas fa-sync-alt' } ];
-
-    this.deviceGroup = this.inventoryControlService.device;
   }
 
   selectOption(id, content) {
@@ -43,6 +41,7 @@ export class AllInvComponent implements OnInit {
         console.log(id); // Remove Modal
         break;
       case 'Resync':
+        this.inventoryControlService.getInventory();
         console.log(id); // Resync MongoDB All Inventory Database
         break;
       default:

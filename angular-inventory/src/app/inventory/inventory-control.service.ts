@@ -1,30 +1,32 @@
 import { Injectable } from '@angular/core';
+import { Device } from '../shared/device.model';
+import { HttpClient } from '@angular/common/http';   // HTTP
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class InventoryControlService {
+  newDevice = new Device(
+      'Switch',
+      'WS-2010',
+      'Cisco',
+      'Serial HERE',
+      45,
+      143,
+      76,
+      86,
+      88
+  );
 
-  // This Should Display Group Information From Query
-  deviceGroup: Array<object>;
-
-  // Dummy Data. This Should Display Individual Device Information From Query
-  device = [
-    { rowId: '1',
-      checkboxId: 'u1', // Retrive Unique ID From Database
-      device: 'Router',
-      model: '4300',
-      label: 'Cisco Router- 4300',
-      start: '45',
-      recieved: '143',
-      shipped: '76',
-      onhand: '86',
-      minimum: '88' }
-    ];
+  deviceGroup = [
+    this.newDevice
+];
 
   constructor() { }
 
   // Need to Create Query Functions Like Below To Retrieve Tables Based On Specified Query (Inbound, Outbound, All)
-  // getInventory()
+  getInventory() {
+    console.log('getInventory() Fired!');
+  }
 }
