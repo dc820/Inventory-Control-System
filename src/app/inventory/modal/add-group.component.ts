@@ -56,17 +56,6 @@ export class AddGroupComponent implements OnInit {
 
   //
   onSubmit(form: NgForm) {
-    this.newDevice = new Device(
-      'Test',
-      'Test',
-      'Test',
-      'Serial Here',
-      0,
-      1,
-      2,
-      3,
-      4
-    );
     console.log(form);
     if (form.valid) {
       console.log('Form Valid');

@@ -8,7 +8,10 @@ import { HomeComponent } from './core/home/home.component';
 
 const appRoutes: Routes = [
     { path: '', component: AllInvComponent, children:
-        [{path: 'Add', component: AddGroupComponent}]
+        [{path: 'Add', component: AddGroupComponent},
+        {path: 'Edit', redirectTo: '/'},
+        {path: 'Remove', redirectTo: '/'},
+        {path: 'Resync', redirectTo: '/'}]
     },
     { path: 'home', component: HomeComponent},
     { path: 'not-found', component: PageNotFoundComponent},

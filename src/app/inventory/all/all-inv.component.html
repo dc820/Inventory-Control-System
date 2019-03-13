@@ -9,11 +9,11 @@
 				<tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let row of deviceGroup" [id] = "row.rowId">
+				<tr *ngFor="let row of deviceGroup" [id] = "">
 					<td>
 						<div class="custom-control custom-checkbox">
-							<input type="checkbox" class="custom-control-input" [id]="row.checkboxId">
-							<label class="custom-control-label" [for]="row.checkboxId">{{ row.device }}</label>
+							<input type="checkbox" class="custom-control-input" [id]="">
+							<label class="custom-control-label" [for]="">{{ row.type }}</label>
 						</div>
 					</td>
 					<td>{{ row.model }}</td>
