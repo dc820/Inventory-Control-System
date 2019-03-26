@@ -5,33 +5,33 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  
+
   <form (ngSubmit)="onSubmit(addForm)" #addForm="ngForm">
     <div class="modal-body">
       <!--Status Form Group-->
       <h5>Status</h5>
       <div class="form-group">
       <div class="custom-control custom-radio custom-control-inline" *ngFor="let option of status">
-        <input 
-          class="custom-control-input" 
-          type="radio" 
-          name="RadioStatus" 
-          [value]="option.value" 
-          [id]="option.id" 
+        <input
+          class="custom-control-input"
+          type="radio"
+          name="RadioStatus"
+          [value]="option.value"
+          [id]="option.id"
           [ngModel]="defaultStatus"
           required>
         <label class="custom-control-label" [for]="option.id">{{ option.value }}</label>
       </div>
     </div>
       <!--Status Form Group-->
-      <h5>Part Type</h5>
+      <h5>Part</h5>
       <div class="form-group">
         <div class="custom-control custom-radio custom-control-inline" *ngFor="let option of part">
-          <input 
-            class="custom-control-input" 
-            type="radio" 
+          <input
+            class="custom-control-input"
+            type="radio"
             name="RadioPart"
-            [id]="option.id" 
+            [id]="option.id"
             [value]="option.value"
             [ngModel]="defaultPart"
             required>
@@ -41,9 +41,9 @@
       <!--Devices Form Group-->
       <div class="form-group">
         <label for="FormDevice">
-          <h5>Device</h5>
+          <h5>Type</h5>
         </label>
-        <select id="FormDevice" class="form-control" [ngModel]="defaultDevice" name="device" required>
+        <select id="FormDevice" class="form-control" [ngModel]="defaultDevice" name="type" required>
           <option [value]="option.value" *ngFor="let option of device">{{ option.value }}</option>
         </select>
       </div>
@@ -52,9 +52,9 @@
         <label for="FormManufacturer">
           <h5>Manufacturer</h5>
         </label>
-        <input 
-          class="form-control" 
-          type="text" 
+        <input
+          class="form-control"
+          type="text"
           id="FormManufacturer"
           placeholder="Manufacturer"
           name="manufacturer"
@@ -66,10 +66,10 @@
         <label for="FormModel">
           <h5>Model</h5>
         </label>
-        <input 
+        <input
           class="form-control"
-          type="text"  
-          id="FormModel" 
+          type="text"
+          id="FormModel"
           placeholder="Model Number"
           name="model"
           ngModel
@@ -81,10 +81,10 @@
         <label for="FormSerial">
           <h5>Serial</h5>
         </label>
-        <input 
+        <input
           class="form-control"
-          type="text" 
-          id="FormSerial" 
+          type="text"
+          id="FormSerial"
           placeholder="Serial Number"
           name="serial"
           ngModel
@@ -97,20 +97,31 @@
         <label for="FormRMA">
           <h5>RMA</h5>
         </label>
-        <input 
+        <input
           class="form-control"
-          type="text" 
-          id="FormRMA" 
+          type="text"
+          id="FormRMA"
           placeholder="RMA Number"
           name="rma"
           ngModel>
           <span class="help-block">Enter RMA If Applicable</span>
       </div>
+      <!--Note Form Group-->
+      <div class="form-group">
+        <h5>Note</h5>
+        <textarea
+          name="note"
+          id=""
+          cols="100%"
+          rows="3"
+          ngModel
+          ></textarea>
+      </div>
 
       <!--INSERT HTML HERE FOR TEXT AREA TO ADD NOTES-->
 
     </div>
-    
+
     <div class="modal-footer">
       <button type="submit" class="btn btn-success" data-dismiss="modal" id="SubmitButton" value="Submit" [disabled]="!addForm.valid">Add</button>
       <button type="button" class="btn btn-primary" data-dismiss="modal">Scan</button>

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InventoryControlService } from 'src/app/inventory/inventory-control.service';
-import { Device } from '../../shared/device.model';
 
 @Component({
   selector: 'app-add-group-modal',
@@ -15,7 +14,6 @@ export class AddGroupComponent implements OnInit {
   defaultDevice: string;
   defaultManufacturer: string;
   deviceGroup: Array<object>;
-  newDevice: Device;
 
   status = [
     {value: 'Onhand', id: 'statusStorage' },
@@ -59,11 +57,17 @@ export class AddGroupComponent implements OnInit {
     console.log(form);
     if (form.valid) {
       console.log('Form Valid');
-      console.log(this.newDevice);
-
-
-      this.inventoryControlService.deviceGroup.push(this.newDevice);
-      console.log(this.inventoryControlService.deviceGroup);
+      this.inventoryControlService
+      .addDevice(
+        form.value.status,
+        form.value.type,
+        form.value.model,
+        form.value.manufacturer,
+        form.value.serial,
+        form.value.rma,
+        form.value.note
+      );
+      form.resetForm();
     }
   }
 }

@@ -9,20 +9,20 @@
 				<tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let row of deviceGroup" [id] = "">
+				<tr *ngFor="let row of devices">
 					<td>
 						<div class="custom-control custom-checkbox">
-							<input type="checkbox" class="custom-control-input" [id]="">
-							<label class="custom-control-label" [for]="">{{ row.type }}</label>
+							<input type="checkbox" class="custom-control-input" [id]="row.id">
+							<label class="custom-control-label" [for]="row.id">{{ row.type }}</label>
 						</div>
 					</td>
 					<td>{{ row.model }}</td>
 					<td>{{ row.manufacturer }}</td>
-					<td>{{ row.start }}</td>
+					<!--<td>{{ row.start }}</td>
 					<td>{{ row.recieved }}</td>
 					<td>{{ row.shipped }}</td>
 					<td>{{ row.onhand }}</td>
-					<td>{{ row.minimum }}</td>
+					<td>{{ row.minimum }}</td>-->
 
 					<!--INSERT HTML HERE FOR OPENING DEVICE GROUP TO SHOW INDIVIDUAL DEVICES-->
 
