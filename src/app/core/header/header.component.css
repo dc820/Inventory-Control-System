@@ -1,3 +1,17 @@
-nav {
-    font-weight: bold;
+.push-right {
+/* This fills the remaining space, by using flexbox.
+  Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}
+
+.search {
+  min-width: 150px;
+  max-width: 500px;
+  width: 60%;
+  height: 95%;
+  font-size: 1rem;
+}
+
+.full-width {
+  width: 100%;
 }

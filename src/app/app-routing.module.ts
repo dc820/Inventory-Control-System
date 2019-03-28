@@ -1,27 +1,19 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AllInvComponent } from './inventory/all/all-inv.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { AddGroupComponent } from './inventory/modal/add-group.component';
 import { HomeComponent } from './core/home/home.component';
+import { AllInvComponent } from './inventory/all-inventory/all-inv.component';
+import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 
 const appRoutes: Routes = [
-    { path: '', component: AllInvComponent, children:
-        [{path: 'Add', component: AddGroupComponent},
-        {path: 'Edit', redirectTo: '/'},
-        {path: 'Remove', redirectTo: '/'},
-        {path: 'Resync', redirectTo: '/'}]
-    },
-    { path: 'home', component: HomeComponent},
+    { path: '', component: HomeComponent, },
+    { path: 'all', component: AllInvComponent, },
     { path: 'not-found', component: PageNotFoundComponent},
     { path: '**', redirectTo: 'not-found' }
   ];
 
 @NgModule({
-    declarations: [
-        PageNotFoundComponent
-    ],
+    declarations: [],
     imports: [
         RouterModule.forRoot(appRoutes)
     ],

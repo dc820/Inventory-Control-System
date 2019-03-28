@@ -8,7 +8,7 @@ import { NgForm } from '@angular/forms';
 })
 export class HeaderComponent {
   tabs = [
-    {id: 'AllTab', name: 'All Inventory', path: ''},
+    {id: 'AllTab', name: 'All Inventory', path: 'all'},
     {id: 'InboundTab', name: 'Inbound Inventory', path: 'inbound'},
     {id: 'OutboundTab', name: 'Outbound Inventory', path: 'outbound'},
     {id: 'ReportsTab', name: 'Reports', path: 'reports'}

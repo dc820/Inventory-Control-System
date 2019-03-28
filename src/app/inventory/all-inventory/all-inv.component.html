@@ -1,0 +1,79 @@
+<mat-card>
+  <mat-card-title>
+    <h5>All Inventory</h5>
+  </mat-card-title>
+  <mat-card-content>
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef> No. </th>
+          <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="weight">
+          <th mat-header-cell *matHeaderCellDef> Weight </th>
+          <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="symbol">
+          <th mat-header-cell *matHeaderCellDef> Symbol </th>
+          <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+	  <table>
+			<thead>
+				<tr>
+					<th scope="col" *ngFor="let heading of headings"><a href="#">{{ heading }}&nbsp;<i class="fas fa-caret-up"></i></a></th>
+				<tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let row of devices">
+					<td>
+						<div class="custom-control custom-checkbox">
+							<input type="checkbox" class="custom-control-input" [id]="row.id">
+							<label class="custom-control-label" [for]="row.id">{{ row.type }}</label>
+						</div>
+					</td>
+					<td>{{ row.model }}</td>
+					<td>{{ row.manufacturer }}</td>
+					<!--<td>{{ row.start }}</td>
+					<td>{{ row.recieved }}</td>
+					<td>{{ row.shipped }}</td>
+					<td>{{ row.onhand }}</td>
+					<td>{{ row.minimum }}</td>-->
+
+					<!--INSERT HTML HERE FOR OPENING DEVICE GROUP TO SHOW INDIVIDUAL DEVICES-->
+
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="100%">
+						<a *ngFor="let button of footing" [routerLink]="'/'+button.id" [id]="button.id" (click)="selectOption(button.id, content)"><i [class]="button.icon"></i></a>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+		<ng-template #content let-modal>
+			<router-outlet></router-outlet>
+		</ng-template>

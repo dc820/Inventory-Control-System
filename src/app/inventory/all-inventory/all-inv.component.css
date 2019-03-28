@@ -1,5 +1,5 @@
-td a {
-    padding-right: 1em;
+table {
+  width: 100%;
 }
 
 .ng-invalid.ng-touched {

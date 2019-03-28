@@ -1,20 +1,34 @@
-<div class="container-fluid">
-  <nav class="navbar navbar-expand-lg navbar-light">
-    <ul class="nav nav-tabs mr-auto">
-      <a class="navbar-brand" routerLink="/home">ICMS</a>
-      <li class="nav-item" *ngFor="let tab of tabs">
-        <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="'/' + tab.path" [id]="tab.id">{{ tab.name }}</a>
-      </li>
-    </ul>
-      
-    <form class="form-inline my-2 my-lg-0" (ngSubmit)="onSubmit(f)" #f="ngForm">
-      <input class="form-control mr-sm-2" 
-          type="search" 
-          placeholder="Search" 
-          aria-label="Search" 
-          ngModel 
-          name="search" >
-      <button class="btn btn-light btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-  </nav>
-</div>
+<mat-toolbar color="primary">
+  <!--Menu-->
+  <button mat-button [matMenuTriggerFor]="menu">
+    <i class="material-icons md-18">menu</i>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{exact: true}"
+    routerLink="">Home</button>
+    <button mat-menu-item
+    *ngFor="let tab of tabs"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{exact: true}"
+    [routerLink]="'/' + tab.path"
+    [id]="tab.id">{{ tab.name }}</button>
+  </mat-menu>
+
+
+
+  <!--SEARCH-->
+  <form class="search" (ngSubmit)="onSubmit(f)" #f="ngForm">
+    <mat-form-field class="full-width">
+      <input
+        matInput
+        placeholder="Search"
+        type="search"
+        aria-label="Search"
+        ngModel
+        name="search">
+    </mat-form-field>
+    <button mat-raised-button color="accent" type="submit">Go</button>
+  </form>
+</mat-toolbar>

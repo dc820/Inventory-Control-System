@@ -1,18 +1,22 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { AppRoutingModule } from '../app-routing.module';
+import { AllInvComponent } from './all-inventory/all-inv.component';
+import { AngularMaterialModule } from '../shared/angular-material.module';
 
-import { AllInvComponent } from './all/all-inv.component';
-import { AddGroupComponent } from './modal/add-group.component';
+
 
 @NgModule({
   declarations: [
-    AllInvComponent,
-    AddGroupComponent
+    AllInvComponent
   ],
   imports: [
+    AngularMaterialModule,
     SharedModule,
-    AppRoutingModule
+    AppRoutingModule,
+  ],
+  exports: [
+    AllInvComponent
   ]
 })
 export class InventoryModule { }
