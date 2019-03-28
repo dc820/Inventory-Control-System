@@ -2,14 +2,18 @@ const express = require('express');
 const InventoryController = require('../controllers/inventory');
 const router = express.Router();
 
-router.get('', InventoryController.getInventory);
+router.get('/search?', InventoryController.searchInventory)
+
+router.get('', InventoryController.getAllInventory);
+
+router.get('/inbound', InventoryController.getInboundInventory);
+
+router.get('/outbound', InventoryController.getOutboundInventory);
 
 router.post('', InventoryController.createDevice);
 
 router.put('/:id', InventoryController.updateDevice);
 
 router.delete('/:id', InventoryController.deleteDevice);
-
-// Search Functionality
 
 module.exports = router;

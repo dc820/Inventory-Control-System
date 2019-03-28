@@ -13,4 +13,4 @@ const deviceSchema = new Schema({
   mimimum: String
 });
 
-module.exports = mongoose.model('Device', deviceSchema);;
+module.exports = mongoose.model('Device', deviceSchema);
