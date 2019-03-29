@@ -1,7 +1,31 @@
+.table-container {
+  /*height: 400px; Overflow only works if height is specified which may be good on mobile devices*/
+  overflow: auto;
+}
+
+.mat-table-sticky:first-child {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  border-right: 1px solid #e0e0e0;
+}
+
+.mat-header-cell {
+  padding-left: 0.5rem;
+}
+
+.mat-cell {
+  padding-left: 0.5rem;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
 table {
   width: 100%;
 }
 
-.ng-invalid.ng-touched {
-    border-color: red
+td {
+  font-size: 14px;
 }

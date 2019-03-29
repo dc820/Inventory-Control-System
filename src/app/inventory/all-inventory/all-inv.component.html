@@ -2,78 +2,66 @@
   <mat-card-title>
     <h5>All Inventory</h5>
   </mat-card-title>
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+  </mat-form-field>
   <mat-card-content>
-    <div class="mat-elevation-z8">
-      <table mat-table [dataSource]="dataSource">
+    <div class="table-container mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource" matSort>
 
-        <!-- Position Column -->
-        <ng-container matColumnDef="position">
-          <th mat-header-cell *matHeaderCellDef> No. </th>
-          <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+        <!-- Model Column -->
+        <ng-container matColumnDef="model" sticky>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Model </th>
+          <td mat-cell *matCellDef="let device"> {{device.model}} </td>
         </ng-container>
 
-        <!-- Name Column -->
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Name </th>
-          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        <!-- Brand Column -->
+        <ng-container matColumnDef="brand">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Brand </th>
+          <td mat-cell *matCellDef="let device"> {{device.brand}} </td>
         </ng-container>
 
-        <!-- Weight Column -->
-        <ng-container matColumnDef="weight">
-          <th mat-header-cell *matHeaderCellDef> Weight </th>
-          <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+        <!-- Device Column -->
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Device </th>
+          <td mat-cell *matCellDef="let device"> {{device.type}} </td>
         </ng-container>
 
-        <!-- Symbol Column -->
-        <ng-container matColumnDef="symbol">
-          <th mat-header-cell *matHeaderCellDef> Symbol </th>
-          <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+        <!-- Recieved Column -->
+        <ng-container matColumnDef="recieved">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Recieved </th>
+          <td mat-cell *matCellDef="let device"> {{device.id}} </td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <!-- Shipped Column -->
+        <ng-container matColumnDef="shipped">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Shipped </th>
+          <td mat-cell *matCellDef="let device"> {{device.id}} </td>
+        </ng-container>
+
+        <!--  On-Hand  Column -->
+        <ng-container matColumnDef="onhand">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Onhand </th>
+          <td mat-cell *matCellDef="let device"> {{device.id}} </td>
+        </ng-container>
+
+        <!-- Total Column -->
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
+          <td mat-cell *matCellDef="let device"> {{device.id}} </td>
+        </ng-container>
+
+        <!-- Minumum Column -->
+        <ng-container matColumnDef="minimum">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Minumum </th>
+          <td mat-cell *matCellDef="let device"> {{device.id}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
 
-      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons sticky></mat-paginator>
     </div>
   </mat-card-content>
 </mat-card>
-
-
-	  <table>
-			<thead>
-				<tr>
-					<th scope="col" *ngFor="let heading of headings"><a href="#">{{ heading }}&nbsp;<i class="fas fa-caret-up"></i></a></th>
-				<tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let row of devices">
-					<td>
-						<div class="custom-control custom-checkbox">
-							<input type="checkbox" class="custom-control-input" [id]="row.id">
-							<label class="custom-control-label" [for]="row.id">{{ row.type }}</label>
-						</div>
-					</td>
-					<td>{{ row.model }}</td>
-					<td>{{ row.manufacturer }}</td>
-					<!--<td>{{ row.start }}</td>
-					<td>{{ row.recieved }}</td>
-					<td>{{ row.shipped }}</td>
-					<td>{{ row.onhand }}</td>
-					<td>{{ row.minimum }}</td>-->
-
-					<!--INSERT HTML HERE FOR OPENING DEVICE GROUP TO SHOW INDIVIDUAL DEVICES-->
-
-				</tr>
-			</tbody>
-			<tfoot>
-				<tr>
-					<td colspan="100%">
-						<a *ngFor="let button of footing" [routerLink]="'/'+button.id" [id]="button.id" (click)="selectOption(button.id, content)"><i [class]="button.icon"></i></a>
-					</td>
-				</tr>
-			</tfoot>
-		</table>
-		<ng-template #content let-modal>
-			<router-outlet></router-outlet>
-		</ng-template>

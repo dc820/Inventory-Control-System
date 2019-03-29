@@ -8,7 +8,8 @@ import {
   MatInputModule,
   MatCardModule,
   MatTableModule,
-  MatPaginatorModule} from '@angular/material';
+  MatPaginatorModule,
+  MatSortModule} from '@angular/material';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import {
     MatInputModule,
     MatCardModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSortModule
   ]
 })
 

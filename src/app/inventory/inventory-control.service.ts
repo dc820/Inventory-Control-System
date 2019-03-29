@@ -28,7 +28,7 @@ export class InventoryControlService {
             status: device.status,
             type: device.type,
             model: device.model,
-            manufacturer: device.manufacturer,
+            brand: device.brand,
             serial: device.serial,
             rma: device.rma,
             note: device.note
@@ -42,8 +42,8 @@ export class InventoryControlService {
       });
   }
 
-  addDevice(status, type, model, manufacturer, serial, rma, note) {
-    const device: Device = { id: null, status, type, model, manufacturer, serial, rma, note};
+  addDevice(status, type, model, brand, serial, rma, note) {
+    const device: Device = { id: null, status, type, model, brand, serial, rma, note};
     this.http
     .post<{ message: string, deviceId: string}>('http://localhost:3000/api/inventory', device)
         .subscribe((responseData) => {

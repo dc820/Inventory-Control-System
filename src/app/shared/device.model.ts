@@ -3,7 +3,7 @@ export interface Device {
   status: string;
   type: string;
   model: string;
-  manufacturer: string;
+  brand: string;
   serial: string;
   rma: string;
   note: string;
