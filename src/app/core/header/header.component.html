@@ -1,5 +1,5 @@
 <mat-toolbar color="primary">
-  <!--Menu-->
+  <!--MENU-->
   <button mat-button [matMenuTriggerFor]="menu">
     <i class="material-icons md-18">menu</i>
   </button>
@@ -16,11 +16,11 @@
     [id]="tab.id">{{ tab.name }}</button>
   </mat-menu>
 
-
+  <span class="push-right"></span>
 
   <!--SEARCH-->
-  <form class="search" (ngSubmit)="onSubmit(f)" #f="ngForm">
-    <mat-form-field class="full-width">
+  <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+    <mat-form-field class="search">
       <input
         matInput
         placeholder="Search"

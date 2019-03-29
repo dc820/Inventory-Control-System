@@ -1,4 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
+import {SelectionModel} from '@angular/cdk/collections';
 import {MatPaginator, MatTableDataSource, MatSort} from '@angular/material';
 import {Device} from '../../shared/device.model';
 
@@ -25,6 +26,7 @@ const INVENTORY_DATA: Device[] = [
   { id: '12', status: '', type: 'Firewall', model:  'ASA5506', brand: 'Cisco', serial: '', rma: '', note: ''}
 ];
 
+
 @Component({
   selector: 'app-all-inv',
   templateUrl: './all-inv.component.html',
@@ -33,8 +35,10 @@ const INVENTORY_DATA: Device[] = [
 
 export class AllInvComponent implements OnInit {
   // Heading for each cell can be modified here
-  displayedColumns: string[] = ['model', 'brand', 'type' , 'recieved', 'shipped', 'onhand', 'total', 'minimum' ];
+  displayedColumns: string[] = ['select', 'model', 'brand', 'type' , 'recieved', 'shipped', 'onhand', 'total', 'minimum' ];
   dataSource = new MatTableDataSource<Device>(INVENTORY_DATA);
+  selection = new SelectionModel<Device>(true, []);
+
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -46,6 +50,29 @@ export class AllInvComponent implements OnInit {
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    console.log(this.selection);
+    this.isAllSelected() ?
+    this.selection.clear() :
+    this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: Device): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.model + 1}`;
   }
 }
 

@@ -7,11 +7,7 @@
 .search {
   min-width: 150px;
   max-width: 500px;
-  width: 60%;
   height: 95%;
   font-size: 1rem;
-}
-
-.full-width {
-  width: 100%;
+  padding-right: 5%;
 }
