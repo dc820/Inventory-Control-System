@@ -6,7 +6,7 @@ const deviceSchema = new Schema({
   part: { type: String, required: true },
   type: { type: String, required: true },
   model: String,
-  manufacturer: String,
+  brand: String,
   serial: String,
   rma: String,
   note: String,

@@ -18,11 +18,10 @@ export class InventoryControlService {
     return this.devicesUpdated.asObservable();
   }
 
-  // Need to Create Query Functions Like Below To Retrieve Tables Based On Specified Query (Inbound, Outbound, All)
   getInventory() {
-    this.http.get<{ message: string, devices: any }>('http://localhost:3000/api/inventory')
+    this.http.get<{ message: string, allInventory: any }>('http://localhost:3000/api/inventory')
       .pipe(map((deviceData) => {
-        return deviceData.devices.map(device => {
+        return deviceData.allInventory.map(device => {
           return {
             id: device._id,
             status: device.status,
@@ -36,7 +35,7 @@ export class InventoryControlService {
         });
       }))
       .subscribe((transformedData) => {
-        console.log(transformedData);
+        // console.log(transformedData);
         this.devices = transformedData;
         this.devicesUpdated.next([...this.devices]);
       });
