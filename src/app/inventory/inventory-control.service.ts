@@ -41,6 +41,20 @@ export class InventoryControlService {
       });
   }
 
+  deleteSelection(id) {
+    console.log(id);
+    this.http.delete<{message: string}>('http://localhost:3000/api/inventory/' + id)
+      .subscribe((responseData) => {
+        console.log(responseData);
+        for (let i = 0; i < this.devices.length ; i++) {
+          if (this.devices[i].id === id ) {
+            this.devices.splice(i, 1);
+          }
+        }
+        this.devicesUpdated.next([...this.devices]);
+      });
+  }
+
   addDevice(status, type, model, brand, serial, rma, note) {
     const device: Device = { id: null, status, type, model, brand, serial, rma, note};
     this.http

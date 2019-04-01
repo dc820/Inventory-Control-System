@@ -28,16 +28,7 @@ export class AllInvComponent implements OnInit, OnDestroy {
   constructor(private inventoryControlService: InventoryControlService) {}
 
   ngOnInit() {
-    this.inventoryControlService.getInventory();
-    this.devicesSub = this.inventoryControlService.getDeviceUpdateListener()
-      .subscribe((devices: Device[]) => {
-        this.INVENTORY_DATA = devices;
-        this.dataSource.data = this.INVENTORY_DATA;
-       // console.log(this.INVENTORY_DATA);
-       // console.log(this.dataSource);
-    });
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.getInventory();
   }
 
   ngOnDestroy() {
@@ -56,7 +47,20 @@ export class AllInvComponent implements OnInit, OnDestroy {
     });
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.selection.clear();
   }
+
+  deleteSelection() {
+    if (this.selection.selected.length > 0) {
+      this.selection.selected.forEach((device) => {
+        this.inventoryControlService.deleteSelection(device.id);
+      });
+      console.log(this.selection.selected);
+      this.selection.clear();
+      this.getInventory();
+    }
+  }
+
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
