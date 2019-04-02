@@ -8,6 +8,7 @@ import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { AppRoutingModule } from './app-routing.module';
+import { FormBuilder } from '@angular/forms';
 
 
 @NgModule({
@@ -23,7 +24,7 @@ import { AppRoutingModule } from './app-routing.module';
     InventoryModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [FormBuilder],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -10,7 +10,12 @@ import {
   MatTableModule,
   MatPaginatorModule,
   MatSortModule,
-  MatCheckboxModule} from '@angular/material';
+  MatCheckboxModule,
+  MatDialogModule,
+  MatSlideToggleModule,
+  MatSelectModule,
+  MatButtonToggleModule,
+  MatTooltipModule} from '@angular/material';
 
 
 @NgModule({
@@ -26,7 +31,12 @@ import {
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDialogModule,
+    MatSlideToggleModule,
+    MatSelectModule,
+    MatButtonToggleModule,
+    MatTooltipModule
   ]
 })
 

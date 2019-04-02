@@ -1,6 +1,7 @@
 export interface Device {
   id: string;
-  status: string;
+  traffic: string;
+  condition: string;
   type: string;
   model: string;
   brand: string;

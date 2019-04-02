@@ -1,0 +1,11 @@
+mat-form-field {
+  width: 100%;
+}
+
+mat-slide-toggle {
+  display: block;
+}
+
+.ng-invalid {
+  border-color: red;
+}

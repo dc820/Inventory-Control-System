@@ -1,0 +1,62 @@
+<form (ngSubmit)="onSubmit(dialogAddForm)" #dialogAddForm="ngForm">
+  <h1 mat-dialog-title>Add Device</h1>
+  <div mat-dialog-content>
+    <!--Device-->
+    <mat-form-field>
+      <mat-select required [ngModel]="device[0]" name="device">
+        <mat-option *ngFor="let option of device" [value]="option">{{ option }}</mat-option>
+      </mat-select>
+      <mat-label>Device</mat-label>
+    </mat-form-field>
+
+    <!--Brand-->
+    <mat-form-field>
+      <input matInput placeholder="Brand" ngModel name="brand" #brand="ngModel" required>
+    </mat-form-field>
+
+    <!--Model-->
+    <mat-form-field>
+      <input matInput placeholder="Model" ngModel name="model" #model="ngModel" required>
+    </mat-form-field>
+
+    <!--Serial-->
+    <mat-form-field>
+      <input matInput placeholder="Serial" ngModel name="serial" #serial="ngModel" required>
+    </mat-form-field>
+
+    <!--Status-->
+    <mat-form-field>
+      <mat-select required [ngModel]="condition[0]" name="condition">
+        <mat-option *ngFor="let option of condition" [value]="option">{{ option }}</mat-option>
+      </mat-select>
+      <mat-label>status</mat-label>
+    </mat-form-field>
+
+    <!--Notes-->
+    <mat-form-field
+      appearance="outline">
+      <textarea matInput ngModel name="note" #brand="ngModel" cols="100%" rows="1"></textarea>
+      <mat-label>Notes</mat-label>
+    </mat-form-field>
+
+    <!--Return Merchandise Authorization-->
+    <mat-form-field *ngIf="slideToggle"
+      [hideRequiredMarker]="options.value.hideRequired"
+      [floatLabel]="options.value.floatLabel">
+      <input matInput placeholder="RMA #" ngModel name="rma" #rma="ngModel" required>
+      <mat-hint>Return Merchandise Authorization</mat-hint>
+    </mat-form-field>
+
+    <mat-slide-toggle color="primary" (click)="toggle()">RMA Case</mat-slide-toggle>
+
+    <mat-button-toggle-group aria-label="Inventory Traffic" ngModel name="traffic" #traffic="ngModel" required>
+      <mat-button-toggle *ngFor="let option of inventoryTraffic" [value]="option.value" [matTooltip]="option.message"><mat-icon>{{ option.icon }}</mat-icon></mat-button-toggle>
+    </mat-button-toggle-group>
+
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button color="primary" type="submit" [disabled]="!dialogAddForm.valid">Add</button>
+    <button mat-button color="warn" mat-dialog-close cdkFocusInitial (click)="resetToggle()">Close</button>
+  </div>
+</form>
+

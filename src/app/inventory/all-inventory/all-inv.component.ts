@@ -1,10 +1,11 @@
 import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import {SelectionModel} from '@angular/cdk/collections';
-import {MatPaginator, MatTableDataSource, MatSort} from '@angular/material';
+import {MatPaginator, MatTableDataSource, MatSort, MatDialog} from '@angular/material';
 
 import { InventoryControlService } from '../inventory-control.service';
 import {Device} from '../../shared/device.model';
 import { Subscription } from 'rxjs';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-all-inv',
@@ -25,7 +26,7 @@ export class AllInvComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private inventoryControlService: InventoryControlService) {}
+  constructor(private inventoryControlService: InventoryControlService, public dialog: MatDialog) {}
 
   ngOnInit() {
     this.getInventory();
@@ -33,6 +34,16 @@ export class AllInvComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.devicesSub.unsubscribe();
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 
   getInventory() {

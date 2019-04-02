@@ -3,7 +3,7 @@ const Device = require('../models/device');
 exports.searchInventory = (req, res, next) => {
   console.log(req.query.q);
 
-  Device.find().or([{ status: {$regex: req.query.q } }, { part: {$regex: req.query.q } }, { type: {$regex: req.query.q } } ])
+  Device.find().or([{ condition: {$regex: req.query.q } }, { traffic: {$regex: req.query.q } }, { type: {$regex: req.query.q } } ])
   .then(result => {
     res.status(200).json({
       query: result
@@ -66,8 +66,8 @@ exports.getOutboundInventory = (req, res, next) => {
 
 exports.createDevice = (req, res, next) => {
   const device = new Device({
-    status: req.body.status,
-    part: req.body.part,
+    traffic: req.body.traffic,
+    condition: req.body.condition,
     type: req.body.type,
     brand: req.body.brand,
     model: req.body.model,
@@ -94,8 +94,8 @@ exports.createDevice = (req, res, next) => {
 exports.updateDevice = (req, res, next) => {
   const device = new Device({
     _id: req.params.id,
-    status: req.body.status,
-    part: req.body.part,
+    traffic: req.body.traffic,
+    condition: req.body.condition,
     type: req.body.type,
     brand: req.body.brand,
     model: req.body.model,

@@ -88,7 +88,7 @@
       <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </div>
   </mat-card-content>
-  <button mat-button><mat-icon aria-hidden="false" aria-label="Add Device">add</mat-icon></button>
+  <button mat-button (click)="openDialog()"><mat-icon aria-hidden="false" aria-label="Add Device">add</mat-icon></button>
   <button mat-button><mat-icon aria-hidden="false" aria-label="Edit Selection">edit</mat-icon></button>
   <button mat-button (click)="deleteSelection()"><mat-icon aria-hidden="false" aria-label="Delete Selection">delete</mat-icon></button>
   <button mat-button (click)="getInventory()"><mat-icon aria-hidden="false" aria-label="Sync Inventory">sync</mat-icon></button>
