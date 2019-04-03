@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { Device } from 'src/app/shared/device.model';
 import { NgForm } from '@angular/forms';
+import { InventoryControlService } from '../inventory-control.service';
 
 @Component({
   selector: 'app-dialog',
@@ -12,8 +13,10 @@ import { NgForm } from '@angular/forms';
 export class DialogComponent {
   options: FormGroup;
   slideToggle = false;
+  mode = this.inventoryControlService.mode;
+  selected = this.inventoryControlService.selected;
 
-  device = [
+  type = [
     'Router',
     'Switch',
     'Firewall',
@@ -37,7 +40,7 @@ export class DialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Device, fb: FormBuilder) {
+    @Inject(MAT_DIALOG_DATA) public data: Device, fb: FormBuilder, private inventoryControlService: InventoryControlService) {
       this.options = fb.group({
         hideRequired: false,
         floatLabel: 'auto',
@@ -45,10 +48,21 @@ export class DialogComponent {
     }
 
   onSubmit(form: NgForm) {
-    console.log(form);
     console.log(form.value);
-    this.slideToggle = false;
-    this.dialogRef.close();
+    if (form.value.rma === undefined) {
+      form.value.rma = '';
+    }
+
+    if (this.mode === 'Add') {
+      this.inventoryControlService.addDevice(form.value);
+      this.slideToggle = false;
+      this.dialogRef.close();
+    } else {
+      form.value.id = this.selected[0].id;
+      this.inventoryControlService.updateDevice(form.value);
+      this.slideToggle = false;
+      this.dialogRef.close();
+    }
   }
   toggle() {
     this.slideToggle = !this.slideToggle;

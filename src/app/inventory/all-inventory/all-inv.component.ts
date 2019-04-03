@@ -36,12 +36,18 @@ export class AllInvComponent implements OnInit, OnDestroy {
     this.devicesSub.unsubscribe();
   }
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      data: {}
-    });
-
+  openDialog(mode): void {
+    this.inventoryControlService.mode = mode;
+    if (this.selection.selected.length === 0 && mode === 'Update' || this.selection.selected.length > 1) {
+      alert('No Selection Or More Than 1');
+      return;
+    }
+    if (mode === 'Update') {
+      this.inventoryControlService.selected = this.selection.selected;
+    }
+    const dialogRef = this.dialog.open(DialogComponent);
     dialogRef.afterClosed().subscribe(result => {
+      this.selection.clear();
       console.log('The dialog was closed');
     });
   }
