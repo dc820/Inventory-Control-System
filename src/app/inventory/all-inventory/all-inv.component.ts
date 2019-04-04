@@ -6,11 +6,19 @@ import { InventoryControlService } from '../inventory-control.service';
 import {Device} from '../../shared/device.model';
 import { Subscription } from 'rxjs';
 import { DialogComponent } from '../dialog/dialog.component';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-all-inv',
   templateUrl: './all-inv.component.html',
-  styleUrls: ['./all-inv.component.css']
+  styleUrls: ['./all-inv.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0', display: 'none'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'))
+    ]),
+  ],
 })
 
 
@@ -19,9 +27,12 @@ export class AllInvComponent implements OnInit, OnDestroy {
   INVENTORY_DATA: Device[] = [];
 
   // Heading for each cell can be modified here     , 'recieved', 'shipped', 'onhand', 'total', 'minimum'
-  displayedColumns: string[] = ['select', 'model', 'brand', 'type', 'id'];
-  dataSource = new MatTableDataSource<Device>(this.INVENTORY_DATA);
+  columnsToDisplay: string[] = ['brand', 'device', 'id'];
+  displayedColumns: string[] = ['select', 'model', 'brand', 'device', 'id'];
+  expandedDeviceGroup: Device | null;
   selection = new SelectionModel<Device>(true, []);
+  dataSource = new MatTableDataSource<Device>(this.INVENTORY_DATA);
+  nestedDisplayedColumns: string[] = ['select', 'traffic', 'condition', 'serial', 'rma', 'note'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -36,22 +47,6 @@ export class AllInvComponent implements OnInit, OnDestroy {
     this.devicesSub.unsubscribe();
   }
 
-  openDialog(mode): void {
-    this.inventoryControlService.mode = mode;
-    if (this.selection.selected.length === 0 && mode === 'Update' || this.selection.selected.length > 1) {
-      alert('No Selection Or More Than 1');
-      return;
-    }
-    if (mode === 'Update') {
-      this.inventoryControlService.selected = this.selection.selected;
-    }
-    const dialogRef = this.dialog.open(DialogComponent);
-    dialogRef.afterClosed().subscribe(result => {
-      this.selection.clear();
-      console.log('The dialog was closed');
-    });
-  }
-
   getInventory() {
     // console.log(this.selection.selected[1]); Can get selected Rows by ID in Array of All Selected
     this.inventoryControlService.getInventory();
@@ -59,8 +54,7 @@ export class AllInvComponent implements OnInit, OnDestroy {
       .subscribe((devices: Device[]) => {
         this.INVENTORY_DATA = devices;
         this.dataSource.data = this.INVENTORY_DATA;
-       // console.log(this.INVENTORY_DATA);
-       // console.log(this.dataSource);
+        console.log(this.dataSource.data);
     });
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -81,6 +75,24 @@ export class AllInvComponent implements OnInit, OnDestroy {
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  openDialog(mode): void {
+    this.inventoryControlService.mode = mode;
+    console.log('Open Dialog ' + mode + ' Mode');
+    if (this.selection.selected.length === 0 && mode === 'Update' || this.selection.selected.length > 1) {
+      alert('No Selection Or More Than 1');
+      return;
+    }
+    if (mode === 'Update') {
+      console.log(this.selection.selected);
+      this.inventoryControlService.selected = this.selection.selected;
+    }
+    const dialogRef = this.dialog.open(DialogComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      this.selection.clear();
+      console.log('The dialog was closed');
+    });
   }
 
   /** Whether the number of selected elements matches the total number of rows. */

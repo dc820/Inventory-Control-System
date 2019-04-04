@@ -49,10 +49,12 @@ export class DialogComponent {
 
   onSubmit(form: NgForm) {
     console.log(form.value);
+
+
+
     if (form.value.rma === undefined) {
       form.value.rma = '';
     }
-
     if (this.mode === 'Add') {
       this.inventoryControlService.addDevice(form.value);
       this.slideToggle = false;

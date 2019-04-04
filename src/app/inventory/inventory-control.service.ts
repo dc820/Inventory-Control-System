@@ -13,7 +13,7 @@ export class InventoryControlService {
   private devicesUpdated = new Subject<Device[]>();
 
   mode: string;
-  selected: object[];
+  selected: Device[];
 
   constructor(private http: HttpClient) { }
 

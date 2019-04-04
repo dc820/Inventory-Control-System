@@ -1,14 +1,17 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-
-import { AppComponent } from './app.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './shared/angular-material.module';
-import { SharedModule } from './shared/shared.module';
+
 import { CoreModule } from './core/core.module';
+import { SharedModule } from './shared/shared.module';
 import { InventoryModule } from './inventory/inventory.module';
+
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
+
 import { FormBuilder } from '@angular/forms';
+import { AppComponent } from './app.component';
 
 
 @NgModule({
@@ -17,11 +20,12 @@ import { FormBuilder } from '@angular/forms';
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,
+    BrowserAnimationsModule,
     AngularMaterialModule,
-    SharedModule,
     CoreModule,
+    SharedModule,
     InventoryModule,
+    HttpClientModule,
     AppRoutingModule
   ],
   providers: [FormBuilder],
