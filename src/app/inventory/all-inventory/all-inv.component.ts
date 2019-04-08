@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
-import {SelectionModel} from '@angular/cdk/collections';
+// import {SelectionModel} from '@angular/cdk/collections';
 import {MatPaginator, MatTableDataSource, MatSort, MatDialog} from '@angular/material';
 
 import { InventoryControlService } from '../inventory-control.service';
@@ -24,15 +24,17 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 
 export class AllInvComponent implements OnInit, OnDestroy {
   private devicesSub: Subscription;
-  INVENTORY_DATA: Device[] = [];
+  private deviceGroupsSub: Subscription;
+  DEVICE_GROUPS: object[] = [];
+  ALL_DEVICES: Device[] = [];
 
-  // Heading for each cell can be modified here     , 'recieved', 'shipped', 'onhand', 'total', 'minimum'
-  columnsToDisplay: string[] = ['brand', 'device', 'id'];
-  displayedColumns: string[] = ['select', 'model', 'brand', 'device', 'id'];
+  // Heading for each cell can be modified here
+  // selection = new SelectionModel<Device>(true, []);
+  mainColumns: string[] = ['model', 'brand', 'type'];
+  nestedColumns: string[] = ['traffic', 'condition', 'serial', 'rma', 'note'];
   expandedDeviceGroup: Device | null;
-  selection = new SelectionModel<Device>(true, []);
-  dataSource = new MatTableDataSource<Device>(this.INVENTORY_DATA);
-  nestedDisplayedColumns: string[] = ['select', 'traffic', 'condition', 'serial', 'rma', 'note'];
+  dataSource = new MatTableDataSource<object>(this.DEVICE_GROUPS);
+  nestedDataSource = new MatTableDataSource<Device>(this.ALL_DEVICES);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -45,23 +47,31 @@ export class AllInvComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.devicesSub.unsubscribe();
+    this.deviceGroupsSub.unsubscribe();
   }
 
   getInventory() {
     // console.log(this.selection.selected[1]); Can get selected Rows by ID in Array of All Selected
     this.inventoryControlService.getInventory();
+    this.deviceGroupsSub = this.inventoryControlService.getDeviceGroupUpdateListener()
+      .subscribe((deviceGroup) => {
+        this.DEVICE_GROUPS = deviceGroup;
+        this.dataSource.data = this.DEVICE_GROUPS;
+      });
     this.devicesSub = this.inventoryControlService.getDeviceUpdateListener()
       .subscribe((devices: Device[]) => {
-        this.INVENTORY_DATA = devices;
-        this.dataSource.data = this.INVENTORY_DATA;
-        console.log(this.dataSource.data);
+        this.ALL_DEVICES = devices;
+        this.nestedDataSource.data = this.ALL_DEVICES;
     });
+    console.log(this.DEVICE_GROUPS);
+    console.log(this.ALL_DEVICES);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.selection.clear();
+    // this.selection.clear();
   }
 
   deleteSelection() {
+    /*
     if (this.selection.selected.length > 0) {
       this.selection.selected.forEach((device) => {
         this.inventoryControlService.deleteSelection(device.id);
@@ -70,6 +80,7 @@ export class AllInvComponent implements OnInit, OnDestroy {
       this.selection.clear();
       this.getInventory();
     }
+    */
   }
 
 
@@ -80,62 +91,42 @@ export class AllInvComponent implements OnInit, OnDestroy {
   openDialog(mode): void {
     this.inventoryControlService.mode = mode;
     console.log('Open Dialog ' + mode + ' Mode');
-    if (this.selection.selected.length === 0 && mode === 'Update' || this.selection.selected.length > 1) {
+    /*if (this.selection.selected.length === 0 && mode === 'Update' || this.selection.selected.length > 1) {
       alert('No Selection Or More Than 1');
       return;
     }
     if (mode === 'Update') {
       console.log(this.selection.selected);
       this.inventoryControlService.selected = this.selection.selected;
-    }
+    }*/
     const dialogRef = this.dialog.open(DialogComponent);
     dialogRef.afterClosed().subscribe(result => {
-      this.selection.clear();
+      // this.selection.clear();
       console.log('The dialog was closed');
     });
   }
 
-  /** Whether the number of selected elements matches the total number of rows. */
+  /*
+  // Whether the number of selected elements matches the total number of rows.
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  // Selects all rows if they are not all selected; otherwise clear selection.
   masterToggle() {
     this.isAllSelected() ?
     this.selection.clear() :
     this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
-  /** The label for the checkbox on the passed row */
+  // The label for the checkbox on the passed row
   checkboxLabel(row?: Device): string {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.model + 1}`;
   }
+  */
 }
-
-/*
-selectOption(id, content) {
-  // Just Run Service Here & Pass ID. Switch Statement Would Be Used Inside Service
-  switch (id) { // In Manipulate Inventory Service - ID Passed
-    case 'Add':
-      console.log(id); // Add Modal
-      this.modalService.open(content, { centered: true, size: 'lg' });
-      break;
-    case 'Edit':
-      console.log(id); // Edit Modal
-      break;
-    case 'Remove':
-      console.log(id); // Remove Modal
-      break;
-    case 'Resync':
-      this.inventoryControlService.getInventory();
-      console.log(id); // Resync MongoDB All Inventory Database
-      break;
-    default:
-      console.log('Error: No Selection');
-*/

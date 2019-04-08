@@ -8,95 +8,54 @@
   <mat-card-content>
     <div class="table-container">
       <table class="mat-elevation-z8" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
-        <!-- Select Column-->
-        <ng-container matColumnDef="select">
-          <th mat-header-cell *matHeaderCellDef>
-            <mat-checkbox (change)="$event ? masterToggle() : null"
-                          [checked]="selection.hasValue() && isAllSelected()"
-                          [indeterminate]="selection.hasValue() && !isAllSelected()"
-                          [aria-label]="checkboxLabel()">
-            </mat-checkbox>
-          </th>
-          <td mat-cell *matCellDef="let deviceGroup">
-            <mat-checkbox (click)="$event.stopPropagation()"
-                          (change)="$event ? selection.toggle(deviceGroup) : null"
-                          [checked]="selection.isSelected(deviceGroup)"
-                          [aria-label]="checkboxLabel(deviceGroup)">
-            </mat-checkbox>
-          </td>
-        </ng-container>
-
-        <!-- Model Column-->
-        <ng-container matColumnDef="model" sticky>
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Model </th>
-          <td mat-cell *matCellDef="let deviceGroup"> {{deviceGroup.model}} </td>
-        </ng-container>
-
 
         <!-- Loop Through All Other Headers-->
-        <ng-container matColumnDef="{{ column }}" *ngFor= "let column of columnsToDisplay">
+        <ng-container matColumnDef="{{ column }}" *ngFor= "let column of mainColumns">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column }}</th>
           <td mat-cell *matCellDef="let deviceGroup"> {{ deviceGroup[column] }} </td>
         </ng-container>
 
         <!--Expansive Row-->
         <ng-container matColumnDef="expandedDetail">
-          <td mat-cell *matCellDef="let deviceGroup" [attr.colspan]="displayedColumns.length">
+          <td mat-cell *matCellDef="let deviceGroup" [attr.colspan]="mainColumns.length">
             <div class="deviceGroup-detail" [@detailExpand]="deviceGroup == expandedDeviceGroup ? 'expanded' : 'collapsed'">
 
-              <!--Nested Table-->
-              <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+              <table mat-table [dataSource]="nestedDataSource">
+                <ng-container matColumnDef="traffic">
+                  <th mat-header-cell *matHeaderCellDef> Traffic </th>
+                  <td mat-cell *matCellDef="let device"> {{device.traffic}} </td>
+                </ng-container>
 
-                  <!-- Checkbox Column -->
-                  <ng-container matColumnDef="select">
-                    <th mat-header-cell *matHeaderCellDef>
-                    </th>
-                    <td mat-cell *matCellDef="let device">
-                      <mat-checkbox (click)="$event.stopPropagation()"
-                                    (change)="$event ? selection.toggle(device) : null"
-                                    [checked]="selection.isSelected(device)"
-                                    [aria-label]="checkboxLabel(device)">
-                      </mat-checkbox>
-                    </td>
-                  </ng-container>
+                <ng-container matColumnDef="condition">
+                  <th mat-header-cell *matHeaderCellDef> Condition </th>
+                  <td mat-cell *matCellDef="let device"> {{device.condition}} </td>
+                </ng-container>
 
-                  <ng-container matColumnDef="serial">
-                    <th mat-header-cell *matHeaderCellDef> Serial </th>
-                    <td mat-cell *matCellDef="let device"> {{device.serial}} </td>
-                  </ng-container>
+                <ng-container matColumnDef="serial">
+                  <th mat-header-cell *matHeaderCellDef> Serial </th>
+                  <td mat-cell *matCellDef="let device"> {{device.serial}} </td>
+                </ng-container>
 
-                  <ng-container matColumnDef="condition">
-                    <th mat-header-cell *matHeaderCellDef> Condition </th>
-                    <td mat-cell *matCellDef="let device"> {{device.condition}} </td>
-                  </ng-container>
+                <ng-container matColumnDef="rma">
+                  <th mat-header-cell *matHeaderCellDef> RMA </th>
+                  <td mat-cell *matCellDef="let device"> {{device.rma}} </td>
+                </ng-container>
 
-                  <ng-container matColumnDef="traffic">
-                    <th mat-header-cell *matHeaderCellDef> Traffic </th>
-                    <td mat-cell *matCellDef="let device"> {{device.traffic}} </td>
-                  </ng-container>
+                <ng-container matColumnDef="note">
+                  <th mat-header-cell *matHeaderCellDef> Note </th>
+                  <td mat-cell *matCellDef="let device"> {{device.note}} </td>
+                </ng-container>
 
-                  <ng-container matColumnDef="rma">
-                    <th mat-header-cell *matHeaderCellDef> RMA# </th>
-                    <td mat-cell *matCellDef="let device"> {{device.rma}} </td>
-                  </ng-container>
-
-                  <ng-container matColumnDef="note">
-                      <th mat-header-cell *matHeaderCellDef> Note </th>
-                      <td mat-cell *matCellDef="let device"> {{device.note}} </td>
-                    </ng-container>
-
-                  <tr mat-header-row *matHeaderRowDef="nestedDisplayedColumns"></tr>
-                  <tr mat-row *matRowDef="let device; columns: nestedDisplayedColumns;"
-                      (click)="selection.toggle(device)">
-                  </tr>
-                </table>
+                <tr mat-header-row *matHeaderRowDef="nestedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let device; columns: nestedColumns;"></tr>
+              </table>
 
             </div>
           </td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-        <tr mat-row *matRowDef="let deviceGroup; columns: displayedColumns;"
+        <tr mat-header-row *matHeaderRowDef="mainColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let deviceGroup; columns: mainColumns;"
           class="deviceGroup-row"
           [class.deviceGroup-expanded-row]="expandedDeviceGroup === deviceGroup"
           (click)="expandedDeviceGroup = expandedDeviceGroup === deviceGroup ? null : deviceGroup">

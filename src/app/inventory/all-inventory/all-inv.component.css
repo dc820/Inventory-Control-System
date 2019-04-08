@@ -27,20 +27,12 @@ tr.deviceGroup-row:not(.deviceGroup-expanded-row):active {
   overflow: hidden;
   display: flex;
 }
-
+/*
 .mat-table-sticky:first-child {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   border-right: 1px solid #e0e0e0;
-}
-
-.mat-header-cell {
-  padding-left: 0.5rem;
-}
-
-.mat-cell {
-  padding-left: 0.5rem;
-}
+}*/
 
 .mat-form-field {
   font-size: 14px;

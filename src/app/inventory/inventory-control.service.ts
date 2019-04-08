@@ -4,6 +4,8 @@ import { Device } from '../shared/device.model';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+const API_ENDPOINT = 'http://localhost:3000/api/inventory/';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,6 +13,8 @@ import { map } from 'rxjs/operators';
 export class InventoryControlService {
   private devices: Device[] = [];
   private devicesUpdated = new Subject<Device[]>();
+  private deviceGroups: object[] = [];
+  private deviceGroupsUpdated = new Subject<object[]>();
 
   mode: string;
   selected: Device[];
@@ -21,27 +25,18 @@ export class InventoryControlService {
     return this.devicesUpdated.asObservable();
   }
 
+  getDeviceGroupUpdateListener() {
+    return this.deviceGroupsUpdated.asObservable();
+  }
+
   getInventory() {
-    this.http.get<{ message: string, allInventory: any }>('http://localhost:3000/api/inventory')
-      .pipe(map((deviceData) => {
-        return deviceData.allInventory.map(device => {
-          return {
-            id: device._id,
-            traffic: device.traffic,
-            condition: device.condition,
-            type: device.type,
-            model: device.model,
-            brand: device.brand,
-            serial: device.serial,
-            rma: device.rma,
-            note: device.note
-          };
-        });
-      }))
-      .subscribe((transformedData) => {
-        // console.log(transformedData);
-        this.devices = transformedData;
+    this.http.get<{ message: string, allInventory: any, uniqueModels: Array<string>, deviceGroups: Array<object> }>(API_ENDPOINT)
+      .subscribe((deviceData) => {
+        console.log(deviceData);
+        this.devices = deviceData.allInventory;
         this.devicesUpdated.next([...this.devices]);
+        this.deviceGroups = deviceData.deviceGroups;
+        this.deviceGroupsUpdated.next([...this.deviceGroups]);
       });
   }
 
@@ -58,7 +53,7 @@ export class InventoryControlService {
       note: newDevice.note
     };
     console.log(device);
-    this.http.post<{ message: string, deviceId: string}>('http://localhost:3000/api/inventory', device)
+    this.http.post<{ message: string, deviceId: string}>(API_ENDPOINT, device)
         .subscribe((responseData) => {
           const deviceId = responseData.deviceId;
           device.id = deviceId;
@@ -80,7 +75,7 @@ export class InventoryControlService {
       rma: editDevice.rma,
       note: editDevice.note
     };
-    this.http.patch<{message: string, device: object}>('http://localhost:3000/api/inventory/' + device.id, device)
+    this.http.patch<{message: string, device: object}>(API_ENDPOINT + device.id, device)
       .subscribe((responseData) => {
         console.log(responseData);
         for (let i = 0; i < this.devices.length ; i++) {
@@ -94,7 +89,7 @@ export class InventoryControlService {
 
   deleteSelection(id) {
     console.log(id);
-    this.http.delete<{message: string}>('http://localhost:3000/api/inventory/' + id)
+    this.http.delete<{message: string}>(API_ENDPOINT + id)
       .subscribe((responseData) => {
         console.log(responseData);
         for (let i = 0; i < this.devices.length ; i++) {

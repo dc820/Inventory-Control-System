@@ -17,11 +17,22 @@ exports.searchInventory = (req, res, next) => {
 }
 
 exports.getAllInventory = (req, res, next) => {
+  let uniqueModels = [];
+  let deviceGroups = [];
   Device.find()
   .then(result => {
+    result.forEach((device) => {
+      if (!uniqueModels.includes(device.model)) {
+        uniqueModels.push(device.model);
+        deviceGroups.push({ model: device.model, brand: device.brand, type: device.type });
+      }
+    });
+    console.log(deviceGroups);
     res.status(200).json({
       message: 'All Inventory Fetched Successfully',
-      allInventory: result
+      allInventory: result,
+      uniqueModels: uniqueModels,
+      deviceGroups: deviceGroups
     });
   })
   .catch(error => {
