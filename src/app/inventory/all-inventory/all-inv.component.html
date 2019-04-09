@@ -3,12 +3,11 @@
     <h5>All Inventory</h5>
   </mat-card-title>
   <mat-form-field>
-    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter by Model, Brand, or Type">
   </mat-form-field>
   <mat-card-content>
     <div class="table-container">
       <table class="mat-elevation-z8" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
-
         <!-- Loop Through All Other Headers-->
         <ng-container matColumnDef="{{ column }}" *ngFor= "let column of mainColumns">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column }}</th>
@@ -19,8 +18,7 @@
         <ng-container matColumnDef="expandedDetail">
           <td mat-cell *matCellDef="let deviceGroup" [attr.colspan]="mainColumns.length">
             <div class="deviceGroup-detail" [@detailExpand]="deviceGroup == expandedDeviceGroup ? 'expanded' : 'collapsed'">
-
-              <table mat-table [dataSource]="nestedDataSource">
+              <table mat-table [dataSource]="nestedDataSource.data[0]">
                 <ng-container matColumnDef="traffic">
                   <th mat-header-cell *matHeaderCellDef> Traffic </th>
                   <td mat-cell *matCellDef="let device"> {{device.traffic}} </td>
@@ -49,11 +47,9 @@
                 <tr mat-header-row *matHeaderRowDef="nestedColumns; sticky: true"></tr>
                 <tr mat-row *matRowDef="let device; columns: nestedColumns;"></tr>
               </table>
-
             </div>
           </td>
         </ng-container>
-
         <tr mat-header-row *matHeaderRowDef="mainColumns; sticky: true"></tr>
         <tr mat-row *matRowDef="let deviceGroup; columns: mainColumns;"
           class="deviceGroup-row"

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';   // HTTP
 import { Device } from '../shared/device.model';
 import { Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 const API_ENDPOINT = 'http://localhost:3000/api/inventory/';
 

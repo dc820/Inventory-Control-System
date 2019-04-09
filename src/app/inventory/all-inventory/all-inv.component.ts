@@ -1,9 +1,9 @@
-import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 // import {SelectionModel} from '@angular/cdk/collections';
-import {MatPaginator, MatTableDataSource, MatSort, MatDialog} from '@angular/material';
+import { MatPaginator, MatTableDataSource, MatSort, MatDialog } from '@angular/material';
 
 import { InventoryControlService } from '../inventory-control.service';
-import {Device} from '../../shared/device.model';
+import { Device } from '../../shared/device.model';
 import { Subscription } from 'rxjs';
 import { DialogComponent } from '../dialog/dialog.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
@@ -25,16 +25,16 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 export class AllInvComponent implements OnInit, OnDestroy {
   private devicesSub: Subscription;
   private deviceGroupsSub: Subscription;
-  DEVICE_GROUPS: object[] = [];
-  ALL_DEVICES: Device[] = [];
 
   // Heading for each cell can be modified here
   // selection = new SelectionModel<Device>(true, []);
   mainColumns: string[] = ['model', 'brand', 'type'];
   nestedColumns: string[] = ['traffic', 'condition', 'serial', 'rma', 'note'];
+  DEVICE_GROUPS: object[] = [];
+  ALL_DEVICES: object[] = [];
   expandedDeviceGroup: Device | null;
   dataSource = new MatTableDataSource<object>(this.DEVICE_GROUPS);
-  nestedDataSource = new MatTableDataSource<Device>(this.ALL_DEVICES);
+  nestedDataSource = new MatTableDataSource<object>(this.ALL_DEVICES);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -58,17 +58,28 @@ export class AllInvComponent implements OnInit, OnDestroy {
         this.DEVICE_GROUPS = deviceGroup;
         this.dataSource.data = this.DEVICE_GROUPS;
       });
+    this.inventoryControlService.getInventory();
     this.devicesSub = this.inventoryControlService.getDeviceUpdateListener()
-      .subscribe((devices: Device[]) => {
-        this.ALL_DEVICES = devices;
-        this.nestedDataSource.data = this.ALL_DEVICES;
+    .subscribe((devices: []) => {
+      let i = 0;
+      this.DEVICE_GROUPS.forEach((group: Device) => {
+        const groupArray = [];
+        devices.forEach((device: Device) => {
+          if (device.model === group.model) {
+            groupArray.push(device);
+            this.ALL_DEVICES[i] =  groupArray;
+          }
+        });
+        i++;
+      });
+      this.nestedDataSource.data = this.ALL_DEVICES;
     });
-    console.log(this.DEVICE_GROUPS);
-    console.log(this.ALL_DEVICES);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    // this.selection.clear();
+    console.log(this.nestedDataSource.data);
   }
+
+
 
   deleteSelection() {
     /*
@@ -101,8 +112,9 @@ export class AllInvComponent implements OnInit, OnDestroy {
     }*/
     const dialogRef = this.dialog.open(DialogComponent);
     dialogRef.afterClosed().subscribe(result => {
+      console.log('The Dialog Was Closed');
+      this.getInventory();
       // this.selection.clear();
-      console.log('The dialog was closed');
     });
   }
 
