@@ -25,6 +25,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 export class AllInvComponent implements OnInit, OnDestroy {
   private devicesSub: Subscription;
   private deviceGroupsSub: Subscription;
+  private uniqueModelsSub: Subscription;
 
   // Heading for each cell can be modified here
   // selection = new SelectionModel<Device>(true, []);
@@ -35,6 +36,7 @@ export class AllInvComponent implements OnInit, OnDestroy {
   expandedDeviceGroup: Device | null;
   dataSource = new MatTableDataSource<object>(this.DEVICE_GROUPS);
   nestedDataSource = new MatTableDataSource<object>(this.ALL_DEVICES);
+  uniqueModels: string[];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -48,17 +50,20 @@ export class AllInvComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.devicesSub.unsubscribe();
     this.deviceGroupsSub.unsubscribe();
+    this.uniqueModelsSub.unsubscribe();
   }
 
   getInventory() {
     // console.log(this.selection.selected[1]); Can get selected Rows by ID in Array of All Selected
     this.inventoryControlService.getInventory();
+
     this.deviceGroupsSub = this.inventoryControlService.getDeviceGroupUpdateListener()
       .subscribe((deviceGroup) => {
         this.DEVICE_GROUPS = deviceGroup;
         this.dataSource.data = this.DEVICE_GROUPS;
       });
     this.inventoryControlService.getInventory();
+
     this.devicesSub = this.inventoryControlService.getDeviceUpdateListener()
     .subscribe((devices: []) => {
       let i = 0;
@@ -76,7 +81,11 @@ export class AllInvComponent implements OnInit, OnDestroy {
     });
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    console.log(this.nestedDataSource.data);
+
+    this.uniqueModelsSub = this.inventoryControlService.getUniqueModelsListener()
+    .subscribe((models) => {
+      this.uniqueModels = models;
+    });
   }
 
 

@@ -11,9 +11,11 @@ const API_ENDPOINT = 'http://localhost:3000/api/inventory/';
 
 export class InventoryControlService {
   private devices: Device[] = [];
-  private devicesUpdated = new Subject<Device[]>();
   private deviceGroups: object[] = [];
+  private uniqueModels: string[] = [];
+  private devicesUpdated = new Subject<Device[]>();
   private deviceGroupsUpdated = new Subject<object[]>();
+  private uniqueModelsUpdated = new Subject<string[]>();
 
   mode: string;
   selected: Device[];
@@ -28,14 +30,21 @@ export class InventoryControlService {
     return this.deviceGroupsUpdated.asObservable();
   }
 
+  getUniqueModelsListener() {
+    return this.uniqueModelsUpdated.asObservable();
+  }
+
   getInventory() {
-    this.http.get<{ message: string, allInventory: any, uniqueModels: Array<string>, deviceGroups: Array<object> }>(API_ENDPOINT)
+    this.http.get<{ message: string, allInventory: any, uniqueModels: any, deviceGroups: Array<object> }>(API_ENDPOINT)
       .subscribe((deviceData) => {
         console.log(deviceData);
         this.devices = deviceData.allInventory;
-        this.devicesUpdated.next([...this.devices]);
         this.deviceGroups = deviceData.deviceGroups;
+        this.uniqueModels = deviceData.uniqueModels;
+
+        this.devicesUpdated.next([...this.devices]);
         this.deviceGroupsUpdated.next([...this.deviceGroups]);
+        this.uniqueModelsUpdated.next([...this.uniqueModels]);
       });
   }
 
