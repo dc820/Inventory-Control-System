@@ -1,16 +1,16 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-
 const inventoryRoutes = require('./routes/inventory');
 
+// Connect To MongoDB Database
 mongoose.connect('mongodb://localhost/inventory', { useNewUrlParser: true });
 
 app.use('/assets', express.static(__dirname + '/public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
+// Cross-Origin Resource Sharing
 app.use((req, res, next) => {
   res.setHeader(
     'Access-Control-Allow-Origin',
@@ -26,7 +26,7 @@ app.use((req, res, next) => {
   );
   next();
 });
-
+// API Endpoints
 app.use('/api/inventory', inventoryRoutes);
 
 module.exports = app;

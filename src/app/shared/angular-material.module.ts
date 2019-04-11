@@ -3,7 +3,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
   MatToolbarModule,
   MatButtonModule,
-  MatIconModule, MatMenuModule,
+  MatIconModule,
+  MatMenuModule,
   MatFormFieldModule,
   MatInputModule,
   MatCardModule,
@@ -15,7 +16,7 @@ import {
   MatSlideToggleModule,
   MatSelectModule,
   MatButtonToggleModule,
-  MatTooltipModule} from '@angular/material';
+  MatTooltipModule } from '@angular/material';
 
 
 @NgModule({

@@ -1,8 +1,7 @@
 const Device = require('../models/device');
-
+// Search Functionality
 exports.searchInventory = (req, res, next) => {
   console.log(req.query.q);
-
   Device.find().or([{ condition: {$regex: req.query.q } }, { traffic: {$regex: req.query.q } }, { type: {$regex: req.query.q } } ])
   .then(result => {
     res.status(200).json({
@@ -15,7 +14,7 @@ exports.searchInventory = (req, res, next) => {
     })
   });
 }
-
+// Retrieve All Devices From Inventory
 exports.getAllInventory = (req, res, next) => {
   let uniqueModels = [];
   let deviceGroups = [];
@@ -42,7 +41,7 @@ exports.getAllInventory = (req, res, next) => {
     });
   });
 };
-
+// Don't Think This Will Be Needed <----------------
 exports.getInboundInventory = (req, res, next) => {
   Device.find().where('status').equals('Inbound')
   .then(result => {
@@ -58,7 +57,7 @@ exports.getInboundInventory = (req, res, next) => {
     });
   });
 }
-
+// Don't Think This Will Be Needed <----------------
 exports.getOutboundInventory = (req, res, next) => {
   Device.find().where('status').equals('Outbound')
   .then(result => {
@@ -74,7 +73,7 @@ exports.getOutboundInventory = (req, res, next) => {
     });
   });
 }
-
+// Add New Device To Inventory
 exports.createDevice = (req, res, next) => {
   const device = new Device({
     traffic: req.body.traffic,
@@ -101,7 +100,7 @@ exports.createDevice = (req, res, next) => {
     });
   });
 }
-
+// Update Device In Inventory
 exports.updateDevice = (req, res, next) => {
   const device = new Device({
     _id: req.params.id,
@@ -134,7 +133,7 @@ exports.updateDevice = (req, res, next) => {
     })
   });
 }
-
+// Delete Device In Inventory
 exports.deleteDevice = (req, res, next) => {
   Device.deleteOne( { _id: req.params.id} )
   .then(document => {

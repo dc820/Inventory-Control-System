@@ -1,33 +1,96 @@
 <!-------------ADD FORM------------->
 <form *ngIf="mode === 'Add'" (ngSubmit)="onSubmit(dialogAddForm)" #dialogAddForm="ngForm">
+  <h1 mat-dialog-title> {{ mode }} Device</h1>
+  <div mat-dialog-content>
+    <!--Device-->
+    <mat-form-field>
+      <mat-select ngModel name="type" required>
+        <mat-option *ngFor="let option of type" [value]="option">{{ option }}</mat-option>
+      </mat-select>
+      <mat-label>Device</mat-label>
+    </mat-form-field>
+
+    <!--Brand-->
+  <mat-form-field>
+      <input matInput placeholder="Brand" ngModel name="brand" #brand="ngModel" required>
+    </mat-form-field>
+
+    <!--Model-->
+    <mat-form-field>
+      <input matInput placeholder="Model" ngModel name="model" #model="ngModel" required>
+    </mat-form-field>
+
+    <!--Condition-->
+    <mat-form-field>
+      <input matInput placeholder="Serial" ngModel name="serial" #serial="ngModel" required>
+    </mat-form-field>
+
+    <!--Status-->
+    <mat-form-field>
+      <mat-select ngModel name="condition" required>
+          <mat-option *ngFor="let option of condition" [value]="option">{{ option }}</mat-option>
+      </mat-select>
+      <mat-label>Status</mat-label>
+    </mat-form-field>
+
+    <!--Return Merchandise Authorization-->
+    <mat-form-field *ngIf="slideToggle"
+      [hideRequiredMarker]="options.value.hideRequired"
+      [floatLabel]="options.value.floatLabel">
+      <input matInput placeholder="RMA #" ngModel name="rma" #rma="ngModel" required>
+      <mat-hint>Return Merchandise Authorization</mat-hint>
+    </mat-form-field>
+
+    <mat-slide-toggle color="primary" (click)="toggle()">RMA Case</mat-slide-toggle>
+
+    <!--Notes-->
+    <mat-form-field
+      appearance="outline">
+      <textarea matInput cols="100%" rows="1" ngModel name="note" #note="ngModel"></textarea>
+      <mat-label>Notes</mat-label>
+    </mat-form-field>
+
+    <!--Traffic-->
+    <mat-button-toggle-group aria-label="Inventory Traffic" ngModel name="traffic" #traffic="ngModel" required>
+      <mat-button-toggle *ngFor="let option of inventoryTraffic" [value]="option.value" [matTooltip]="option.message"><mat-icon>{{ option.icon }}</mat-icon></mat-button-toggle>
+    </mat-button-toggle-group>
+
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button color="primary" type="submit" [disabled]="!dialogAddForm.valid">Add</button>
+    <button mat-button color="warn" mat-dialog-close cdkFocusInitial (click)="resetToggle()">Close</button>
+  </div>
+</form>
+<!-------------EDIT FORM------------->
+<form *ngIf="mode === 'Update'" (ngSubmit)="onSubmit(dialogAddForm)" #dialogAddForm="ngForm">
     <h1 mat-dialog-title> {{ mode }} Device</h1>
     <div mat-dialog-content>
       <!--Device-->
       <mat-form-field>
-        <mat-select ngModel name="type" required>
+        <mat-select [ngModel]="selected[0].type" name="type" required>
           <mat-option *ngFor="let option of type" [value]="option">{{ option }}</mat-option>
         </mat-select>
         <mat-label>Device</mat-label>
       </mat-form-field>
 
       <!--Brand-->
-    <mat-form-field>
-        <input matInput placeholder="Brand" ngModel name="brand" #brand="ngModel" required>
+      <mat-form-field>
+        <input matInput placeholder="Brand" [ngModel]="selected[0].brand" name="brand" #brand="ngModel" required>
       </mat-form-field>
 
       <!--Model-->
       <mat-form-field>
-        <input matInput placeholder="Model" ngModel name="model" #model="ngModel" required>
+        <input matInput placeholder="Model" [ngModel]="selected[0].model" name="model" #model="ngModel" required>
+      </mat-form-field>
+
+      <!--Serial-->
+      <mat-form-field>
+        <input matInput placeholder="Serial" [ngModel]="selected[0].serial" name="serial" #serial="ngModel" required>
       </mat-form-field>
 
       <!--Condition-->
       <mat-form-field>
-        <input matInput placeholder="Serial" ngModel name="serial" #serial="ngModel" required>
-      </mat-form-field>
-
-      <!--Status-->
-      <mat-form-field>
-        <mat-select ngModel name="condition" required>
+        <mat-select [ngModel]="selected[0].condition" name="condition" required>
             <mat-option *ngFor="let option of condition" [value]="option">{{ option }}</mat-option>
         </mat-select>
         <mat-label>Status</mat-label>
@@ -37,7 +100,7 @@
       <mat-form-field *ngIf="slideToggle"
         [hideRequiredMarker]="options.value.hideRequired"
         [floatLabel]="options.value.floatLabel">
-        <input matInput placeholder="RMA #" ngModel name="rma" #rma="ngModel" required>
+        <input matInput placeholder="RMA #" [ngModel]="selected[0].rma" name="rma" #rma="ngModel" required>
         <mat-hint>Return Merchandise Authorization</mat-hint>
       </mat-form-field>
 
@@ -46,84 +109,20 @@
       <!--Notes-->
       <mat-form-field
         appearance="outline">
-        <textarea matInput cols="100%" rows="1" ngModel name="note" #note="ngModel"></textarea>
+        <textarea matInput cols="100%" rows="1" [ngModel]="selected[0].note" name="note" #note="ngModel"></textarea>
         <mat-label>Notes</mat-label>
       </mat-form-field>
 
       <!--Traffic-->
-      <mat-button-toggle-group aria-label="Inventory Traffic" ngModel name="traffic" #traffic="ngModel" required>
+      <mat-button-toggle-group aria-label="Inventory Traffic" [ngModel]="selected[0].traffic" name="traffic" #traffic="ngModel" required>
         <mat-button-toggle *ngFor="let option of inventoryTraffic" [value]="option.value" [matTooltip]="option.message"><mat-icon>{{ option.icon }}</mat-icon></mat-button-toggle>
       </mat-button-toggle-group>
 
     </div>
+    <!--Action Buttons For Dialog Form-->
     <div mat-dialog-actions>
-      <button mat-button color="primary" type="submit" [disabled]="!dialogAddForm.valid">Add</button>
+      <button mat-button color="primary" type="submit" [disabled]="!dialogAddForm.valid">{{ mode }}</button>
       <button mat-button color="warn" mat-dialog-close cdkFocusInitial (click)="resetToggle()">Close</button>
     </div>
   </form>
-
-  <!-------------EDIT FORM------------->
-
-  <form *ngIf="mode === 'Update'" (ngSubmit)="onSubmit(dialogAddForm)" #dialogAddForm="ngForm">
-      <h1 mat-dialog-title> {{ mode }} Device</h1>
-      <div mat-dialog-content>
-        <!--Device-->
-        <mat-form-field>
-          <mat-select [ngModel]="selected[0].type" name="type" required>
-            <mat-option *ngFor="let option of type" [value]="option">{{ option }}</mat-option>
-          </mat-select>
-          <mat-label>Device</mat-label>
-        </mat-form-field>
-
-        <!--Brand-->
-        <mat-form-field>
-          <input matInput placeholder="Brand" [ngModel]="selected[0].brand" name="brand" #brand="ngModel" required>
-        </mat-form-field>
-
-        <!--Model-->
-        <mat-form-field>
-          <input matInput placeholder="Model" [ngModel]="selected[0].model" name="model" #model="ngModel" required>
-        </mat-form-field>
-
-        <!--Serial-->
-        <mat-form-field>
-          <input matInput placeholder="Serial" [ngModel]="selected[0].serial" name="serial" #serial="ngModel" required>
-        </mat-form-field>
-
-        <!--Condition-->
-        <mat-form-field>
-          <mat-select [ngModel]="selected[0].condition" name="condition" required>
-              <mat-option *ngFor="let option of condition" [value]="option">{{ option }}</mat-option>
-          </mat-select>
-          <mat-label>Status</mat-label>
-        </mat-form-field>
-
-        <!--Return Merchandise Authorization-->
-        <mat-form-field *ngIf="slideToggle"
-          [hideRequiredMarker]="options.value.hideRequired"
-          [floatLabel]="options.value.floatLabel">
-          <input matInput placeholder="RMA #" [ngModel]="selected[0].rma" name="rma" #rma="ngModel" required>
-          <mat-hint>Return Merchandise Authorization</mat-hint>
-        </mat-form-field>
-
-        <mat-slide-toggle color="primary" (click)="toggle()">RMA Case</mat-slide-toggle>
-
-        <!--Notes-->
-        <mat-form-field
-          appearance="outline">
-          <textarea matInput cols="100%" rows="1" [ngModel]="selected[0].note" name="note" #note="ngModel"></textarea>
-          <mat-label>Notes</mat-label>
-        </mat-form-field>
-
-        <!--Traffic-->
-        <mat-button-toggle-group aria-label="Inventory Traffic" [ngModel]="selected[0].traffic" name="traffic" #traffic="ngModel" required>
-          <mat-button-toggle *ngFor="let option of inventoryTraffic" [value]="option.value" [matTooltip]="option.message"><mat-icon>{{ option.icon }}</mat-icon></mat-button-toggle>
-        </mat-button-toggle-group>
-
-      </div>
-      <div mat-dialog-actions>
-        <button mat-button color="primary" type="submit" [disabled]="!dialogAddForm.valid">{{ mode }}</button>
-        <button mat-button color="warn" mat-dialog-close cdkFocusInitial (click)="resetToggle()">Close</button>
-      </div>
-    </form>
 

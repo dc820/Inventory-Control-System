@@ -2,55 +2,62 @@
   <mat-card-title>
     <h5>All Inventory</h5>
   </mat-card-title>
+  <!-- Filter Inventory Table-->
   <mat-form-field>
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter by Model, Brand, or Type">
   </mat-form-field>
   <mat-card-content>
+
+    <!--Inventory Table-->
     <div class="table-container">
       <table class="mat-elevation-z8" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
-        <!-- Loop Through All Other Headers-->
+        <!--Inventory Table Rows-->
         <ng-container matColumnDef="{{ column }}" *ngFor= "let column of mainColumns">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column }}</th>
           <td mat-cell *matCellDef="let deviceGroup"> {{ deviceGroup[column] }} </td>
         </ng-container>
 
-        <!--Expansive Row-->
+        <!--Expansion For Each Row-->
         <ng-container matColumnDef="expandedDetail">
           <td mat-cell *matCellDef="let deviceGroup" [attr.colspan]="mainColumns.length">
             <div class="deviceGroup-detail" [@detailExpand]="deviceGroup == expandedDeviceGroup ? 'expanded' : 'collapsed'">
+              <!--Nested Data Table-->
               <table mat-table [dataSource]="nestedDataSource.data[uniqueModels.indexOf(deviceGroup.model)]">
                 <ng-container matColumnDef="traffic">
                   <th mat-header-cell *matHeaderCellDef> Traffic </th>
                   <td mat-cell *matCellDef="let device"> {{device.traffic}} </td>
                 </ng-container>
-
+                <!--Condition Row-->
                 <ng-container matColumnDef="condition">
                   <th mat-header-cell *matHeaderCellDef> Condition </th>
                   <td mat-cell *matCellDef="let device"> {{device.condition}} </td>
                 </ng-container>
-
+                <!--Serial Row-->
                 <ng-container matColumnDef="serial">
                   <th mat-header-cell *matHeaderCellDef> Serial </th>
                   <td mat-cell *matCellDef="let device"> {{device.serial}} </td>
                 </ng-container>
-
+                <!--RMA Row-->
                 <ng-container matColumnDef="rma">
                   <th mat-header-cell *matHeaderCellDef> RMA </th>
                   <td mat-cell *matCellDef="let device"> {{device.rma}} </td>
                 </ng-container>
-
+                <!--Note Row-->
                 <ng-container matColumnDef="note">
                   <th mat-header-cell *matHeaderCellDef> Note </th>
                   <td mat-cell *matCellDef="let device"> {{device.note}} </td>
                 </ng-container>
-
+                <!--Nested Data Table Header Row-->
                 <tr mat-header-row *matHeaderRowDef="nestedColumns; sticky: true"></tr>
+                <!--Nested Data Table Data Row-->
                 <tr mat-row *matRowDef="let device; columns: nestedColumns;"></tr>
               </table>
             </div>
           </td>
         </ng-container>
+        <!--Inventory Table Header Row-->
         <tr mat-header-row *matHeaderRowDef="mainColumns; sticky: true"></tr>
+        <!--Inventory Table Group Row-->
         <tr mat-row *matRowDef="let deviceGroup; columns: mainColumns;"
           class="deviceGroup-row"
           [class.deviceGroup-expanded-row]="expandedDeviceGroup === deviceGroup"
@@ -58,9 +65,11 @@
         </tr>
         <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
       </table>
+      <!--Pagination-->
       <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </div>
   </mat-card-content>
+  <!--Inventory Table Buttons-->
   <button mat-button (click)="openDialog('Add')"><mat-icon aria-hidden="false" aria-label="Add Device">add</mat-icon></button>
   <button mat-button (click)="openDialog('Update')"><mat-icon aria-hidden="false" aria-label="Edit Selection">edit</mat-icon></button>
   <button mat-button (click)="deleteSelection()"><mat-icon aria-hidden="false" aria-label="Delete Selection">delete</mat-icon></button>
