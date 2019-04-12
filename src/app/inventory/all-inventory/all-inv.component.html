@@ -23,34 +23,34 @@
             <div class="deviceGroup-detail" [@detailExpand]="deviceGroup == expandedDeviceGroup ? 'expanded' : 'collapsed'">
               <!--Nested Data Table-->
               <table mat-table [dataSource]="nestedDataSource.data[uniqueModels.indexOf(deviceGroup.model)]">
-                <ng-container matColumnDef="traffic">
+                <ng-container [matColumnDef]="'traffic'+deviceGroup.model">
                   <th mat-header-cell *matHeaderCellDef> Traffic </th>
                   <td mat-cell *matCellDef="let device"> {{device.traffic}} </td>
                 </ng-container>
                 <!--Condition Row-->
-                <ng-container matColumnDef="condition">
+                <ng-container [matColumnDef]="'condition'+deviceGroup.model">
                   <th mat-header-cell *matHeaderCellDef> Condition </th>
                   <td mat-cell *matCellDef="let device"> {{device.condition}} </td>
                 </ng-container>
                 <!--Serial Row-->
-                <ng-container matColumnDef="serial">
+                <ng-container [matColumnDef]="'serial'+deviceGroup.model">
                   <th mat-header-cell *matHeaderCellDef> Serial </th>
                   <td mat-cell *matCellDef="let device"> {{device.serial}} </td>
                 </ng-container>
                 <!--RMA Row-->
-                <ng-container matColumnDef="rma">
+                <ng-container [matColumnDef]="'rma'+deviceGroup.model">
                   <th mat-header-cell *matHeaderCellDef> RMA </th>
                   <td mat-cell *matCellDef="let device"> {{device.rma}} </td>
                 </ng-container>
                 <!--Note Row-->
-                <ng-container matColumnDef="note">
+                <ng-container [matColumnDef]="'note'+deviceGroup.model">
                   <th mat-header-cell *matHeaderCellDef> Note </th>
                   <td mat-cell *matCellDef="let device"> {{device.note}} </td>
                 </ng-container>
                 <!--Nested Data Table Header Row-->
-                <tr mat-header-row *matHeaderRowDef="nestedColumns; sticky: true"></tr>
+                <tr mat-header-row *matHeaderRowDef="nestedData(deviceGroup); sticky: true"></tr>
                 <!--Nested Data Table Data Row-->
-                <tr mat-row *matRowDef="let device; columns: nestedColumns;"></tr>
+                <tr mat-row *matRowDef="let device; columns: nestedData(deviceGroup);"></tr>
               </table>
             </div>
           </td>

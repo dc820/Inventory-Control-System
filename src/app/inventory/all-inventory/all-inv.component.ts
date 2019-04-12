@@ -22,7 +22,6 @@ import { DialogComponent } from '../dialog/dialog.component';
   ],
 })
 
-
 export class AllInvComponent implements OnInit, OnDestroy {
   // Subscriptions For HTTP Response
   private devicesSub: Subscription;
@@ -94,6 +93,8 @@ export class AllInvComponent implements OnInit, OnDestroy {
     // Pagination & Sorting For Main Table
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    // Sorting For Nested Table
+    // this.nestedDataSource.sort = this.sort;
     // Subscription To Unique Device Models
     this.uniqueModelsSub = this.inventoryControlService.getUniqueModelsListener()
     .subscribe((models) => {
@@ -102,6 +103,13 @@ export class AllInvComponent implements OnInit, OnDestroy {
   }
 
 
+  nestedData(deviceGroup: Device) {
+    const transformedColumns = [];
+    for (let i = 0; i < this.nestedColumns.length; i++) {
+      transformedColumns[i] = this.nestedColumns[i] + deviceGroup.model;
+    }
+    return transformedColumns;
+  }
 
   deleteSelection() {
     /*
