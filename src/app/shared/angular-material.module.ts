@@ -16,7 +16,8 @@ import {
   MatSlideToggleModule,
   MatSelectModule,
   MatButtonToggleModule,
-  MatTooltipModule } from '@angular/material';
+  MatTooltipModule,
+  MatListModule} from '@angular/material';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import {
     MatSlideToggleModule,
     MatSelectModule,
     MatButtonToggleModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatListModule
   ]
 })
 

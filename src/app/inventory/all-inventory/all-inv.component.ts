@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-// import { SelectionModel } from '@angular/cdk/collections';
+import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator, MatTableDataSource, MatSort, MatDialog } from '@angular/material';
 import { Subscription } from 'rxjs';
 import { InventoryControlService } from '../inventory-control.service';
@@ -29,19 +29,20 @@ export class AllInvComponent implements OnInit, OnDestroy {
   private uniqueModelsSub: Subscription;
 
   // Header Cells For Table Can Be Modified Here
-  mainColumns: string[] = ['model', 'brand', 'type'];
-  nestedColumns: string[] = ['traffic', 'condition', 'serial', 'rma', 'note'];
-  // Data Arrays
-  DEVICE_GROUPS: object[] = [];
+  mainColumns: string[] = ['select','model', 'brand', 'type'];
+  trafficColumns: string[] = ['Stock', 'Inbound', 'Outbound', 'Recycled'];
   ALL_DEVICES: object[] = [];
-  expandedDeviceGroup: Device | null;
-  // Table Data Source
-  dataSource = new MatTableDataSource<object>(this.DEVICE_GROUPS);
-  nestedDataSource = new MatTableDataSource<object>(this.ALL_DEVICES);
+  // Devices Grouped By Model
+  DEVICE_GROUPS: object[] = [];
   // Unique Device Models
   uniqueModels: string[];
+  // Table Data Source
+  dataSource = new MatTableDataSource<object>(this.DEVICE_GROUPS);
 
-  // selection = new SelectionModel<Device>(true, []);
+  expandedDeviceGroup: Device | null;
+
+  // Selection Model
+  selection = new SelectionModel<Device>(true, []);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -87,28 +88,17 @@ export class AllInvComponent implements OnInit, OnDestroy {
         });
         i++;
       });
-      // Set Nested Devices Data Source
-      this.nestedDataSource.data = this.ALL_DEVICES;
     });
     // Pagination & Sorting For Main Table
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    // Sorting For Nested Table
-    // this.nestedDataSource.sort = this.sort;
+    console.log(this.ALL_DEVICES);
+    console.log(this.ALL_DEVICES[0]);
     // Subscription To Unique Device Models
     this.uniqueModelsSub = this.inventoryControlService.getUniqueModelsListener()
     .subscribe((models) => {
       this.uniqueModels = models;
     });
-  }
-
-
-  nestedData(deviceGroup: Device) {
-    const transformedColumns = [];
-    for (let i = 0; i < this.nestedColumns.length; i++) {
-      transformedColumns[i] = this.nestedColumns[i] + deviceGroup.model;
-    }
-    return transformedColumns;
   }
 
   deleteSelection() {
@@ -127,11 +117,11 @@ export class AllInvComponent implements OnInit, OnDestroy {
   //  Filtering For Table
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    console.log(this.selection.selected);
   }
   // Opens Modal & Pass Mode Depending On Table Button Click
   openDialog(mode): void {
     this.inventoryControlService.mode = mode;
-    console.log('Open Dialog ' + mode + ' Mode');
     /*if (this.selection.selected.length === 0 && mode === 'Update' || this.selection.selected.length > 1) {
       alert('No Selection Or More Than 1');
       return;
@@ -144,13 +134,11 @@ export class AllInvComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(DialogComponent);
     // Subscribes To Closing Of Dialog
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The Dialog Was Closed');
       this.getInventory();
       // this.selection.clear();
     });
   }
 
-  /*
   // Whether the number of selected elements matches the total number of rows.
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -162,7 +150,7 @@ export class AllInvComponent implements OnInit, OnDestroy {
   masterToggle() {
     this.isAllSelected() ?
     this.selection.clear() :
-    this.dataSource.data.forEach(row => this.selection.select(row));
+    this.dataSource.data.forEach((row: Device) => this.selection.select(row));
   }
 
   // The label for the checkbox on the passed row
@@ -172,5 +160,5 @@ export class AllInvComponent implements OnInit, OnDestroy {
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.model + 1}`;
   }
-  */
+
 }

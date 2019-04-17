@@ -26,10 +26,10 @@ export class DialogComponent {
     'Other'
   ];
   inventoryTraffic = [
-    { value: 'Storage', icon: 'storage', message: 'Storage' },
-    { value: 'Recycled', icon: 'delete_outline', message: 'Recycling' },
+    { value: 'Stock', icon: 'storage', message: 'Stock' },
     { value: 'Inbound', icon: 'home', message: 'Inbound'},
-    { value: 'Outbound', icon: 'local_shipping', message: 'Outbound'}
+    { value: 'Outbound', icon: 'local_shipping', message: 'Outbound'},
+    { value: 'Recycled', icon: 'delete_outline', message: 'Recycled' }
   ];
   condition = [
     'Used',

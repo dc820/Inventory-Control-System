@@ -11,47 +11,64 @@
     <!--Inventory Table-->
     <div class="table-container">
       <table class="mat-elevation-z8" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
-        <!--Inventory Table Rows-->
-        <ng-container matColumnDef="{{ column }}" *ngFor= "let column of mainColumns">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column }}</th>
-          <td mat-cell *matCellDef="let deviceGroup"> {{ deviceGroup[column] }} </td>
+        <!-- Checkbox Column -->
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? masterToggle() : null"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()"
+                          [aria-label]="checkboxLabel()">
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let deviceGroup">
+            <mat-checkbox (click)="$event.stopPropagation()"
+                          (change)="$event ? selection.toggle(deviceGroup) : null"
+                          [checked]="selection.isSelected(deviceGroup)"
+                          [aria-label]="checkboxLabel(deviceGroup)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+
+        <!-- Model Column -->
+        <ng-container matColumnDef="model">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Model</th>
+            <td mat-cell *matCellDef="let deviceGroup"> {{ deviceGroup.model }} </td>
+        </ng-container>
+
+        <!-- Brand Column -->
+        <ng-container matColumnDef="brand">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Brand</th>
+            <td mat-cell *matCellDef="let deviceGroup"> {{ deviceGroup.brand }} </td>
+        </ng-container>
+
+        <!-- Type Column -->
+        <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Type<th>
+            <td mat-cell *matCellDef="let deviceGroup"> {{ deviceGroup.type }} </td>
         </ng-container>
 
         <!--Expansion For Each Row-->
         <ng-container matColumnDef="expandedDetail">
           <td mat-cell *matCellDef="let deviceGroup" [attr.colspan]="mainColumns.length">
             <div class="deviceGroup-detail" [@detailExpand]="deviceGroup == expandedDeviceGroup ? 'expanded' : 'collapsed'">
-              <!--Nested Data Table-->
-              <table mat-table [dataSource]="nestedDataSource.data[uniqueModels.indexOf(deviceGroup.model)]">
-                <ng-container [matColumnDef]="'traffic'+deviceGroup.model">
-                  <th mat-header-cell *matHeaderCellDef> Traffic </th>
-                  <td mat-cell *matCellDef="let device"> {{device.traffic}} </td>
-                </ng-container>
-                <!--Condition Row-->
-                <ng-container [matColumnDef]="'condition'+deviceGroup.model">
-                  <th mat-header-cell *matHeaderCellDef> Condition </th>
-                  <td mat-cell *matCellDef="let device"> {{device.condition}} </td>
-                </ng-container>
-                <!--Serial Row-->
-                <ng-container [matColumnDef]="'serial'+deviceGroup.model">
-                  <th mat-header-cell *matHeaderCellDef> Serial </th>
-                  <td mat-cell *matCellDef="let device"> {{device.serial}} </td>
-                </ng-container>
-                <!--RMA Row-->
-                <ng-container [matColumnDef]="'rma'+deviceGroup.model">
-                  <th mat-header-cell *matHeaderCellDef> RMA </th>
-                  <td mat-cell *matCellDef="let device"> {{device.rma}} </td>
-                </ng-container>
-                <!--Note Row-->
-                <ng-container [matColumnDef]="'note'+deviceGroup.model">
-                  <th mat-header-cell *matHeaderCellDef> Note </th>
-                  <td mat-cell *matCellDef="let device"> {{device.note}} </td>
-                </ng-container>
-                <!--Nested Data Table Header Row-->
-                <tr mat-header-row *matHeaderRowDef="nestedData(deviceGroup); sticky: true"></tr>
-                <!--Nested Data Table Data Row-->
-                <tr mat-row *matRowDef="let device; columns: nestedData(deviceGroup);"></tr>
-              </table>
+
+              <!--Device List-->
+              <div *ngFor="let header of trafficColumns">
+                <p>{{ header }}</p>
+                <div *ngFor="let device of ALL_DEVICES[uniqueModels.indexOf(deviceGroup.model)]">
+                  <mat-checkbox *ngIf="header === device.traffic"
+                                (click)="$event.stopPropagation()"
+                                (change)="$event ? selection.toggle(device) : null"
+                                [checked]="selection.isSelected(device)"
+                                [aria-label]="checkboxLabel(device)">
+                    <p> Condition: {{ device.condition }} </p>
+                    <p> Serial: {{ device.serial }} </p>
+                    <p> RMA: {{ device.rma }} </p>
+                    <p> Note: {{ device.note }} </p>
+                  </mat-checkbox>
+                </div>
+                <p> {{header}} Selected: </p>
+              </div>
             </div>
           </td>
         </ng-container>
