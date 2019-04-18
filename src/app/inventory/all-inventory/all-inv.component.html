@@ -24,7 +24,8 @@
             <mat-checkbox (click)="$event.stopPropagation()"
                           (change)="$event ? selection.toggle(deviceGroup) : null"
                           [checked]="selection.isSelected(deviceGroup)"
-                          [aria-label]="checkboxLabel(deviceGroup)">
+                          [aria-label]="checkboxLabel(deviceGroup)"
+                          (change)=onRowChecked(deviceGroup)>
             </mat-checkbox>
           </td>
         </ng-container>
@@ -55,12 +56,11 @@
               <!--Device List-->
               <div *ngFor="let header of trafficColumns">
                 <p>{{ header }}</p>
-                <div *ngFor="let device of ALL_DEVICES[uniqueModels.indexOf(deviceGroup.model)]">
+                <div *ngFor="let device of GROUPED_DEVICES[uniqueModels.indexOf(deviceGroup.model)]">
                   <mat-checkbox *ngIf="header === device.traffic"
-                                (click)="$event.stopPropagation()"
-                                (change)="$event ? selection.toggle(device) : null"
-                                [checked]="selection.isSelected(device)"
-                                [aria-label]="checkboxLabel(device)">
+                                (click)="onCheck(device)"
+                                [(ngModel)]="device.checked"
+                                labelPosition="before">
                     <p> Condition: {{ device.condition }} </p>
                     <p> Serial: {{ device.serial }} </p>
                     <p> RMA: {{ device.rma }} </p>

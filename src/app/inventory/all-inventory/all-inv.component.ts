@@ -29,9 +29,10 @@ export class AllInvComponent implements OnInit, OnDestroy {
   private uniqueModelsSub: Subscription;
 
   // Header Cells For Table Can Be Modified Here
-  mainColumns: string[] = ['select','model', 'brand', 'type'];
+  mainColumns: string[] = ['select', 'model', 'brand', 'type'];
   trafficColumns: string[] = ['Stock', 'Inbound', 'Outbound', 'Recycled'];
   ALL_DEVICES: object[] = [];
+  GROUPED_DEVICES: object[] = [];
   // Devices Grouped By Model
   DEVICE_GROUPS: object[] = [];
   // Unique Device Models
@@ -40,7 +41,7 @@ export class AllInvComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<object>(this.DEVICE_GROUPS);
 
   expandedDeviceGroup: Device | null;
-
+  checkedDevices: Device[];
   // Selection Model
   selection = new SelectionModel<Device>(true, []);
 
@@ -50,6 +51,7 @@ export class AllInvComponent implements OnInit, OnDestroy {
   constructor(private inventoryControlService: InventoryControlService, public dialog: MatDialog) {}
 
   ngOnInit() {
+    this.checkedDevices = [];
     this.getInventory();
   }
 
@@ -61,6 +63,8 @@ export class AllInvComponent implements OnInit, OnDestroy {
   }
 
   getInventory() {
+    // Reset Checked Devices
+    this.checkedDevices = [];
     // Returns All Inventory, Devices Grouped, & Unique Models
     this.inventoryControlService.getInventory();
     // Subscribe To Device Groups
@@ -76,14 +80,17 @@ export class AllInvComponent implements OnInit, OnDestroy {
     // Subscribe To All Devices
     this.devicesSub = this.inventoryControlService.getDeviceUpdateListener()
     .subscribe((devices: []) => {
+      this.ALL_DEVICES = devices;
       // Set Devices Into Their Specific Group
       let i = 0;
       this.DEVICE_GROUPS.forEach((group: Device) => {
         const groupArray = [];
-        devices.forEach((device: Device) => {
+        devices.forEach((device: any) => {
           if (device.model === group.model) {
+            // Device Recieves Property Check On Inventory Update
+            device.checked = false;
             groupArray.push(device);
-            this.ALL_DEVICES[i] =  groupArray;
+            this.GROUPED_DEVICES[i] = groupArray;
           }
         });
         i++;
@@ -92,8 +99,8 @@ export class AllInvComponent implements OnInit, OnDestroy {
     // Pagination & Sorting For Main Table
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    console.log(this.ALL_DEVICES);
-    console.log(this.ALL_DEVICES[0]);
+    console.log(this.GROUPED_DEVICES);
+    console.log(this.GROUPED_DEVICES[0]);
     // Subscription To Unique Device Models
     this.uniqueModelsSub = this.inventoryControlService.getUniqueModelsListener()
     .subscribe((models) => {
@@ -151,6 +158,7 @@ export class AllInvComponent implements OnInit, OnDestroy {
     this.isAllSelected() ?
     this.selection.clear() :
     this.dataSource.data.forEach((row: Device) => this.selection.select(row));
+    this.onRowChecked(null);
   }
 
   // The label for the checkbox on the passed row
@@ -160,5 +168,54 @@ export class AllInvComponent implements OnInit, OnDestroy {
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.model + 1}`;
   }
+  // When True Device Check, Add To Checked Devices Array
+  onCheck(device: any) {
+    if (!device.checked) {
+      this.checkedDevices.push(device);
+    } else {
+      this.checkedDevices.splice(this.checkedDevices.indexOf(device), 1);
+    }
+    console.log(this.checkedDevices);
+  }
 
+  // GROUPED_DEVICES, checkedDevices, & compare by model
+  onRowChecked(deviceGroup: any) {
+    // ALL DEVICES ARE SELECTED
+    if (this.selection.selected.length === this.GROUPED_DEVICES.length) {
+      const newCheckedArr = [];
+      this.ALL_DEVICES.forEach((device: any) => {
+        device.checked = true;
+        newCheckedArr.push(device);
+        this.checkedDevices = newCheckedArr;
+        console.log(this.checkedDevices);
+      });
+    } else if (this.selection.selected.length === 0) {
+      this.ALL_DEVICES.forEach((device: any) => {
+        device.checked = false;
+      });
+      this.checkedDevices = [];
+    } else {
+      this.selection.selected.forEach(selectedDevice => {
+        this.ALL_DEVICES.forEach((device: any) => {
+          if (device.model === selectedDevice.model) {
+            device.checked = true;
+          }
+        });
+      });
+      this.ALL_DEVICES.forEach((device: any) => {
+        if (device.checked === true) {
+          console.log('Device Are Checked');
+          // Look Through Checked Devices
+          // If Device Isn't In Checked Devices Add It
+          // Else Ignore
+
+          if (!this.checkedDevices.includes(device, 0)) {
+            this.checkedDevices.push(device);
+          }
+        }
+      });
+      // console.log(this.selection.selected);
+      console.log(this.checkedDevices);
+    }
+  }
 }
