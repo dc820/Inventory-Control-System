@@ -44,6 +44,7 @@ export class AllInvComponent implements OnInit, OnDestroy {
   checkedDevices: Device[];
   // Selection Model
   selection = new SelectionModel<Device>(true, []);
+  checkedRow: object[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -158,7 +159,7 @@ export class AllInvComponent implements OnInit, OnDestroy {
     this.isAllSelected() ?
     this.selection.clear() :
     this.dataSource.data.forEach((row: Device) => this.selection.select(row));
-    this.onRowChecked(null);
+    this.onRowChecked();
   }
 
   // The label for the checkbox on the passed row
@@ -176,10 +177,25 @@ export class AllInvComponent implements OnInit, OnDestroy {
       this.checkedDevices.splice(this.checkedDevices.indexOf(device), 1);
     }
     console.log(this.checkedDevices);
+    this.GROUPED_DEVICES.forEach((group: any) => {
+      group.forEach(deviceObj => {
+        const checkedDeviceGroup = [];
+        this.checkedDevices.forEach(checkedDevice => {
+          if (checkedDevice.model === deviceObj.model) {
+            checkedDeviceGroup.push(checkedDevice);
+            if (checkedDeviceGroup.length === group.length) {
+              this.checkedRow.push({model: checkedDevice.model, checked: true});
+              console.log(this.checkedRow[this.checkedRow.indexOf({model: checkedDevice.model, checked: true})]);
+              // NEED TO FIGURE OUT CHILDREN CHECKBOXES SELECTING PARENT
+            }
+          }
+        });
+      });
+    });
+
   }
 
-  // GROUPED_DEVICES, checkedDevices, & compare by model
-  onRowChecked(deviceGroup: any) {
+  onRowChecked() {
     // ALL DEVICES ARE SELECTED
     if (this.selection.selected.length === this.GROUPED_DEVICES.length) {
       const newCheckedArr = [];
@@ -215,7 +231,7 @@ export class AllInvComponent implements OnInit, OnDestroy {
         }
       });
       // console.log(this.selection.selected);
-      console.log(this.checkedDevices);
+      // console.log(this.checkedDevices);
     }
   }
 }
