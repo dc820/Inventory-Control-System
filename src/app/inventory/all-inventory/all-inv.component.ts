@@ -41,10 +41,11 @@ export class AllInvComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<object>(this.DEVICE_GROUPS);
 
   expandedDeviceGroup: Device | null;
-  checkedDevices: Device[];
+
   // Selection Model -----------VIEW SELECTION MODEL DOCUMENTATION
-  selection = new SelectionModel<Device>(true, []);
+  selection = new SelectionModel<object>(true, []);
   childrenSelection = new SelectionModel<object>(true, []);
+  indeterminateSelection = new SelectionModel<object>(true, []);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -52,7 +53,6 @@ export class AllInvComponent implements OnInit, OnDestroy {
   constructor(private inventoryControlService: InventoryControlService, public dialog: MatDialog) {}
 
   ngOnInit() {
-    this.checkedDevices = [];
     this.getInventory();
   }
 
@@ -64,8 +64,6 @@ export class AllInvComponent implements OnInit, OnDestroy {
   }
 
   getInventory() {
-    // Reset Checked Devices
-    this.checkedDevices = [];
     // Returns All Inventory, Devices Grouped, & Unique Models
     this.inventoryControlService.getInventory();
     // Subscribe To Device Groups
@@ -89,7 +87,6 @@ export class AllInvComponent implements OnInit, OnDestroy {
         devices.forEach((device: any) => {
           if (device.model === group.model) {
             // Device Recieves Property Check On Inventory Update
-            device.checked = false;
             groupArray.push(device);
             this.GROUPED_DEVICES[i] = groupArray;
           }
@@ -124,7 +121,7 @@ export class AllInvComponent implements OnInit, OnDestroy {
   //  Filtering For Table
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
-    console.log(this.checkedDevices);
+    console.log(this.childrenSelection.selected);
   }
   // Opens Modal & Pass Mode Depending On Table Button Click
   openDialog(mode): void {
@@ -153,53 +150,66 @@ export class AllInvComponent implements OnInit, OnDestroy {
     return numSelected === numRows;
   }
 
-  isAllChildrenSelected() {
-
-  }
-
 
   // Selects all rows if they are not all selected; otherwise clear selection.
   masterToggle() {
     this.isAllSelected() ?
-    this.ALL_DEVICES.forEach(device => this.noneChecked(device)) :
-    this.ALL_DEVICES.forEach(device => this.onCheck(device));
+    this.childrenSelection.clear() :
+    this.ALL_DEVICES.forEach(device => this.childrenSelection.select(device));
 
     this.isAllSelected() ?
     this.selection.clear() :
     this.dataSource.data.forEach((row: Device) => this.selection.select(row));
-    console.log(this.checkedDevices);
   }
 
-  // When True Device Check, Add To Checked Devices Array
-  onCheck(device: any) {
-    if(this.checkedDevices.includes(device)) {
-      return;
-    }
-    if (!device.checked) {
-      this.checkedDevices.push(device);
-    } else {
-      this.noneChecked(device);
-    }
-  }
-
-  noneChecked(device: any) {
-    this.checkedDevices.splice(this.checkedDevices.indexOf(device), 1);
-  }
-
-  selectChildren(deviceGroup: any) {
-    if (this.selection.isSelected(deviceGroup)) {
+  // When Children Checkbox Selected
+  onCheck(device: any, deviceGroup: any) {
+    if (this.childrenSelection.isSelected(device)) {
       this.GROUPED_DEVICES.forEach((group: []) => {
-        const filteredGroup = group.filter((device: Device) => device.model === deviceGroup.model);
-        if (filteredGroup.length !== 0) {
-          filteredGroup.forEach(device => this.onCheck(device));
+        const filteredGroup = group.filter((groupDevice: Device) => groupDevice.model === deviceGroup.model);
+        const filteredSelection = this.childrenSelection.selected.filter(
+          (childSelection: Device) => childSelection.model === deviceGroup.model
+        );
+        if (filteredGroup.length === filteredSelection.length) {
+          this.indeterminateSelection.deselect(deviceGroup);
+          this.selection.select(deviceGroup);
         }
-        if (filteredGroup.length === 0) {
-          filteredGroup.forEach(device => this.noneChecked(device));
+        if (filteredSelection.length < filteredGroup.length && filteredSelection.length > 0) {
+          this.indeterminateSelection.select(deviceGroup);
         }
       });
     } else {
-      this.childrenSelection.select(deviceGroup);
-      console.log(this.childrenSelection.selected);
+      this.selection.deselect(deviceGroup);
+      this.indeterminateSelection.select(deviceGroup);
+      const filteredSelection = this.childrenSelection.selected.filter(
+        (childSelection: Device) => childSelection.model === deviceGroup.model
+      );
+      if (filteredSelection.length === 0) {
+        this.indeterminateSelection.deselect(deviceGroup);
+      }
+    }
+  }
+
+  selectChildren(deviceGroup: any) {
+    console.log(this.selection.selected);
+    if (this.selection.isSelected(deviceGroup)) {
+      console.log('Group Selected');
+      this.GROUPED_DEVICES.forEach((group: []) => {
+        const filteredGroup = group.filter((device: Device) => device.model === deviceGroup.model);
+        filteredGroup.forEach(device => {
+          this.indeterminateSelection.deselect(deviceGroup);
+          this.childrenSelection.select(device);
+        });
+      });
+    } else {
+      console.log('Group Deselected');
+      this.GROUPED_DEVICES.forEach((group: []) => {
+        const filteredGroup = group.filter((device: Device) => device.model === deviceGroup.model);
+        filteredGroup.forEach(device => {
+          this.childrenSelection.deselect(device);
+          // this.indeterminateSelection.deselect(deviceGroup);
+        });
+      });
     }
   }
 
