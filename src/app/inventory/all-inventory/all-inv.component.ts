@@ -42,9 +42,9 @@ export class AllInvComponent implements OnInit, OnDestroy {
 
   expandedDeviceGroup: Device | null;
   checkedDevices: Device[];
-  // Selection Model
+  // Selection Model -----------VIEW SELECTION MODEL DOCUMENTATION
   selection = new SelectionModel<Device>(true, []);
-  checkedRow: object[] = [];
+  childrenSelection = new SelectionModel<object>(true, []);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -101,7 +101,6 @@ export class AllInvComponent implements OnInit, OnDestroy {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     console.log(this.GROUPED_DEVICES);
-    console.log(this.GROUPED_DEVICES[0]);
     // Subscription To Unique Device Models
     this.uniqueModelsSub = this.inventoryControlService.getUniqueModelsListener()
     .subscribe((models) => {
@@ -125,7 +124,7 @@ export class AllInvComponent implements OnInit, OnDestroy {
   //  Filtering For Table
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
-    console.log(this.selection.selected);
+    console.log(this.checkedDevices);
   }
   // Opens Modal & Pass Mode Depending On Table Button Click
   openDialog(mode): void {
@@ -154,12 +153,54 @@ export class AllInvComponent implements OnInit, OnDestroy {
     return numSelected === numRows;
   }
 
+  isAllChildrenSelected() {
+
+  }
+
+
   // Selects all rows if they are not all selected; otherwise clear selection.
   masterToggle() {
     this.isAllSelected() ?
+    this.ALL_DEVICES.forEach(device => this.noneChecked(device)) :
+    this.ALL_DEVICES.forEach(device => this.onCheck(device));
+
+    this.isAllSelected() ?
     this.selection.clear() :
     this.dataSource.data.forEach((row: Device) => this.selection.select(row));
-    this.onRowChecked();
+    console.log(this.checkedDevices);
+  }
+
+  // When True Device Check, Add To Checked Devices Array
+  onCheck(device: any) {
+    if(this.checkedDevices.includes(device)) {
+      return;
+    }
+    if (!device.checked) {
+      this.checkedDevices.push(device);
+    } else {
+      this.noneChecked(device);
+    }
+  }
+
+  noneChecked(device: any) {
+    this.checkedDevices.splice(this.checkedDevices.indexOf(device), 1);
+  }
+
+  selectChildren(deviceGroup: any) {
+    if (this.selection.isSelected(deviceGroup)) {
+      this.GROUPED_DEVICES.forEach((group: []) => {
+        const filteredGroup = group.filter((device: Device) => device.model === deviceGroup.model);
+        if (filteredGroup.length !== 0) {
+          filteredGroup.forEach(device => this.onCheck(device));
+        }
+        if (filteredGroup.length === 0) {
+          filteredGroup.forEach(device => this.noneChecked(device));
+        }
+      });
+    } else {
+      this.childrenSelection.select(deviceGroup);
+      console.log(this.childrenSelection.selected);
+    }
   }
 
   // The label for the checkbox on the passed row
@@ -167,71 +208,6 @@ export class AllInvComponent implements OnInit, OnDestroy {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.model + 1}`;
-  }
-  // When True Device Check, Add To Checked Devices Array
-  onCheck(device: any) {
-    if (!device.checked) {
-      this.checkedDevices.push(device);
-    } else {
-      this.checkedDevices.splice(this.checkedDevices.indexOf(device), 1);
-    }
-    console.log(this.checkedDevices);
-    this.GROUPED_DEVICES.forEach((group: any) => {
-      group.forEach(deviceObj => {
-        const checkedDeviceGroup = [];
-        this.checkedDevices.forEach(checkedDevice => {
-          if (checkedDevice.model === deviceObj.model) {
-            checkedDeviceGroup.push(checkedDevice);
-            if (checkedDeviceGroup.length === group.length) {
-              this.checkedRow.push({model: checkedDevice.model, checked: true});
-              console.log(this.checkedRow[this.checkedRow.indexOf({model: checkedDevice.model, checked: true})]);
-              // NEED TO FIGURE OUT CHILDREN CHECKBOXES SELECTING PARENT
-            }
-          }
-        });
-      });
-    });
-
-  }
-
-  onRowChecked() {
-    // ALL DEVICES ARE SELECTED
-    if (this.selection.selected.length === this.GROUPED_DEVICES.length) {
-      const newCheckedArr = [];
-      this.ALL_DEVICES.forEach((device: any) => {
-        device.checked = true;
-        newCheckedArr.push(device);
-        this.checkedDevices = newCheckedArr;
-        console.log(this.checkedDevices);
-      });
-    } else if (this.selection.selected.length === 0) {
-      this.ALL_DEVICES.forEach((device: any) => {
-        device.checked = false;
-      });
-      this.checkedDevices = [];
-    } else {
-      this.selection.selected.forEach(selectedDevice => {
-        this.ALL_DEVICES.forEach((device: any) => {
-          if (device.model === selectedDevice.model) {
-            device.checked = true;
-          }
-        });
-      });
-      this.ALL_DEVICES.forEach((device: any) => {
-        if (device.checked === true) {
-          console.log('Device Are Checked');
-          // Look Through Checked Devices
-          // If Device Isn't In Checked Devices Add It
-          // Else Ignore
-
-          if (!this.checkedDevices.includes(device, 0)) {
-            this.checkedDevices.push(device);
-          }
-        }
-      });
-      // console.log(this.selection.selected);
-      // console.log(this.checkedDevices);
-    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.model}`;
   }
 }
