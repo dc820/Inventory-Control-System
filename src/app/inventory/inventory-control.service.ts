@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';   // HTTP
+import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Device } from '../shared/device.model';
 
@@ -17,13 +17,13 @@ export class InventoryControlService {
   private devicesUpdated = new Subject<Device[]>();
   private deviceGroupsUpdated = new Subject<object[]>();
   private uniqueModelsUpdated = new Subject<string[]>();
-
+  // Mode Selected From Table
   mode: string;
-  // selected: Device[];
 
   constructor(private http: HttpClient) { }
-
-  // Update Listeners
+  /**
+   * Update Listeners
+   */
   getDeviceUpdateListener() {
     return this.devicesUpdated.asObservable();
   }
@@ -33,7 +33,9 @@ export class InventoryControlService {
   getUniqueModelsListener() {
     return this.uniqueModelsUpdated.asObservable();
   }
-  // Retrives Inventory From Backend
+  /**
+   * Retrives Inventory From Backend
+   */
   getInventory() {
     this.http.get<{ message: string, allInventory: any, uniqueModels: any, deviceGroups: Array<object> }>(API_ENDPOINT)
       .subscribe((deviceData) => {
@@ -49,10 +51,12 @@ export class InventoryControlService {
         this.uniqueModelsUpdated.next([...this.uniqueModels]);
       });
   }
-  // Add Device To Backend Inventory
+  /**
+   * Add Device To Backend Inventory
+   */
   addDevice(newDevice) {
     const device: Device = {
-      id: null,
+      _id: null,
       traffic: newDevice.traffic,
       condition: newDevice.condition,
       type: newDevice.type,
@@ -62,21 +66,21 @@ export class InventoryControlService {
       rma: newDevice.rma,
       note: newDevice.note
     };
-    console.log(device);
     this.http.post<{ message: string, deviceId: string}>(API_ENDPOINT, device)
         .subscribe((responseData) => {
           const deviceId = responseData.deviceId;
-          device.id = deviceId;
+          device._id = deviceId;
           this.devices.push(device);
-          // Pass Copy of Devices Array to Updated Devices
-          this.devicesUpdated.next([...this.devices]);
+          this.getInventory();
         });
   }
-  // Find Device By ID & Update Specified Device Properties On Backend
+  /**
+   * Find Device By ID & Update Specified Device Properties On Backend
+   */
   updateDevice(editDevice) {
     console.log(editDevice.id);
     const device: Device = {
-      id: editDevice.id,
+      _id: editDevice.id,
       traffic: editDevice.traffic,
       condition: editDevice.condition,
       type: editDevice.type,
@@ -86,31 +90,31 @@ export class InventoryControlService {
       rma: editDevice.rma,
       note: editDevice.note
     };
-    this.http.patch<{message: string, device: object}>(API_ENDPOINT + device.id, device)
+    this.http.patch<{message: string, device: object}>(API_ENDPOINT + device._id, device)
       .subscribe((responseData) => {
-        console.log(responseData);
         for (let i = 0; i < this.devices.length ; i++) {
-          if (this.devices[i].id === editDevice.id ) {
+          if (this.devices[i]._id === editDevice.id ) {
             this.devices[i] = device;
           }
         }
-        // Pass Copy of Devices Array to Updated Devices
-        this.devicesUpdated.next([...this.devices]);
+        this.getInventory();
       });
   }
-  // Delete Device By ID From Backend
-  deleteSelection(id) {
-    console.log(id);
-    this.http.delete<{message: string}>(API_ENDPOINT + id)
+  /**
+   * Delete Device By ID
+   */
+  deleteSelection(deleteCheckedArr) {
+    this.http.delete<{message: string}>(API_ENDPOINT + deleteCheckedArr)
       .subscribe((responseData) => {
         console.log(responseData);
-        for (let i = 0; i < this.devices.length ; i++) {
-          if (this.devices[i].id === id ) {
-            this.devices.splice(i, 1);
+        deleteCheckedArr.forEach(deletedID => {
+          for (let i = 0; i < this.devices.length ; i++) {
+            if (this.devices[i]._id === deletedID ) {
+              this.devices.splice(i, 1);
+            }
           }
-        }
-        // Pass Copy of Devices Array to Updated Devices
-        this.devicesUpdated.next([...this.devices]);
+        });
+        this.getInventory();
       });
   }
 }

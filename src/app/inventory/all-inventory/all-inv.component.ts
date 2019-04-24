@@ -27,131 +27,161 @@ export class AllInvComponent implements OnInit, OnDestroy {
   private devicesSub: Subscription;
   private deviceGroupsSub: Subscription;
   private uniqueModelsSub: Subscription;
-
-  // Header Cells For Table Can Be Modified Here
-  mainColumns: string[] = ['select', 'model', 'brand', 'type'];
+  // Header Cells For Table
+  mainColumns: string[] = ['select', 'model', 'brand', 'type', 'total'];
   trafficColumns: string[] = ['Stock', 'Inbound', 'Outbound', 'Recycled'];
-  ALL_DEVICES: object[] = [];
+  // All Devices Ungrouped
+  ALL_DEVICES: Device[] = [];
+  // Devices Grouped In Respective Model Category
   GROUPED_DEVICES: object[] = [];
-  // Devices Grouped By Model
-  DEVICE_GROUPS: object[] = [];
+  // Device Category Rows By Model, Brand, & Type
+  DEVICE_GROUPS: Device[] = [];
   // Unique Device Models
   uniqueModels: string[];
   // Table Data Source
-  dataSource = new MatTableDataSource<object>(this.DEVICE_GROUPS);
-
+  dataSource = new MatTableDataSource<Device>(this.DEVICE_GROUPS);
+  // For Table Row Expansion
   expandedDeviceGroup: Device | null;
-
-  // Selection Model -----------VIEW SELECTION MODEL DOCUMENTATION
+  // VIEW SELECTION MODEL DOCUMENTATION - Angular CDK - selection.d.ts
   selection = new SelectionModel<object>(true, []);
   childrenSelection = new SelectionModel<object>(true, []);
   indeterminateSelection = new SelectionModel<object>(true, []);
-
+  // Pagination & Sort For Table
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private inventoryControlService: InventoryControlService, public dialog: MatDialog) {}
-
+  /**
+   * Initialize Inventory Table & Subscribe To Observables
+   */
   ngOnInit() {
+    // Retrieve All Inventory, Devices Grouped, & Unique Models
     this.getInventory();
-  }
-
-  ngOnDestroy() {
-    // Unsubscribe Before Destroying Component To Avoid Memory Leaks
-    this.devicesSub.unsubscribe();
-    this.deviceGroupsSub.unsubscribe();
-    this.uniqueModelsSub.unsubscribe();
-  }
-
-  getInventory() {
-    // Returns All Inventory, Devices Grouped, & Unique Models
-    this.inventoryControlService.getInventory();
-    // Subscribe To Device Groups
-    this.deviceGroupsSub = this.inventoryControlService.getDeviceGroupUpdateListener()
-      .subscribe((deviceGroup) => {
-        // Set Device Groups
-        this.DEVICE_GROUPS = deviceGroup;
-        // Set Device Group Data Source
-        this.dataSource.data = this.DEVICE_GROUPS;
-      });
-    // Returns All Inventory, Devices Grouped, & Unique Models
-    this.inventoryControlService.getInventory();
-    // Subscribe To All Devices
-    this.devicesSub = this.inventoryControlService.getDeviceUpdateListener()
-    .subscribe((devices: []) => {
-      this.ALL_DEVICES = devices;
-      // Set Devices Into Their Specific Group
-      let i = 0;
-      this.DEVICE_GROUPS.forEach((group: Device) => {
-        const groupArray = [];
-        devices.forEach((device: any) => {
-          if (device.model === group.model) {
-            // Device Recieves Property Check On Inventory Update
-            groupArray.push(device);
-            this.GROUPED_DEVICES[i] = groupArray;
-          }
-        });
-        i++;
-      });
-    });
-    // Pagination & Sorting For Main Table
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    console.log(this.GROUPED_DEVICES);
     // Subscription To Unique Device Models
     this.uniqueModelsSub = this.inventoryControlService.getUniqueModelsListener()
     .subscribe((models) => {
       this.uniqueModels = models;
     });
-  }
-
-  deleteSelection() {
-    /*
-    if (this.selection.selected.length > 0) {
-      this.selection.selected.forEach((device) => {
-        this.inventoryControlService.deleteSelection(device.id);
+    // Subscribe To Device Groups
+    this.deviceGroupsSub = this.inventoryControlService.getDeviceGroupUpdateListener()
+      .subscribe((deviceGroup: Device[]) => {
+        // Set Device Groups
+        this.DEVICE_GROUPS = deviceGroup;
+        // Set Device Group Data Source
+        this.dataSource.data = this.DEVICE_GROUPS;
+        // Pagination & Sorting For Table
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.setDeviceGroups();
       });
-      console.log(this.selection.selected);
-      this.selection.clear();
-      this.getInventory();
-    }
-    */
+    // Subscribe To All Devices
+    this.devicesSub = this.inventoryControlService.getDeviceUpdateListener()
+    .subscribe((devices: []) => {
+      this.ALL_DEVICES = devices;
+    });
   }
-
-  //  Filtering For Table
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    console.log(this.childrenSelection.selected);
+  /**
+   * Unsubscribe Before Destroying Component To Avoid Memory Leaks
+   */
+  ngOnDestroy() {
+    this.devicesSub.unsubscribe();
+    this.deviceGroupsSub.unsubscribe();
+    this.uniqueModelsSub.unsubscribe();
   }
-  // Opens Modal & Pass Mode Depending On Table Button Click
+  /**
+   * Retrieve Inventory & Clear Selections
+   */
+  getInventory() {
+    this.clearSelection();
+    this.inventoryControlService.getInventory();
+  }
+  /**
+   * Retrieve Inventory From HTTP Request & Subscribe To Listeners
+   */
+  clearSelection() {
+    this.selection.clear();
+    this.childrenSelection.clear();
+    this.indeterminateSelection.clear();
+  }
+  /**
+   * Set Devices Into Their Specific Group
+   */
+  setDeviceGroups() {
+    let i = 0;
+    this.dataSource.data.forEach((group: Device) => {
+      const groupArray = [];
+      this.ALL_DEVICES.forEach((device: any) => {
+        if (device.model === group.model) {
+          groupArray.push(device);
+          this.GROUPED_DEVICES[i] = groupArray;
+        }
+      });
+      i++;
+    });
+  }
+  /**
+   * Get Device Group Totals For Rows
+   */
+  getDeviceGroupLength(deviceGroup: any) {
+    let groupTotal = 0;
+    this.ALL_DEVICES.forEach((device: any) => {
+      if (device.model === deviceGroup.model) {
+        groupTotal++;
+      }
+    });
+    return groupTotal;
+  }
+  /**
+   * Opens Modal & Pass Mode Depending On Table Button Clicked - Add/Edit Mode
+   */
   openDialog(mode): void {
     this.inventoryControlService.mode = mode;
-    /*if (this.selection.selected.length === 0 && mode === 'Update' || this.selection.selected.length > 1) {
-      alert('No Selection Or More Than 1');
+    if (this.childrenSelection.selected.length === 0 && mode === 'Update' || this.childrenSelection.selected.length > 1) {
+      alert('There is no selection or more than 1 selection.');
       return;
     }
     if (mode === 'Update') {
-      console.log(this.selection.selected);
-      this.inventoryControlService.selected = this.selection.selected;
-    }*/
+      console.log(mode);
+      // Need To Decide What To Do With Editing
+    }
     // Creates Dialog Reference To Open Component
     const dialogRef = this.dialog.open(DialogComponent);
     // Subscribes To Closing Of Dialog
     dialogRef.afterClosed().subscribe(result => {
-      this.getInventory();
-      // this.selection.clear();
+      this.clearSelection();
     });
   }
-
-  // Whether the number of selected elements matches the total number of rows.
+  /**
+   * Delete Selected Devices & Clear Selection
+   */
+  deleteSelection() {
+    if (this.childrenSelection.selected.length > 0) {
+      const deleteCheckedArr = [];
+      this.childrenSelection.selected.forEach((device: Device) => {
+        deleteCheckedArr.push(device._id);
+      });
+      console.log(deleteCheckedArr);
+      this.inventoryControlService.deleteSelection(deleteCheckedArr);
+      this.clearSelection();
+    }
+  }
+  /**
+   * Apply Filter To Table. Filter By Model, Brand, & Type
+   */
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+  /**
+   * Whether The Number Of Selected Elements Matches The Total Number Of Rows
+   */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
-
-
-  // Selects all rows if they are not all selected; otherwise clear selection.
+  /**
+   * Selects All Rows If They Are Not All Selected; Otherwise Clear Selection
+   */
   masterToggle() {
     this.isAllSelected() ?
     this.childrenSelection.clear() :
@@ -161,8 +191,9 @@ export class AllInvComponent implements OnInit, OnDestroy {
     this.selection.clear() :
     this.dataSource.data.forEach((row: Device) => this.selection.select(row));
   }
-
-  // When Children Checkbox Selected
+  /**
+   * Children Checkbox Selection
+   */
   onCheck(device: any, deviceGroup: any) {
     if (this.childrenSelection.isSelected(device)) {
       this.GROUPED_DEVICES.forEach((group: []) => {
@@ -189,7 +220,9 @@ export class AllInvComponent implements OnInit, OnDestroy {
       }
     }
   }
-
+  /**
+   * Parent Checkbox To Toggle All Children
+   */
   selectChildren(deviceGroup: any) {
     console.log(this.selection.selected);
     if (this.selection.isSelected(deviceGroup)) {
@@ -207,13 +240,13 @@ export class AllInvComponent implements OnInit, OnDestroy {
         const filteredGroup = group.filter((device: Device) => device.model === deviceGroup.model);
         filteredGroup.forEach(device => {
           this.childrenSelection.deselect(device);
-          // this.indeterminateSelection.deselect(deviceGroup);
         });
       });
     }
   }
-
-  // The label for the checkbox on the passed row
+  /**
+   * The Label For The Checkbox On The Passed Row
+   */
   checkboxLabel(row?: Device): string {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;

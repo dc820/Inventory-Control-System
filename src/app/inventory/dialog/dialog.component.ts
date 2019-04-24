@@ -15,7 +15,6 @@ export class DialogComponent {
   slideToggle = false;
   // Get Mode Selected From Table Action Buttons
   mode = this.inventoryControlService.mode;
-  // selected = this.inventoryControlService.selected;
   // Form Field Values
   type = [
     'Router',
@@ -62,7 +61,6 @@ export class DialogComponent {
       this.dialogRef.close();
     } else {
       // Update Device If Mode Is Update
-      // form.value.id = this.selected[0].id;
       this.inventoryControlService.updateDevice(form.value);
       this.slideToggle = false;
       this.dialogRef.close();

@@ -9,6 +9,7 @@ exports.searchInventory = (req, res, next) => {
     })
   })
   .catch(error => {
+    console.log(error);
     res.status(500).json({
       message: 'Search Failed'
     })
@@ -135,12 +136,17 @@ exports.updateDevice = (req, res, next) => {
 }
 // Delete Device In Inventory
 exports.deleteDevice = (req, res, next) => {
-  Device.deleteOne( { _id: req.params.id} )
+  console.log('Params Here');
+  console.log(req.params.idList);
+  let devicesToDeleteArr = req.params.idList.split(',');
+  console.log(devicesToDeleteArr);
+
+  Device.deleteMany( { _id: {$in: devicesToDeleteArr}} )
   .then(document => {
     if (document.n > 0) {
       res.status(200).json({
         message: 'Delete Successful',
-        deviceDeleted: document
+        devicesDeleted: document
       });
     } else {
       res.status(401).json({
