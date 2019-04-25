@@ -38,7 +38,6 @@ import {
     MatSlideToggleModule,
     MatSelectModule,
     MatButtonToggleModule,
-    MatTooltipModule,
     MatListModule
   ]
 })

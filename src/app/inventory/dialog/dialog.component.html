@@ -11,7 +11,7 @@
     </mat-form-field>
 
     <!--Brand-->
-  <mat-form-field>
+    <mat-form-field>
       <input matInput placeholder="Brand" ngModel name="brand" #brand="ngModel" required>
     </mat-form-field>
 
@@ -33,6 +33,14 @@
       <mat-label>Status</mat-label>
     </mat-form-field>
 
+    <!--Traffic-->
+    <mat-form-field>
+      <mat-select ngModel name="traffic" required>
+        <mat-option *ngFor="let option of inventoryTraffic" [value]="option">{{ option }}</mat-option>
+      </mat-select>
+      <mat-label>Inventory Traffic</mat-label>
+    </mat-form-field>
+
     <!--Return Merchandise Authorization-->
     <mat-form-field *ngIf="slideToggle"
       [hideRequiredMarker]="options.value.hideRequired"
@@ -50,11 +58,6 @@
       <mat-label>Notes</mat-label>
     </mat-form-field>
 
-    <!--Traffic-->
-    <mat-button-toggle-group aria-label="Inventory Traffic" ngModel name="traffic" #traffic="ngModel" required>
-      <mat-button-toggle *ngFor="let option of inventoryTraffic" [value]="option.value" [matTooltip]="option.message"><mat-icon>{{ option.icon }}</mat-icon></mat-button-toggle>
-    </mat-button-toggle-group>
-
   </div>
   <div mat-dialog-actions>
     <button mat-button color="primary" type="submit" [disabled]="!dialogAddForm.valid">Add</button>
@@ -65,28 +68,6 @@
 <form *ngIf="mode === 'Update'" (ngSubmit)="onSubmit(dialogAddForm)" #dialogAddForm="ngForm">
     <h1 mat-dialog-title> {{ mode }} Device</h1>
     <div mat-dialog-content>
-      <!--Device--
-      <mat-form-field>
-        <mat-select [ngModel]="selected[0].type" name="type" required>
-          <mat-option *ngFor="let option of type" [value]="option">{{ option }}</mat-option>
-        </mat-select>
-        <mat-label>Device</mat-label>
-      </mat-form-field>
-
-      <!--Brand--
-      <mat-form-field>
-        <input matInput placeholder="Brand" [ngModel]="selected[0].brand" name="brand" #brand="ngModel" required>
-      </mat-form-field>
-
-      <!--Model--
-      <mat-form-field>
-        <input matInput placeholder="Model" [ngModel]="selected[0].model" name="model" #model="ngModel" required>
-      </mat-form-field>
-
-      <!--Serial--
-      <mat-form-field>
-        <input matInput placeholder="Serial" [ngModel]="selected[0].serial" name="serial" #serial="ngModel" required>
-      </mat-form-field>
 
       <!--Condition--
       <mat-form-field>

@@ -29,7 +29,7 @@ export class AllInvComponent implements OnInit, OnDestroy {
   private uniqueModelsSub: Subscription;
   // Header Cells For Table
   mainColumns: string[] = ['select', 'model', 'brand', 'type', 'total'];
-  trafficColumns: string[] = ['Stock', 'Inbound', 'Outbound', 'Recycled'];
+  trafficColumns: string[] = ['Stock', 'Inbound', 'Outbound'];
   // All Devices Ungrouped
   ALL_DEVICES: Device[] = [];
   // Devices Grouped In Respective Model Category
@@ -136,7 +136,8 @@ export class AllInvComponent implements OnInit, OnDestroy {
    */
   openDialog(mode): void {
     this.inventoryControlService.mode = mode;
-    if (this.childrenSelection.selected.length === 0 && mode === 'Update' || this.childrenSelection.selected.length > 1) {
+    if (this.childrenSelection.selected.length === 0 && mode === 'Update'
+      || this.childrenSelection.selected.length > 1  && mode === 'Update') {
       alert('There is no selection or more than 1 selection.');
       return;
     }
