@@ -19,6 +19,7 @@ export class InventoryControlService {
   private uniqueModelsUpdated = new Subject<string[]>();
   // Mode Selected From Table
   mode: string;
+  childrenSelection: object[];
 
   constructor(private http: HttpClient) { }
   /**

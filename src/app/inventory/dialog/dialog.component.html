@@ -64,12 +64,12 @@
     <button mat-button color="warn" mat-dialog-close cdkFocusInitial (click)="resetToggle()">Close</button>
   </div>
 </form>
-<!-------------EDIT FORM
+<!-------------EDIT FORM------------->
 <form *ngIf="mode === 'Update'" (ngSubmit)="onSubmit(dialogAddForm)" #dialogAddForm="ngForm">
     <h1 mat-dialog-title> {{ mode }} Device</h1>
     <div mat-dialog-content>
 
-      <!--Condition--
+      <!--Condition-->
       <mat-form-field>
         <mat-select [ngModel]="selected[0].condition" name="condition" required>
             <mat-option *ngFor="let option of condition" [value]="option">{{ option }}</mat-option>
@@ -77,7 +77,7 @@
         <mat-label>Status</mat-label>
       </mat-form-field>
 
-      <!--Return Merchandise Authorization--
+      <!--Return Merchandise Authorization-->
       <mat-form-field *ngIf="slideToggle"
         [hideRequiredMarker]="options.value.hideRequired"
         [floatLabel]="options.value.floatLabel">
@@ -87,24 +87,23 @@
 
       <mat-slide-toggle color="primary" (click)="toggle()">RMA Case</mat-slide-toggle>
 
-      <!--Notes--
+      <!--Notes-->
       <mat-form-field
         appearance="outline">
         <textarea matInput cols="100%" rows="1" [ngModel]="selected[0].note" name="note" #note="ngModel"></textarea>
         <mat-label>Notes</mat-label>
       </mat-form-field>
 
-      <!--Traffic--
+      <!--Traffic-->
       <mat-button-toggle-group aria-label="Inventory Traffic" [ngModel]="selected[0].traffic" name="traffic" #traffic="ngModel" required>
-        <mat-button-toggle *ngFor="let option of inventoryTraffic" [value]="option.value" [matTooltip]="option.message"><mat-icon>{{ option.icon }}</mat-icon></mat-button-toggle>
+        <mat-button-toggle *ngFor="let option of inventoryTraffic" [value]="option"><mat-icon>{{ option }}</mat-icon></mat-button-toggle>
       </mat-button-toggle-group>
 
     </div>
-    <!--Action Buttons For Dialog Form--
+    <!--Action Buttons For Dialog Form-->
     <div mat-dialog-actions>
       <button mat-button color="primary" type="submit" [disabled]="!dialogAddForm.valid">{{ mode }}</button>
       <button mat-button color="warn" mat-dialog-close cdkFocusInitial (click)="resetToggle()">Close</button>
     </div>
   </form>
-  ------------->
 

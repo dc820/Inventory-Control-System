@@ -29,6 +29,7 @@ export class AllInvComponent implements OnInit, OnDestroy {
   private uniqueModelsSub: Subscription;
   // Header Cells For Table
   mainColumns: string[] = ['select', 'model', 'brand', 'type', 'total'];
+  toggleRowColumns: string[] = ['model', 'brand', 'type', 'total'];
   trafficColumns: string[] = ['Stock', 'Inbound', 'Outbound'];
   // All Devices Ungrouped
   ALL_DEVICES: Device[] = [];
@@ -144,6 +145,7 @@ export class AllInvComponent implements OnInit, OnDestroy {
     if (mode === 'Update') {
       console.log(mode);
       // Need To Decide What To Do With Editing
+      this.inventoryControlService.childrenSelection = this.childrenSelection.selected;
     }
     // Creates Dialog Reference To Open Component
     const dialogRef = this.dialog.open(DialogComponent);
