@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 
 import { InventoryControlService } from '../inventory-control.service';
 import { Device } from 'src/app/shared/device.model';
@@ -39,22 +39,41 @@ export class DialogComponent {
     public dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Device,
     fb: FormBuilder,
-    private inventoryControlService: InventoryControlService
+    private inventoryControlService: InventoryControlService,
+    private snackBar: MatSnackBar
   ) {
-      this.options = fb.group({
-        hideRequired: false,
-        floatLabel: 'auto',
-      });
-    }
+    this.options = fb.group({
+      hideRequired: false,
+      floatLabel: 'auto',
+    });
+  }
+
+  openSnackBar(message) {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000
+    });
+  }
 
   onSubmit(form: NgForm) {
-    console.log(form.value);
     // Set Blank RMA Value If No Value Defined
     if (form.value.rma === undefined) {
       form.value.rma = '';
     }
+    console.log(form.value);
+    if (form.value.condition === '' && form.value.rma === '' && form.value.traffic === '' && form.value.note === '') {
+      this.snackBar.open('At Least One Field is Required to Continue', 'Close');
+      return;
+    }
+
     // Add Device If Mode Is Add
     if (this.mode === 'Add') {
+      this.inventoryControlService.dialogDeviceGroupCheck.forEach(group => {
+        // If Added Model Is Already In Device Group, Brand & Type Are Made The Same
+        if (form.value.model === group.model) {
+          form.value.brand = group.brand;
+          form.value.type = group.type;
+        }
+      });
       this.inventoryControlService.addDevice(form.value);
       this.slideToggle = false;
       this.dialogRef.close();

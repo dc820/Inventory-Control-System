@@ -16,9 +16,8 @@ import {
   MatSlideToggleModule,
   MatSelectModule,
   MatButtonToggleModule,
-  MatTooltipModule,
   MatListModule} from '@angular/material';
-
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   exports: [
@@ -38,7 +37,8 @@ import {
     MatSlideToggleModule,
     MatSelectModule,
     MatButtonToggleModule,
-    MatListModule
+    MatListModule,
+    MatSnackBarModule
   ]
 })
 

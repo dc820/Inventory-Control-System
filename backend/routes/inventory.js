@@ -24,7 +24,7 @@ router.post('', InventoryController.createDevice);
 /**
  * Update Device In Inventory
  */
-router.patch('/:id', InventoryController.updateDevice);
+router.patch('/:idList', InventoryController.updateDevice);
 /**
  * Delete Device In Inventory
  */

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatPaginator, MatTableDataSource, MatSort, MatDialog } from '@angular/material';
+import { MatPaginator, MatTableDataSource, MatSort, MatDialog, MatSnackBar } from '@angular/material';
 import { Subscription } from 'rxjs';
 import { InventoryControlService } from '../inventory-control.service';
 import { Device } from '../../shared/device.model';
@@ -51,7 +51,7 @@ export class AllInvComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private inventoryControlService: InventoryControlService, public dialog: MatDialog) {}
+  constructor(private inventoryControlService: InventoryControlService, public dialog: MatDialog, private snackBar: MatSnackBar) {}
   /**
    * Initialize Inventory Table & Subscribe To Observables
    */
@@ -88,6 +88,10 @@ export class AllInvComponent implements OnInit, OnDestroy {
     this.devicesSub.unsubscribe();
     this.deviceGroupsSub.unsubscribe();
     this.uniqueModelsSub.unsubscribe();
+  }
+
+  openSnackBar(message) {
+    this.snackBar.open(message);
   }
   /**
    * Retrieve Inventory & Clear Selections
@@ -137,15 +141,19 @@ export class AllInvComponent implements OnInit, OnDestroy {
    */
   openDialog(mode): void {
     this.inventoryControlService.mode = mode;
-    if (this.childrenSelection.selected.length === 0 && mode === 'Update'
-      || this.childrenSelection.selected.length > 1  && mode === 'Update') {
-      alert('There is no selection or more than 1 selection.');
-      return;
-    }
     if (mode === 'Update') {
       console.log(mode);
-      // Need To Decide What To Do With Editing
+      if (this.childrenSelection.isEmpty()) {
+        this.snackBar.open('Select One or More Devices to Edit', 'Close', {
+          duration: 3000
+        });
+        return;
+      }
+      // Send Selection To Service
       this.inventoryControlService.childrenSelection = this.childrenSelection.selected;
+    } else {
+      console.log(this.DEVICE_GROUPS);
+      this.inventoryControlService.dialogDeviceGroupCheck = this.DEVICE_GROUPS;
     }
     // Creates Dialog Reference To Open Component
     const dialogRef = this.dialog.open(DialogComponent);
@@ -158,7 +166,12 @@ export class AllInvComponent implements OnInit, OnDestroy {
    * Delete Selected Devices & Clear Selection
    */
   deleteSelection() {
-    if (this.childrenSelection.selected.length > 0) {
+    if (this.childrenSelection.isEmpty()) {
+      this.snackBar.open('Select One or More Devices to Delete', 'Close', {
+        duration: 3000
+      });
+      return;
+    } else {
       const deleteCheckedArr = [];
       this.childrenSelection.selected.forEach((device: Device) => {
         deleteCheckedArr.push(device._id);

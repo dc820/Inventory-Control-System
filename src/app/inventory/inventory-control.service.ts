@@ -20,6 +20,7 @@ export class InventoryControlService {
   // Mode Selected From Table
   mode: string;
   childrenSelection: object[];
+  dialogDeviceGroupCheck = [];
 
   constructor(private http: HttpClient) { }
   /**
@@ -40,7 +41,7 @@ export class InventoryControlService {
   getInventory() {
     this.http.get<{ message: string, allInventory: any, uniqueModels: any, deviceGroups: Array<object> }>(API_ENDPOINT)
       .subscribe((deviceData) => {
-        console.log(deviceData);
+        console.log(deviceData.deviceGroups);
         this.devices = deviceData.allInventory;
         this.deviceGroups = deviceData.deviceGroups;
         this.uniqueModels = deviceData.uniqueModels;
@@ -78,24 +79,30 @@ export class InventoryControlService {
   /**
    * Find Device By ID & Update Specified Device Properties On Backend
    */
-  updateDevice(editDevice) {
-    console.log(editDevice.id);
-    const device: Device = {
-      _id: editDevice.id,
-      traffic: editDevice.traffic,
-      condition: editDevice.condition,
-      type: editDevice.type,
-      model: editDevice.model,
-      brand: editDevice.brand,
-      serial: editDevice.serial,
-      rma: editDevice.rma,
-      note: editDevice.note
-    };
-    this.http.patch<{message: string, device: object}>(API_ENDPOINT + device._id, device)
+  updateDevice(editValues) {
+    console.log(editValues);
+    const idList: string[] = [];
+    this.childrenSelection.forEach((child: Device) => {
+      if (child.condition === '') {
+        child.condition = editValues.condition;
+      }
+      if (child.traffic === '') {
+        child.traffic = editValues.traffic;
+      }
+      if (child.rma === '') {
+        child.rma = editValues.rma;
+      }
+      if (child.note === '') {
+        child.note = editValues.note;
+      }
+      idList.push(child._id);
+    });
+    console.log(this.childrenSelection);
+    this.http.patch<{message: string, device: object}>(API_ENDPOINT + idList, editValues)
       .subscribe((responseData) => {
         for (let i = 0; i < this.devices.length ; i++) {
-          if (this.devices[i]._id === editDevice.id ) {
-            this.devices[i] = device;
+          if (this.devices[i]._id === editValues.id ) {
+            this.devices[i] = editValues;
           }
         }
         this.getInventory();

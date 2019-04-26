@@ -103,23 +103,35 @@ exports.createDevice = (req, res, next) => {
 }
 // Update Device In Inventory
 exports.updateDevice = (req, res, next) => {
-  const device = new Device({
-    _id: req.params.id,
-    traffic: req.body.traffic,
-    condition: req.body.condition,
-    type: req.body.type,
-    brand: req.body.brand,
-    model: req.body.model,
-    serial: req.body.serial,
-    rma: req.body.rma,
-    note: req.body.note
-  });
-  Device.updateOne({ _id: req.params.id }, device)
-  .then(document => {
-    if (document.n > 0) {
+  let devicesToUpdateArr = req.params.idList.split(',');
+  let propertiesToUpdate = {};
+  if (req.body.condition !== ''){
+    propertiesToUpdate.condition = req.body.condtion;
+  }
+  if (req.body.traffic !== ''){
+    propertiesToUpdate.traffic = req.body.traffic;
+  }
+  if (req.body.rma !== ''){
+    propertiesToUpdate.rma = req.body.rma;
+  }
+  if (req.body.note !== ''){
+    propertiesToUpdate.note = req.body.note;
+  }
+  console.log(devicesToUpdateArr);
+  Device.bulkWrite([
+    {
+      updateMany: {
+        filter: {_id: { $in: devicesToUpdateArr}},
+        update: propertiesToUpdate
+      }
+    }
+  ])
+  .then(updated => {
+    console.log(updated);
+    if (updated.modifiedCount > 0) {
       res.status(200).json({
         message: 'Update Successful',
-        device: document
+        updated: updated
       });
     } else {
       res.status(401).json({

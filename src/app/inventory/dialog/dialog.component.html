@@ -20,17 +20,17 @@
       <input matInput placeholder="Model" ngModel name="model" #model="ngModel" required>
     </mat-form-field>
 
-    <!--Condition-->
+    <!--Serial-->
     <mat-form-field>
       <input matInput placeholder="Serial" ngModel name="serial" #serial="ngModel" required>
     </mat-form-field>
 
-    <!--Status-->
+    <!--Condition-->
     <mat-form-field>
       <mat-select ngModel name="condition" required>
           <mat-option *ngFor="let option of condition" [value]="option">{{ option }}</mat-option>
       </mat-select>
-      <mat-label>Status</mat-label>
+      <mat-label>Condition</mat-label>
     </mat-form-field>
 
     <!--Traffic-->
@@ -55,7 +55,7 @@
     <mat-form-field
       appearance="outline">
       <textarea matInput cols="100%" rows="1" ngModel name="note" #note="ngModel"></textarea>
-      <mat-label>Notes</mat-label>
+      <mat-label>Note</mat-label>
     </mat-form-field>
 
   </div>
@@ -65,23 +65,31 @@
   </div>
 </form>
 <!-------------EDIT FORM------------->
-<form *ngIf="mode === 'Update'" (ngSubmit)="onSubmit(dialogAddForm)" #dialogAddForm="ngForm">
+<form *ngIf="mode === 'Update'" (ngSubmit)="onSubmit(dialogEditForm)" #dialogEditForm="ngForm">
     <h1 mat-dialog-title> {{ mode }} Device</h1>
     <div mat-dialog-content>
 
       <!--Condition-->
       <mat-form-field>
-        <mat-select [ngModel]="selected[0].condition" name="condition" required>
+        <mat-select ngModel name="condition">
             <mat-option *ngFor="let option of condition" [value]="option">{{ option }}</mat-option>
         </mat-select>
-        <mat-label>Status</mat-label>
+        <mat-label>Condition</mat-label>
+      </mat-form-field>
+
+      <!--Traffic-->
+      <mat-form-field>
+        <mat-select ngModel name="traffic">
+          <mat-option *ngFor="let option of inventoryTraffic" [value]="option">{{ option }}</mat-option>
+        </mat-select>
+        <mat-label>Inventory Traffic</mat-label>
       </mat-form-field>
 
       <!--Return Merchandise Authorization-->
       <mat-form-field *ngIf="slideToggle"
         [hideRequiredMarker]="options.value.hideRequired"
         [floatLabel]="options.value.floatLabel">
-        <input matInput placeholder="RMA #" [ngModel]="selected[0].rma" name="rma" #rma="ngModel" required>
+        <input matInput placeholder="RMA #" ngModel name="rma">
         <mat-hint>Return Merchandise Authorization</mat-hint>
       </mat-form-field>
 
@@ -90,19 +98,14 @@
       <!--Notes-->
       <mat-form-field
         appearance="outline">
-        <textarea matInput cols="100%" rows="1" [ngModel]="selected[0].note" name="note" #note="ngModel"></textarea>
-        <mat-label>Notes</mat-label>
+        <textarea matInput cols="100%" rows="1" ngModel name="note"></textarea>
+        <mat-label>Note</mat-label>
       </mat-form-field>
-
-      <!--Traffic-->
-      <mat-button-toggle-group aria-label="Inventory Traffic" [ngModel]="selected[0].traffic" name="traffic" #traffic="ngModel" required>
-        <mat-button-toggle *ngFor="let option of inventoryTraffic" [value]="option"><mat-icon>{{ option }}</mat-icon></mat-button-toggle>
-      </mat-button-toggle-group>
 
     </div>
     <!--Action Buttons For Dialog Form-->
     <div mat-dialog-actions>
-      <button mat-button color="primary" type="submit" [disabled]="!dialogAddForm.valid">{{ mode }}</button>
+      <button mat-button color="primary" type="submit" [disabled]="dialogEditForm.pristine">{{ mode }}</button>
       <button mat-button color="warn" mat-dialog-close cdkFocusInitial (click)="resetToggle()">Close</button>
     </div>
   </form>
