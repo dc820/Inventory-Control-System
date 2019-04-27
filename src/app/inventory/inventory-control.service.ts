@@ -14,9 +14,15 @@ export class InventoryControlService {
   private devices: Device[] = [];
   private deviceGroups: object[] = [];
   private uniqueModels: string[] = [];
+  private inStockInventory: Device[] = [];
+  private inboundInventory: Device[] = [];
+  private outboundInventory: Device[] = [];
   private devicesUpdated = new Subject<Device[]>();
   private deviceGroupsUpdated = new Subject<object[]>();
   private uniqueModelsUpdated = new Subject<string[]>();
+  private inStockInventoryUpdated = new Subject<Device[]>();
+  private inboundInventoryUpdated = new Subject<Device[]>();
+  private outboundInventoryUpdated = new Subject<Device[]>();
   // Mode Selected From Table
   mode: string;
   childrenSelection: object[];
@@ -26,8 +32,17 @@ export class InventoryControlService {
   /**
    * Update Listeners
    */
-  getDeviceUpdateListener() {
-    return this.devicesUpdated.asObservable();
+  getInventoryUpdateListener(traffic: string) {
+    switch (traffic) {
+      case 'InStock':
+        return this.inStockInventoryUpdated.asObservable();
+      case 'Inbound':
+         return this.inboundInventoryUpdated.asObservable();
+      case 'Outbound':
+        return this.outboundInventoryUpdated.asObservable();
+      default:
+        return this.devicesUpdated.asObservable();
+    }
   }
   getDeviceGroupUpdateListener() {
     return this.deviceGroupsUpdated.asObservable();
@@ -36,25 +51,48 @@ export class InventoryControlService {
     return this.uniqueModelsUpdated.asObservable();
   }
   /**
-   * Retrives Inventory From Backend
+   * Retrives All Inventory & Sorts Devices
    */
-  getInventory() {
-    this.http.get<{ message: string, allInventory: any, uniqueModels: any, deviceGroups: Array<object> }>(API_ENDPOINT)
-      .subscribe((deviceData) => {
-        console.log(deviceData.deviceGroups);
-        this.devices = deviceData.allInventory;
-        this.deviceGroups = deviceData.deviceGroups;
-        this.uniqueModels = deviceData.uniqueModels;
-        // Pass Copy of Devices Array to Updated Devices
-        this.devicesUpdated.next([...this.devices]);
-        // Pass Copy of Device Groups Array to Updated Device Groups
-        this.deviceGroupsUpdated.next([...this.deviceGroups]);
-        // Pass Copy of Unique Models Array to Updated Unique Models
-        this.uniqueModelsUpdated.next([...this.uniqueModels]);
-      });
+  getInventory(traffic: string) {
+    switch (traffic) {
+      case 'InStock':
+        this.http.get<{ message: string, inStockInventory: any }>(API_ENDPOINT + traffic)
+        .subscribe((deviceData) => {
+          this.inStockInventory = deviceData.inStockInventory;
+          this.inStockInventoryUpdated.next([...this.inStockInventory]);
+        });
+        break;
+      case 'Inbound':
+        this.http.get<{ message: string, inboundInventory: any }>(API_ENDPOINT + traffic)
+        .subscribe((deviceData) => {
+          this.inboundInventory = deviceData.inboundInventory;
+          this.inboundInventoryUpdated.next([...this.inboundInventory]);
+        });
+        break;
+      case 'Outbound':
+        this.http.get<{ message: string, outboundInventory: any }>(API_ENDPOINT + traffic)
+        .subscribe((deviceData) => {
+          this.outboundInventory = deviceData.outboundInventory;
+          this.outboundInventoryUpdated.next([...this.outboundInventory]);
+        });
+        break;
+      default:
+        this.http.get<{ message: string, allInventory: any, uniqueModels: any, deviceGroups: Array<object> }>(API_ENDPOINT)
+        .subscribe((deviceData) => {
+          this.devices = deviceData.allInventory;
+          this.deviceGroups = deviceData.deviceGroups;
+          this.uniqueModels = deviceData.uniqueModels;
+          // Pass Copy of Devices Array to Updated Devices
+          this.devicesUpdated.next([...this.devices]);
+          // Pass Copy of Device Groups Array to Updated Device Groups
+          this.deviceGroupsUpdated.next([...this.deviceGroups]);
+          // Pass Copy of Unique Models Array to Updated Unique Models
+          this.uniqueModelsUpdated.next([...this.uniqueModels]);
+        });
+    }
   }
   /**
-   * Add Device To Backend Inventory
+   * Add Device To Inventory
    */
   addDevice(newDevice) {
     const device: Device = {
@@ -73,14 +111,13 @@ export class InventoryControlService {
           const deviceId = responseData.deviceId;
           device._id = deviceId;
           this.devices.push(device);
-          this.getInventory();
+          this.getInventory('All');
         });
   }
   /**
-   * Find Device By ID & Update Specified Device Properties On Backend
+   * Find Device By ID & Update Specified Device Properties
    */
   updateDevice(editValues) {
-    console.log(editValues);
     const idList: string[] = [];
     this.childrenSelection.forEach((child: Device) => {
       if (child.condition === '') {
@@ -97,7 +134,6 @@ export class InventoryControlService {
       }
       idList.push(child._id);
     });
-    console.log(this.childrenSelection);
     this.http.patch<{message: string, device: object}>(API_ENDPOINT + idList, editValues)
       .subscribe((responseData) => {
         for (let i = 0; i < this.devices.length ; i++) {
@@ -105,7 +141,7 @@ export class InventoryControlService {
             this.devices[i] = editValues;
           }
         }
-        this.getInventory();
+        this.getInventory('All');
       });
   }
   /**
@@ -114,7 +150,6 @@ export class InventoryControlService {
   deleteSelection(deleteCheckedArr) {
     this.http.delete<{message: string}>(API_ENDPOINT + deleteCheckedArr)
       .subscribe((responseData) => {
-        console.log(responseData);
         deleteCheckedArr.forEach(deletedID => {
           for (let i = 0; i < this.devices.length ; i++) {
             if (this.devices[i]._id === deletedID ) {
@@ -122,7 +157,7 @@ export class InventoryControlService {
             }
           }
         });
-        this.getInventory();
+        this.getInventory('All');
       });
   }
 }

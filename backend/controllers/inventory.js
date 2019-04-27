@@ -1,21 +1,7 @@
 const Device = require('../models/device');
-// Search Functionality
-exports.searchInventory = (req, res, next) => {
-  console.log(req.query.q);
-  Device.find().or([{ condition: {$regex: req.query.q } }, { traffic: {$regex: req.query.q } }, { type: {$regex: req.query.q } } ])
-  .then(result => {
-    res.status(200).json({
-      query: result
-    })
-  })
-  .catch(error => {
-    console.log(error);
-    res.status(500).json({
-      message: 'Search Failed'
-    })
-  });
-}
-// Retrieve All Devices From Inventory
+/**
+ * Retrieve All Devices From Inventory
+ */
 exports.getAllInventory = (req, res, next) => {
   let uniqueModels = [];
   let deviceGroups = [];
@@ -42,9 +28,29 @@ exports.getAllInventory = (req, res, next) => {
     });
   });
 };
-// Don't Think This Will Be Needed <----------------
+/**
+ * Retrieve Stock Devices From Inventory
+ */
+exports.getInStockInventory = (req, res, next) => {
+  Device.find().where('traffic').equals('Stock')
+  .then(result => {
+    res.status(200).json({
+      message: 'Inbound Inventory Fetched Successfully',
+      inStockInventory: result
+    });
+  })
+  .catch(error => {
+    console.log(error);
+    res.status(500).json({
+      message: 'Could Not Retrieve Devices'
+    });
+  });
+}
+/**
+ * Retrieve Inbound Devices From Inventory
+ */
 exports.getInboundInventory = (req, res, next) => {
-  Device.find().where('status').equals('Inbound')
+  Device.find().where('traffic').equals('Inbound')
   .then(result => {
     res.status(200).json({
       message: 'Inbound Inventory Fetched Successfully',
@@ -58,9 +64,11 @@ exports.getInboundInventory = (req, res, next) => {
     });
   });
 }
-// Don't Think This Will Be Needed <----------------
+/**
+ * Retrieve Outbound Devices From Inventory
+ */
 exports.getOutboundInventory = (req, res, next) => {
-  Device.find().where('status').equals('Outbound')
+  Device.find().where('traffic').equals('Outbound')
   .then(result => {
     res.status(200).json({
       message: 'Outbound Inventory Fetched Successfully',
@@ -74,7 +82,9 @@ exports.getOutboundInventory = (req, res, next) => {
     });
   });
 }
-// Add New Device To Inventory
+/**
+ * Add New Device To Inventory
+ */
 exports.createDevice = (req, res, next) => {
   const device = new Device({
     traffic: req.body.traffic,
@@ -85,7 +95,6 @@ exports.createDevice = (req, res, next) => {
     serial: req.body.serial,
     rma: req.body.rma,
     note: req.body.note
-    // Specify Minimum?
   });
   device.save()
   .then(document => {
@@ -101,7 +110,9 @@ exports.createDevice = (req, res, next) => {
     });
   });
 }
-// Update Device In Inventory
+/**
+ * Update Device In Inventory
+ */
 exports.updateDevice = (req, res, next) => {
   let devicesToUpdateArr = req.params.idList.split(',');
   let propertiesToUpdate = {};
@@ -146,7 +157,9 @@ exports.updateDevice = (req, res, next) => {
     })
   });
 }
-// Delete Device In Inventory
+/**
+ * Delete Device In Inventory
+ */
 exports.deleteDevice = (req, res, next) => {
   console.log('Params Here');
   console.log(req.params.idList);

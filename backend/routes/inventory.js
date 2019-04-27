@@ -2,19 +2,19 @@ const express = require('express');
 const InventoryController = require('../controllers/inventory');
 const router = express.Router();
 /**
- *  Search Functionality
- */
-router.get('/search?', InventoryController.searchInventory)
-/**
  * Retrieve All Devices From Inventory
  */
 router.get('', InventoryController.getAllInventory);
 /**
- * Don't Think This Will Be Needed <----------------
+ * Retrieve Stock Devices From Inventory
+ */
+router.get('/instock', InventoryController.getInStockInventory);
+/**
+ * Retrieve Inbound Devices From Inventory
  */
 router.get('/inbound', InventoryController.getInboundInventory);
 /**
- * Don't Think This Will Be Needed <----------------
+ * Retrieve Outbound Devices From Inventory
  */
 router.get('/outbound', InventoryController.getOutboundInventory);
 /**

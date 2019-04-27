@@ -1,0 +1,13 @@
+td, th {
+  width: 14.286%;
+}
+
+.table-container {
+  width: 100%;
+  overflow: auto;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}

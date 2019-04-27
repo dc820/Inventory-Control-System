@@ -9,13 +9,8 @@ import { NgForm } from '@angular/forms';
 export class HeaderComponent {
   tabs = [
     {id: 'AllTab', name: 'All Inventory', path: 'all'},
-    {id: 'InboundTab', name: 'Inbound Inventory', path: 'inbound'},
-    {id: 'OutboundTab', name: 'Outbound Inventory', path: 'outbound'},
-    {id: 'ReportsTab', name: 'Reports', path: 'reports'}
+    {id: 'InStockTab', name: 'In Stock', path: 'instock'},
+    {id: 'InboundTab', name: 'Inbound', path: 'inbound'},
+    {id: 'OutboundTab', name: 'Outbound', path: 'outbound'}
   ];
-  constructor() { }
-
-  onSubmit(form: NgForm) {
-    console.log(form);
-  }
 }

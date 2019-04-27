@@ -5,11 +5,13 @@ import { AppRoutingModule } from '../app-routing.module';
 
 import { AllInvComponent } from './all-inventory/all-inv.component';
 import { DialogComponent } from './dialog/dialog.component';
+import { TrafficComponent } from './traffic/traffic.component';
 
 @NgModule({
   declarations: [
     AllInvComponent,
-    DialogComponent
+    DialogComponent,
+    TrafficComponent,
   ],
   imports: [
     AngularMaterialModule,

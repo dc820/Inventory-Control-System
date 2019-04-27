@@ -76,7 +76,7 @@ export class AllInvComponent implements OnInit, OnDestroy {
         this.setDeviceGroups();
       });
     // Subscribe To All Devices
-    this.devicesSub = this.inventoryControlService.getDeviceUpdateListener()
+    this.devicesSub = this.inventoryControlService.getInventoryUpdateListener('All')
     .subscribe((devices: []) => {
       this.ALL_DEVICES = devices;
     });
@@ -98,7 +98,7 @@ export class AllInvComponent implements OnInit, OnDestroy {
    */
   getInventory() {
     this.clearSelection();
-    this.inventoryControlService.getInventory();
+    this.inventoryControlService.getInventory('All');
   }
   /**
    * Retrieve Inventory From HTTP Request & Subscribe To Listeners
@@ -152,7 +152,6 @@ export class AllInvComponent implements OnInit, OnDestroy {
       // Send Selection To Service
       this.inventoryControlService.childrenSelection = this.childrenSelection.selected;
     } else {
-      console.log(this.DEVICE_GROUPS);
       this.inventoryControlService.dialogDeviceGroupCheck = this.DEVICE_GROUPS;
     }
     // Creates Dialog Reference To Open Component
@@ -176,7 +175,6 @@ export class AllInvComponent implements OnInit, OnDestroy {
       this.childrenSelection.selected.forEach((device: Device) => {
         deleteCheckedArr.push(device._id);
       });
-      console.log(deleteCheckedArr);
       this.inventoryControlService.deleteSelection(deleteCheckedArr);
       this.clearSelection();
     }
@@ -240,7 +238,6 @@ export class AllInvComponent implements OnInit, OnDestroy {
    * Parent Checkbox To Toggle All Children
    */
   selectChildren(deviceGroup: any) {
-    console.log(this.selection.selected);
     if (this.selection.isSelected(deviceGroup)) {
       console.log('Group Selected');
       this.GROUPED_DEVICES.forEach((group: []) => {

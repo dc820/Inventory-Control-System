@@ -12,7 +12,7 @@ tr.deviceGroup-row:not(.deviceGroup-expanded-row):active {
   width: 100vw;
 }
 
-td {
+td.mat-cell {
   width: 20vw;
 }
 
@@ -24,7 +24,6 @@ div > div > h5 {
 }
 
 td > div > div {
-  display: block;
   min-width: 24vw;
 }
 
@@ -34,14 +33,17 @@ mat-checkbox div {
 }
 
 div div p {
+  display: inline;
   margin: 0;
   padding: 0px;
   font-size: 12px;
-  width: inherit;
-  height: 14px;
   line-height: 1.25em;
   white-space: pre-wrap;
   text-align: left;
+}
+
+div div div div {
+  display: block;
 }
 
 th > mat-checkbox, td > mat-checkbox {
@@ -74,3 +76,7 @@ th > mat-checkbox, td > mat-checkbox {
   border: 1px solid black;
   border-radius: 4px;
 }
+
+/**
+border: 1px solid red;
+*/
