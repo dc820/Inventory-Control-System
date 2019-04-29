@@ -5,16 +5,15 @@
   </button>
   <mat-menu #menu="matMenu">
     <button mat-menu-item
-    routerLinkActive="active"
-    [routerLinkActiveOptions]="{exact: true}"
-    routerLink="">Home</button>
-    <button mat-menu-item
     *ngFor="let tab of tabs"
     routerLinkActive="active"
     [routerLinkActiveOptions]="{exact: true}"
     [routerLink]="'/' + tab.path"
     [id]="tab.id">{{ tab.name }}</button>
-  </mat-menu>
+</mat-menu>
 
-  <span class="push-right"></span>
+<button class="full" mat-raised-button
+  routerLinkActive="active"
+  [routerLinkActiveOptions]="{exact: true}"
+  routerLink="">Home</button>
 </mat-toolbar>
