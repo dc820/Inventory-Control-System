@@ -1,0 +1,15 @@
+mat-card {
+  width: 90vw;
+  max-width: 15in;
+  margin: auto;
+  margin-top: 8rem;
+  margin-bottom: 0;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+button {
+  width: 100%;
+}

@@ -1,15 +1,39 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
+
+  constructor(private authService: AuthService) {}
+  userIsAuthenticated = false;
+  private authListenerSubs: Subscription;
+
   tabs = [
-    {id: 'AllTab', name: 'All Inventory', path: 'all'},
     {id: 'InStockTab', name: 'In Stock', path: 'instock'},
     {id: 'InboundTab', name: 'Inbound', path: 'inbound'},
-    {id: 'OutboundTab', name: 'Outbound', path: 'outbound'}
+    {id: 'OutboundTab', name: 'Outbound', path: 'outbound'},
+    {id: 'ModifyTab', name: 'Modify', path: 'modify'},
   ];
+
+  ngOnInit() {
+    this.userIsAuthenticated = this.authService.getIsAuth();
+    this.authListenerSubs = this.authService.getAuthStatusListener()
+      .subscribe(isAuthenticated => {
+        this.userIsAuthenticated = isAuthenticated;
+      });
+  }
+
+  ngOnDestroy() {
+    this.authListenerSubs.unsubscribe();
+  }
+
+  onLogout() {
+    this.authService.logout();
+  }
 }

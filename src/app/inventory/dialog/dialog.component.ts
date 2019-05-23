@@ -3,7 +3,7 @@ import { NgForm, FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 
 import { InventoryControlService } from '../inventory-control.service';
-import { Device } from 'src/app/shared/device.model';
+import { Device } from 'src/app/shared/models/device.model';
 
 @Component({
   selector: 'app-dialog',

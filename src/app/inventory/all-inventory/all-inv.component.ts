@@ -4,7 +4,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator, MatTableDataSource, MatSort, MatDialog, MatSnackBar } from '@angular/material';
 import { Subscription } from 'rxjs';
 import { InventoryControlService } from '../inventory-control.service';
-import { Device } from '../../shared/device.model';
+import { Device } from '../../shared/models/device.model';
 
 import { DialogComponent } from '../dialog/dialog.component';
 

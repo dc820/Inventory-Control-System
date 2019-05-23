@@ -16,7 +16,8 @@ import {
   MatSlideToggleModule,
   MatSelectModule,
   MatButtonToggleModule,
-  MatListModule} from '@angular/material';
+  MatListModule,
+  MatProgressSpinnerModule} from '@angular/material';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
@@ -38,7 +39,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatSelectModule,
     MatButtonToggleModule,
     MatListModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatProgressSpinnerModule
   ]
 })
 

@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import { Device } from 'src/app/shared/device.model';
+import { Device } from 'src/app/shared/models/device.model';
 import { Subscription } from 'rxjs';
 import { InventoryControlService } from '../inventory-control.service';
 

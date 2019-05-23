@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
-import { Device } from '../shared/device.model';
+import { Device } from '../shared/models/device.model';
 
 const API_ENDPOINT = 'http://localhost:3000/api/inventory/';
 

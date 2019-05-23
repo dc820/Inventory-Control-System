@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const inventoryRoutes = require('./routes/inventory');
+const userRoutes = require('./routes/user');
 
 // Connect To MongoDB Database
 mongoose.connect('mongodb://localhost/inventory', { useNewUrlParser: true });
@@ -28,5 +29,6 @@ app.use((req, res, next) => {
 });
 // API Endpoints
 app.use('/api/inventory', inventoryRoutes);
+app.use('/api/user', userRoutes);
 
 module.exports = app;
