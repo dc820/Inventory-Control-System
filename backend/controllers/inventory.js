@@ -115,9 +115,10 @@ exports.createDevice = (req, res, next) => {
  */
 exports.updateDevice = (req, res, next) => {
   let devicesToUpdateArr = req.params.idList.split(',');
+  console.log('HERE==========' + devicesToUpdateArr);
   let propertiesToUpdate = {};
   if (req.body.condition !== ''){
-    propertiesToUpdate.condition = req.body.condtion;
+    propertiesToUpdate.condition = req.body.condition;
   }
   if (req.body.traffic !== ''){
     propertiesToUpdate.traffic = req.body.traffic;
@@ -146,7 +147,7 @@ exports.updateDevice = (req, res, next) => {
       });
     } else {
       res.status(401).json({
-        message: 'Not Authorized'
+        message: 'Update Not Authorized'
       });
     }
   })

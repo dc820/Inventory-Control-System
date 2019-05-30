@@ -15,6 +15,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { AuthInterceptor } from './auth/auth-interceptor';
+import { FormBuilder } from '@angular/forms';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { AuthInterceptor } from './auth/auth-interceptor';
     AppRoutingModule
   ],
   providers: [
+    FormBuilder,
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]

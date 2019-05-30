@@ -30,23 +30,25 @@ export class AllInvComponent implements OnInit, OnDestroy {
   // Header Cells For Table
   mainColumns: string[] = ['select', 'model', 'brand', 'type', 'total'];
   toggleRowColumns: string[] = ['model', 'brand', 'type', 'total'];
-  trafficColumns: string[] = ['Stock', 'Inbound', 'Outbound'];
+  trafficColumns: string[] = ['In Stock', 'Inbound', 'Outbound'];
   // All Devices Ungrouped
   ALL_DEVICES: Device[] = [];
   // Devices Grouped In Respective Model Category
   GROUPED_DEVICES: object[] = [];
   // Device Category Rows By Model, Brand, & Type
-  DEVICE_GROUPS: Device[] = [];
+  DEVICE_ROWS: Device[] = [];
   // Unique Device Models
   uniqueModels: string[];
   // Table Data Source
-  dataSource = new MatTableDataSource<Device>(this.DEVICE_GROUPS);
+  dataSource = new MatTableDataSource<Device>(this.DEVICE_ROWS);
   // For Table Row Expansion
   expandedDeviceGroup: Device | null;
   // VIEW SELECTION MODEL DOCUMENTATION - Angular CDK - selection.d.ts
   selection = new SelectionModel<object>(true, []);
-  childrenSelection = new SelectionModel<object>(true, []);
-  indeterminateSelection = new SelectionModel<object>(true, []);
+  trafficSelection = new SelectionModel<string>(true, []);
+  childSelection = new SelectionModel<object>(true, []);
+  indeterminateRowSelection = new SelectionModel<object>(true, []);
+  indeterminateTrafficSelection = new SelectionModel<object>(true, []);
   // Pagination & Sort For Table
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -67,9 +69,9 @@ export class AllInvComponent implements OnInit, OnDestroy {
     this.deviceGroupsSub = this.inventoryControlService.getDeviceGroupUpdateListener()
       .subscribe((deviceGroup: Device[]) => {
         // Set Device Groups
-        this.DEVICE_GROUPS = deviceGroup;
+        this.DEVICE_ROWS = deviceGroup;
         // Set Device Group Data Source
-        this.dataSource.data = this.DEVICE_GROUPS;
+        this.dataSource.data = this.DEVICE_ROWS;
         // Pagination & Sorting For Table
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -105,8 +107,11 @@ export class AllInvComponent implements OnInit, OnDestroy {
    */
   clearSelection() {
     this.selection.clear();
-    this.childrenSelection.clear();
-    this.indeterminateSelection.clear();
+    this.trafficSelection.clear();
+    this.childSelection.clear();
+    this.indeterminateRowSelection.clear();
+    this.indeterminateRowSelection.clear();
+    this.indeterminateTrafficSelection.clear();
   }
   /**
    * Set Devices Into Their Specific Group
@@ -142,17 +147,16 @@ export class AllInvComponent implements OnInit, OnDestroy {
   openDialog(mode): void {
     this.inventoryControlService.mode = mode;
     if (mode === 'Update') {
-      console.log(mode);
-      if (this.childrenSelection.isEmpty()) {
+      if (this.selection.isEmpty()) {
         this.snackBar.open('Select One or More Devices to Edit', 'Close', {
           duration: 3000
         });
         return;
       }
       // Send Selection To Service
-      this.inventoryControlService.childrenSelection = this.childrenSelection.selected;
+      this.inventoryControlService.childSelection = this.childSelection.selected;
     } else {
-      this.inventoryControlService.dialogDeviceGroupCheck = this.DEVICE_GROUPS;
+      this.inventoryControlService.dialogDeviceGroupCheck = this.DEVICE_ROWS;
     }
     // Creates Dialog Reference To Open Component
     const dialogRef = this.dialog.open(DialogComponent);
@@ -165,14 +169,14 @@ export class AllInvComponent implements OnInit, OnDestroy {
    * Delete Selected Devices & Clear Selection
    */
   deleteSelection() {
-    if (this.childrenSelection.isEmpty()) {
+    if (this.selection.isEmpty()) {
       this.snackBar.open('Select One or More Devices to Delete', 'Close', {
         duration: 3000
       });
       return;
     } else {
       const deleteCheckedArr = [];
-      this.childrenSelection.selected.forEach((device: Device) => {
+      this.selection.selected.forEach((device: Device) => {
         deleteCheckedArr.push(device._id);
       });
       this.inventoryControlService.deleteSelection(deleteCheckedArr);
@@ -184,6 +188,8 @@ export class AllInvComponent implements OnInit, OnDestroy {
    */
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    console.log(this.indeterminateRowSelection.selected);
+    console.log(this.indeterminateTrafficSelection.selected);
   }
   /**
    * Whether The Number Of Selected Elements Matches The Total Number Of Rows
@@ -198,61 +204,52 @@ export class AllInvComponent implements OnInit, OnDestroy {
    */
   masterToggle() {
     this.isAllSelected() ?
-    this.childrenSelection.clear() :
-    this.ALL_DEVICES.forEach(device => this.childrenSelection.select(device));
-
-    this.isAllSelected() ?
     this.selection.clear() :
     this.dataSource.data.forEach((row: Device) => this.selection.select(row));
+
+    this.dataSource.data.forEach((row: Device) => this.selectTraffic(row));
   }
   /**
-   * Children Checkbox Selection
+   * TOGGLE GROUPED BY TRAFFIC
    */
-  onCheck(device: any, deviceGroup: any) {
-    if (this.childrenSelection.isSelected(device)) {
+  selectTraffic(deviceGroup: any) {
+    if (this.selection.isSelected(deviceGroup)) {
       this.GROUPED_DEVICES.forEach((group: []) => {
-        const filteredGroup = group.filter((groupDevice: Device) => groupDevice.model === deviceGroup.model);
-        const filteredSelection = this.childrenSelection.selected.filter(
-          (childSelection: Device) => childSelection.model === deviceGroup.model
-        );
-        if (filteredGroup.length === filteredSelection.length) {
-          this.indeterminateSelection.deselect(deviceGroup);
-          this.selection.select(deviceGroup);
-        }
-        if (filteredSelection.length < filteredGroup.length && filteredSelection.length > 0) {
-          this.indeterminateSelection.select(deviceGroup);
-        }
+        const filteredGroup = group.filter((device: Device) => device.model === deviceGroup.model);
+        filteredGroup.forEach((device: Device) => {
+          this.trafficSelection.select(device.traffic);
+          this.childSelection.select(device);
+        });
       });
     } else {
-      this.selection.deselect(deviceGroup);
-      this.indeterminateSelection.select(deviceGroup);
-      const filteredSelection = this.childrenSelection.selected.filter(
-        (childSelection: Device) => childSelection.model === deviceGroup.model
-      );
-      if (filteredSelection.length === 0) {
-        this.indeterminateSelection.deselect(deviceGroup);
-      }
+      this.GROUPED_DEVICES.forEach((group: []) => {
+        const filteredGroup = group.filter((device: Device) => device.model === deviceGroup.model);
+        filteredGroup.forEach((device: Device) => {
+          this.trafficSelection.deselect(device.traffic);
+          this.childSelection.deselect(device);
+        });
+      });
     }
   }
   /**
    * Parent Checkbox To Toggle All Children
    */
-  selectChildren(deviceGroup: any) {
-    if (this.selection.isSelected(deviceGroup)) {
-      console.log('Group Selected');
+  selectChildren(deviceGroup: Device, traffic: string) {
+    if (this.trafficSelection.isSelected(traffic)) {
       this.GROUPED_DEVICES.forEach((group: []) => {
-        const filteredGroup = group.filter((device: Device) => device.model === deviceGroup.model);
-        filteredGroup.forEach(device => {
-          this.indeterminateSelection.deselect(deviceGroup);
-          this.childrenSelection.select(device);
+        const filteredGroup = group.filter((device: Device) => device.model === deviceGroup.model && device.traffic === traffic);
+        filteredGroup.forEach((device: Device) => {
+          // this.indeterminateTrafficSelection.deselect(deviceGroup);
+          this.trafficSelection.select(traffic);
+          this.childSelection.select(device);
         });
       });
     } else {
-      console.log('Group Deselected');
       this.GROUPED_DEVICES.forEach((group: []) => {
-        const filteredGroup = group.filter((device: Device) => device.model === deviceGroup.model);
-        filteredGroup.forEach(device => {
-          this.childrenSelection.deselect(device);
+        const filteredGroup = group.filter((device: Device) => device.model === deviceGroup.model && device.traffic === traffic);
+        filteredGroup.forEach((device: Device) => {
+          this.trafficSelection.deselect(device.traffic);
+          this.childSelection.deselect(device);
         });
       });
     }

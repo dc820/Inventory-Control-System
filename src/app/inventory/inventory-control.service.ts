@@ -25,7 +25,7 @@ export class InventoryControlService {
   private outboundInventoryUpdated = new Subject<Device[]>();
   // Mode Selected From Table
   mode: string;
-  childrenSelection: object[];
+  childSelection: object[];
   dialogDeviceGroupCheck = [];
 
   constructor(private http: HttpClient) { }
@@ -119,7 +119,7 @@ export class InventoryControlService {
    */
   updateDevice(editValues) {
     const idList: string[] = [];
-    this.childrenSelection.forEach((child: Device) => {
+    this.childSelection.forEach((child: Device) => {
       if (child.condition === '') {
         child.condition = editValues.condition;
       }

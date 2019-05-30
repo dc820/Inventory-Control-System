@@ -13,23 +13,7 @@ tr.deviceGroup-row:not(.deviceGroup-expanded-row):active {
 }
 
 td.mat-cell {
-  width: 20vw;
-}
-
-div > div > h5 {
-  font-size: 14px;
-  margin: 0;
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-td > div > div {
-  min-width: 24vw;
-}
-
-mat-checkbox div {
-  width: 225px;
-  display: inline-block;
+  width: 100vw;
 }
 
 div div p {
@@ -42,40 +26,29 @@ div div p {
   text-align: left;
 }
 
-div div div div {
-  display: block;
-}
-
-th > mat-checkbox, td > mat-checkbox {
-  padding-right: 32px;
-}
-
 .table-container {
   max-height: 60vh;
   overflow: auto;
 }
 
-.deviceGroup-row {
-  border-bottom-width: 0;
+.mat-form-field {
+  width: 100%;
+}
+
+.mat-column-select {
+  overflow: initial;
 }
 
 .deviceGroup-detail {
   overflow: hidden;
-  display: flex;
 }
 
-.mat-form-field {
-  font-size: 14px;
-  width: 100%;
-}
-
-.device-info {
-  margin: 0.25em;
-  padding: 0.25em 0.50em 0em 0.25em;
-  background-color: white;
+.nested-table tr td{
   border: 1px solid black;
-  border-radius: 4px;
+  width: 200px;
 }
+
+
 
 /**
 border: 1px solid red;
