@@ -1,3 +1,7 @@
+table {
+  width: 100%;
+}
+
 tr.detail-row {
   height: 0;
   background-color: whitesmoke;
@@ -43,13 +47,23 @@ div div p {
   overflow: hidden;
 }
 
-.nested-table tr td{
-  border: 1px solid black;
-  width: 200px;
+.nested-table {
+  width: 100%;
 }
 
+.nested-table tr {
+  width: 100%;
+}
 
+.nested-table th{
+  border: 1px solid black;
+}
 
-/**
-border: 1px solid red;
-*/
+.nested-table td {
+  border: 1px solid black;
+}
+
+.nested-table th mat-checkbox {
+  padding-left: 8px;
+}
+

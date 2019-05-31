@@ -24,16 +24,16 @@
   <a *ngIf="userIsAuthenticated" [routerLink]="'/'"><img src="https://upload.wikimedia.org/wikipedia/en/4/4f/PSEG_logo.svg" alt="PSEG Inventory Report"></a>
 
   <div *ngIf="userIsAuthenticated">
-    <button mat-raised-button color="primary"
+    <button mat-button color="primary"
       *ngFor="let tab of tabs"
       routerLinkActive="mat-accent"
       [routerLinkActiveOptions]="{exact: true}"
       [routerLink]="'/' + tab.path"
       [id]="tab.id">{{ tab.name }}</button>
     </div>
-    <button *ngIf="!userIsAuthenticated" mat-raised-button color="primary" routerLinkActive="mat-accent" [routerLink]="'/login'">Login</button>
-    <button *ngIf="!userIsAuthenticated" mat-raised-button color="primary" routerLinkActive="mat-accent" [routerLink]="'/signup'">Signup</button>
+    <button *ngIf="!userIsAuthenticated" color="primary" mat-button routerLinkActive="mat-accent" [routerLink]="'/login'">Login</button>
+    <button *ngIf="!userIsAuthenticated" color="primary" mat-button routerLinkActive="mat-accent" [routerLink]="'/signup'">Signup</button>
 
-  <button *ngIf="userIsAuthenticated" mat-raised-button color="primary" (click)="onLogout()">Logout</button>
+  <button *ngIf="userIsAuthenticated" color="primary" mat-button (click)="onLogout()">Logout</button>
 
 </mat-toolbar>
