@@ -1,39 +1,19 @@
-<mat-toolbar color="primary" class="show-mobile">
-  <!--MENU-->
-  <button mat-button [matMenuTriggerFor]="menu">
-    <i class="material-icons md-18">menu</i>
-  </button>
-  <mat-menu #menu="matMenu">
-    <button mat-menu-item
-    *ngFor="let tab of tabs"
-    routerLinkActive="active"
-    [routerLinkActiveOptions]="{exact: true}"
-    [routerLink]="'/' + tab.path"
-    [id]="tab.id">{{ tab.name }}</button>
-  </mat-menu>
-
-  <button class="full" mat-raised-button
-    routerLinkActive="active"
-    [routerLinkActiveOptions]="{exact: true}"
-    routerLink="">Home</button>
-
-</mat-toolbar>
-
 <mat-toolbar color="primary" class="hide-mobile">
   <img *ngIf="!userIsAuthenticated" src="https://upload.wikimedia.org/wikipedia/en/4/4f/PSEG_logo.svg" alt="PSEG Inventory Report">
   <a *ngIf="userIsAuthenticated" [routerLink]="'/'"><img src="https://upload.wikimedia.org/wikipedia/en/4/4f/PSEG_logo.svg" alt="PSEG Inventory Report"></a>
-
   <div *ngIf="userIsAuthenticated">
-    <button mat-button color="primary"
-      *ngFor="let tab of tabs"
-      routerLinkActive="mat-accent"
-      [routerLinkActiveOptions]="{exact: true}"
-      [routerLink]="'/' + tab.path"
-      [id]="tab.id">{{ tab.name }}</button>
-    </div>
-    <button *ngIf="!userIsAuthenticated" color="primary" mat-button routerLinkActive="mat-accent" [routerLink]="'/login'">Login</button>
-    <button *ngIf="!userIsAuthenticated" color="primary" mat-button routerLinkActive="mat-accent" [routerLink]="'/signup'">Signup</button>
+  <button mat-raised-button
+    *ngFor="let tab of tabs"
+    routerLinkActive="mat-primary"
+    [routerLinkActiveOptions]="{exact: true}"
+    [routerLink]="'/' + tab.path"
+    [id]="tab.id">{{ tab.name }}</button>
+  </div>
+  <span *ngIf="!userIsAuthenticated"></span>
+  <button *ngIf="!userIsAuthenticated" mat-raised-button routerLinkActive="mat-primary" [routerLink]="'/login'">Login</button>
+  <button *ngIf="!userIsAuthenticated" mat-raised-button routerLinkActive="mat-primary" [routerLink]="'/signup'">Signup</button>
 
-  <button *ngIf="userIsAuthenticated" color="primary" mat-button (click)="onLogout()">Logout</button>
+  <span *ngIf="userIsAuthenticated"></span>
+  <button *ngIf="userIsAuthenticated" mat-raised-button routerLinkActive="mat-primary" (click)="onLogout()">Logout</button>
 
 </mat-toolbar>

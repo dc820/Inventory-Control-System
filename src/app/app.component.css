@@ -2,3 +2,9 @@ main {
   width: 100%;
   margin: 1rem auto;
 }
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}

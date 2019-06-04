@@ -148,6 +148,7 @@ export class InventoryControlService {
    * Delete Device By ID
    */
   deleteSelection(deleteCheckedArr) {
+    console.log(deleteCheckedArr);
     this.http.delete<{message: string}>(API_ENDPOINT + deleteCheckedArr)
       .subscribe((responseData) => {
         deleteCheckedArr.forEach(deletedID => {

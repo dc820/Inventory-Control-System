@@ -1,0 +1,36 @@
+<mat-toolbar color="primary" class="show-mobile">
+  <!--MENU-->
+  <button mat-button [matMenuTriggerFor]="menu">
+    <i class="material-icons md-18">menu</i>
+  </button>
+  <span></span>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item
+    *ngFor="let tab of tabs"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{exact: true}"
+    [routerLink]="'/' + tab.path"
+    [id]="tab.id">{{ tab.name }}</button>
+  </mat-menu>
+
+  <button class="full" mat-button
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{exact: true}"
+    routerLink="">Home</button>
+
+</mat-toolbar>
+  <mat-toolbar color="primary" class="hide-mobile">
+    <mat-toolbar-row>
+    <img *ngIf="!userIsAuthenticated" src="https://upload.wikimedia.org/wikipedia/en/4/4f/PSEG_logo.svg" alt="PSEG Inventory Report">
+    <a *ngIf="userIsAuthenticated" [routerLink]="'/'"><img src="https://upload.wikimedia.org/wikipedia/en/4/4f/PSEG_logo.svg" alt="PSEG Inventory Report"></a>
+    <p>Copyright © 2019, PSEG All Rights Reserved</p>
+    <div *ngIf="userIsAuthenticated">
+    <button mat-raised-button
+      *ngFor="let tab of tabs"
+      routerLinkActive="mat-primary"
+      [routerLinkActiveOptions]="{exact: true}"
+      [routerLink]="'/' + tab.path"
+      [id]="tab.id">{{ tab.name }}</button>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>

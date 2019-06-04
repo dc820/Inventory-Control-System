@@ -52,18 +52,23 @@ div div p {
 }
 
 .nested-table tr {
-  width: 100%;
+  background-color: white;
 }
 
-.nested-table th{
-  border: 1px solid black;
+.nested-table th, .nested-table td {
+  border: 0.5px solid black;
+  padding: 4px;
+  font-size: 15px;
 }
 
-.nested-table td {
-  border: 1px solid black;
+.nested-table tr mat-checkbox {
+  display: table-cell;
 }
 
-.nested-table th mat-checkbox {
-  padding-left: 8px;
+.nested-check {
+  width: 2%;
 }
 
+h3 {
+  padding: 8px 0;
+}

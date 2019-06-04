@@ -146,7 +146,7 @@ export class AllInvComponent implements OnInit, OnDestroy {
   openDialog(mode): void {
     this.inventoryControlService.mode = mode;
     if (mode === 'Update') {
-      if (this.selection.isEmpty()) {
+      if (this.childSelection.isEmpty()) {
         this.snackBar.open('Select One or More Devices to Edit', 'Close', {
           duration: 3000
         });
@@ -168,14 +168,14 @@ export class AllInvComponent implements OnInit, OnDestroy {
    * Delete Selected Devices & Clear Selection
    */
   deleteSelection() {
-    if (this.selection.isEmpty()) {
+    if (this.childSelection.isEmpty()) {
       this.snackBar.open('Select One or More Devices to Delete', 'Close', {
         duration: 3000
       });
       return;
     } else {
       const deleteCheckedArr = [];
-      this.selection.selected.forEach((device: Device) => {
+      this.childSelection.selected.forEach((device: Device) => {
         deleteCheckedArr.push(device._id);
       });
       this.inventoryControlService.deleteSelection(deleteCheckedArr);
@@ -187,6 +187,8 @@ export class AllInvComponent implements OnInit, OnDestroy {
    */
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    console.log(this.GROUPED_DEVICES);
+    console.log(this.DEVICE_ROWS);
   }
   /**
    * Whether The Number Of Selected Elements Matches The Total Number Of Rows

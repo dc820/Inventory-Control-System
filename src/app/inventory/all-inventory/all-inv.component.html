@@ -60,49 +60,47 @@
 
         <!-- Expansion For Each Row -->
         <ng-container matColumnDef="expandedDetail">
-          <td mat-cell *matCellDef="let deviceGroup" [attr.colspan]="mainColumns.length">
-            <div class="deviceGroup-detail" [@detailExpand]="deviceGroup == expandedDeviceGroup ? 'expanded' : 'collapsed'">
+          <td mat-cell *matCellDef="let deviceGroup" [attr.colspan]="mainColumns.length" class="deviceGroup-detail" [@detailExpand]="deviceGroup == expandedDeviceGroup ? 'expanded' : 'collapsed'">
 
-              <!-- Device List -->
-              <div *ngFor="let header of trafficColumns">
-                <h5>
-                  <b>{{ header }}</b>
-                </h5>
-                <!--NESTED TABLE-->
-                <table class="nested-table">
-                  <tr>
-                    <th>
-                      <!-- Traffic Checkbox -->
-                      <mat-checkbox
-                        (change)="$event ? trafficSelection.toggle(header + deviceGroup.model) : null"
-                        (change)="selectChildren(deviceGroup, header)"
-                        [checked]="trafficSelection.isSelected(header + deviceGroup.model)"
-                        [indeterminate]="indeterminateTrafficSelection.isSelected(header + deviceGroup.model)"
-                        [aria-label]="">
-                     </mat-checkbox>
-                    </th>
-                    <th>Condition</th>
-                    <th>Serial</th>
-                    <th>RMA</th>
-                    <th>Note</th>
-                  </tr>
-                  <tr *ngFor="let device of GROUPED_DEVICES[uniqueModels.indexOf(deviceGroup.model)]">
-                    <td *ngIf="header === device.traffic">
-                      <mat-checkbox
-                        (click)="$event.stopPropagation()"
-                        (change)="$event ? childSelection.toggle(device) : null"
-                        (change)="onChildChecked(device, deviceGroup, header)"
-                        [checked]="childSelection.isSelected(device) && childSelection.hasValue()"
-                        labelPosition="before">
-                      </mat-checkbox>
-                    </td>
-                    <td *ngIf="header === device.traffic">{{ device.condition }}</td>
-                    <td *ngIf="header === device.traffic">{{ device.serial }}</td>
-                    <td *ngIf="header === device.traffic">{{ device.rma }}</td>
-                    <td *ngIf="header === device.traffic">{{ device.note }}</td>
-                  </tr>
-                </table>
-              </div>
+            <!-- Device List -->
+            <div *ngFor="let header of trafficColumns">
+              <h3>
+                <b>{{ header }}</b>
+              </h3>
+              <!--NESTED TABLE-->
+              <table class="nested-table" cellspacing="0px">
+                <tr>
+                  <th class="nested-check">
+                    <!-- Traffic Checkbox -->
+                    <mat-checkbox
+                      (change)="$event ? trafficSelection.toggle(header + deviceGroup.model) : null"
+                      (change)="selectChildren(deviceGroup, header)"
+                      [checked]="trafficSelection.isSelected(header + deviceGroup.model)"
+                      [indeterminate]="indeterminateTrafficSelection.isSelected(header + deviceGroup.model)"
+                      [aria-label]="">
+                    </mat-checkbox>
+                  </th>
+                  <th>Condition</th>
+                  <th>Serial</th>
+                  <th>RMA</th>
+                  <th>Note</th>
+                </tr>
+                <tr *ngFor="let device of GROUPED_DEVICES[uniqueModels.indexOf(deviceGroup.model)]">
+                  <td *ngIf="header === device.traffic">
+                    <mat-checkbox
+                      (click)="$event.stopPropagation()"
+                      (change)="$event ? childSelection.toggle(device) : null"
+                      (change)="onChildChecked(device, deviceGroup, header)"
+                      [checked]="childSelection.isSelected(device) && childSelection.hasValue()"
+                      labelPosition="before">
+                    </mat-checkbox>
+                  </td>
+                  <td *ngIf="header === device.traffic">{{ device.condition }}</td>
+                  <td *ngIf="header === device.traffic">{{ device.serial }}</td>
+                  <td *ngIf="header === device.traffic">{{ device.rma }}</td>
+                  <td *ngIf="header === device.traffic">{{ device.note }}</td>
+                </tr>
+              </table>
             </div>
           </td>
         </ng-container>

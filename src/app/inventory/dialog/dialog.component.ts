@@ -25,7 +25,7 @@ export class DialogComponent {
     'Other'
   ];
   inventoryTraffic = [
-    'Stock',
+    'In Stock',
     'Inbound',
     'Outbound'
   ];

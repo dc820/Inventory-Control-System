@@ -23,8 +23,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
-              "src/my-theme.scss"
+              "src/styles.scss"
             ],
             "scripts": [],
             "es5BrowserSupport": true
@@ -133,5 +132,10 @@
       }
     }
   },
-  "defaultProject": "angular-inventory"
+  "defaultProject": "angular-inventory",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }

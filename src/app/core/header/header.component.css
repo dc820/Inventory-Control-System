@@ -1,5 +1,10 @@
-mat-toolbar {
-  /*background-color: hsl(19, 89%, 71%) !important;*/
+span {
+  flex: 1 1 auto;
+}
+
+a {
+  margin-left: 3rem;
+  margin-right: 7rem;
 }
 
 @media only screen and (max-device-width: 480px) {
@@ -12,4 +17,9 @@ mat-toolbar {
   .show-mobile {
     display: none;
   }
+}
+
+button {
+  margin-right: 1rem;
+  margin-bottom: 6px;
 }
