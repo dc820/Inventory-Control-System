@@ -67,6 +67,11 @@ div div p {
 
 .nested-check {
   width: 2%;
+  padding-left: 12px !important;
+}
+
+td.most-inner-check {
+  padding-right: 12px !important;
 }
 
 h3 {
@@ -75,4 +80,8 @@ h3 {
 
 td.mat-cell:first-of-type {
   width: 8rem;
+}
+
+mat-card {
+  max-height: 50%;
 }

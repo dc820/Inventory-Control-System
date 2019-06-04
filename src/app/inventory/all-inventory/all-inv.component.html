@@ -86,7 +86,7 @@
                   <th>Note</th>
                 </tr>
                 <tr *ngFor="let device of GROUPED_DEVICES[uniqueModels.indexOf(deviceGroup.model)]">
-                  <td *ngIf="header === device.traffic">
+                  <td *ngIf="header === device.traffic" class="most-inner-check">
                     <mat-checkbox
                       (click)="$event.stopPropagation()"
                       (change)="$event ? childSelection.toggle(device) : null"
