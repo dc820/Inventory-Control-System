@@ -72,3 +72,7 @@ div div p {
 h3 {
   padding: 8px 0;
 }
+
+td.mat-cell:first-of-type {
+  width: 8rem;
+}
