@@ -19,18 +19,17 @@
     routerLink="">Home</button>
 
 </mat-toolbar>
-  <mat-toolbar color="primary" class="hide-mobile">
-    <mat-toolbar-row>
-    <img *ngIf="!userIsAuthenticated" src="https://upload.wikimedia.org/wikipedia/en/4/4f/PSEG_logo.svg" alt="PSEG Inventory Report">
-    <a *ngIf="userIsAuthenticated" [routerLink]="'/'"><img src="https://upload.wikimedia.org/wikipedia/en/4/4f/PSEG_logo.svg" alt="PSEG Inventory Report"></a>
+
+<mat-toolbar color="primary" class="hide-mobile">
+  <mat-toolbar-row>
+    <img class="brand" *ngIf="!userIsAuthenticated" src="https://upload.wikimedia.org/wikipedia/en/4/4f/PSEG_logo.svg" alt="PSEG Inventory Report">
+    <a *ngIf="userIsAuthenticated" [routerLink]="'/'"><img class="brand" src="https://upload.wikimedia.org/wikipedia/en/4/4f/PSEG_logo.svg" alt="PSEG Inventory Report"></a>
     <p>Copyright © 2019, PSEG All Rights Reserved</p>
-    <div *ngIf="userIsAuthenticated">
-    <button mat-raised-button
-      *ngFor="let tab of tabs"
-      routerLinkActive="mat-primary"
-      [routerLinkActiveOptions]="{exact: true}"
-      [routerLink]="'/' + tab.path"
-      [id]="tab.id">{{ tab.name }}</button>
+    <div>
+      <a href="https://www.facebook.com/pseg" target="_blank"><img src="https://cdn0.iconfinder.com/data/icons/social-circle-3/72/Facebook-256.png" alt="Facebook"></a>
+      <a href="https://www.twitter.com/PSEGdelivers" target="_blank"><img src="https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_twitter-128.png" alt="Twitter"></a>
+      <a href="https://www.youtube.com/user/PSEGvideo" target="_blank"><img src="https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_youtube-128.png" alt="Youtube"></a>
+      <a href="https://www.linkedin.com/company/pseg?trk=tyah&trkInfo=tarId%3A1422278775327%2Ctas%3APSEG%2Cidx%3A2-1-4" target="_blank"><img src="https://cdn0.iconfinder.com/data/icons/social-circle-3/72/Linkedin-128.png" alt="LinkedIn"></a>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>

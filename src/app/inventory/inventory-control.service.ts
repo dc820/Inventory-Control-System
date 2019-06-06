@@ -106,7 +106,7 @@ export class InventoryControlService {
       rma: newDevice.rma,
       note: newDevice.note
     };
-    this.http.post<{ message: string, deviceId: string}>(API_ENDPOINT, device)
+    this.http.post<{ message: string, deviceId: string, auditLog: object }>(API_ENDPOINT, device)
         .subscribe((responseData) => {
           const deviceId = responseData.deviceId;
           device._id = deviceId;
@@ -134,7 +134,7 @@ export class InventoryControlService {
       }
       idList.push(child._id);
     });
-    this.http.patch<{message: string, device: object}>(API_ENDPOINT + idList, editValues)
+    this.http.patch<{ message: string, device: object, auditLog: object }>(API_ENDPOINT + idList, editValues)
       .subscribe((responseData) => {
         for (let i = 0; i < this.devices.length ; i++) {
           if (this.devices[i]._id === editValues.id ) {
@@ -149,8 +149,9 @@ export class InventoryControlService {
    */
   deleteSelection(deleteCheckedArr) {
     console.log(deleteCheckedArr);
-    this.http.delete<{message: string}>(API_ENDPOINT + deleteCheckedArr)
+    this.http.delete<{ message: string, auditLog: object }>(API_ENDPOINT + deleteCheckedArr)
       .subscribe((responseData) => {
+        console.log(responseData);
         deleteCheckedArr.forEach(deletedID => {
           for (let i = 0; i < this.devices.length ; i++) {
             if (this.devices[i]._id === deletedID ) {
