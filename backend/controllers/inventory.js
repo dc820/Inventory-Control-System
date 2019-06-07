@@ -15,7 +15,6 @@ exports.getAllInventory = (req, res, next) => {
         deviceGroups.push({ model: device.model, brand: device.brand, type: device.type });
       }
     });
-    console.log(deviceGroups);
     res.status(200).json({
       message: 'All Inventory Fetched Successfully',
       allInventory: result,
@@ -98,6 +97,7 @@ exports.createDevice = (req, res, next) => {
     rma: req.body.rma,
     note: req.body.note
   });
+
   const addToAudit = new Audit({
     traffic: req.body.traffic,
     condition: req.body.condition,
@@ -107,9 +107,9 @@ exports.createDevice = (req, res, next) => {
     serial: req.body.serial,
     rma: req.body.rma,
     note: req.body.note,
-    time: new Date,
+    time: new Date(),
     user: req.body.user,
-    change: 'Added to Inventory'
+    change: 'Added'
   });
   addToAudit.save();
   device.save()
@@ -168,6 +168,7 @@ exports.updateDevice = (req, res, next) => {
         } else {
           propertiesToUpdate.note = result.note;
         }
+
         const addToAudit = new Audit({
           traffic: propertiesToUpdate.traffic,
           condition: propertiesToUpdate.condition,
@@ -177,9 +178,9 @@ exports.updateDevice = (req, res, next) => {
           serial: result.serial,
           rma: propertiesToUpdate.rma,
           note: propertiesToUpdate.note,
-          time: new Date,
+          time: new Date(),
           user: req.body.user,
-          change: 'Updated Device Properties'
+          change: 'Updated'
         });
         addToAudit.save();
       });
@@ -231,9 +232,9 @@ exports.deleteDevice = (req, res, next) => {
           serial: result.serial,
           rma: result.rma,
           note: result.note,
-          time: new Date,
+          time: new Date(),
           user: user,
-          change: 'Removed From Inventory'
+          change: 'Removed'
         });
         addToAudit.save()
    });
@@ -252,10 +253,27 @@ exports.deleteDevice = (req, res, next) => {
       });
     }
   })
-  .catch(error =>{
+  .catch(error => {
     console.log(error);
     res.status(500).json({
       message: 'Could Not Delete Device From Inventory'
     });
   });
+}
+
+exports.getAudit = (req, res, next) => {
+  Audit.find()
+    .then(result => {
+      console.log(result);
+      res.status(200).json({
+        message: 'Audit Log Fetched Successfully',
+        audit: result,
+      });
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({
+        message: 'Could Not Delete Device From Inventory'
+      });
+    })
 }

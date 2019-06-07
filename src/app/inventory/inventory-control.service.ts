@@ -18,12 +18,15 @@ export class InventoryControlService {
   private inStockInventory: Device[] = [];
   private inboundInventory: Device[] = [];
   private outboundInventory: Device[] = [];
+  private auditLog: object[] = [];
+
   private devicesUpdated = new Subject<Device[]>();
   private deviceGroupsUpdated = new Subject<object[]>();
   private uniqueModelsUpdated = new Subject<string[]>();
   private inStockInventoryUpdated = new Subject<Device[]>();
   private inboundInventoryUpdated = new Subject<Device[]>();
   private outboundInventoryUpdated = new Subject<Device[]>();
+  private auditLogUpdated = new Subject<object[]>();
   // Mode Selected From Table
   mode: string;
   childSelection: object[];
@@ -51,6 +54,10 @@ export class InventoryControlService {
   getUniqueModelsListener() {
     return this.uniqueModelsUpdated.asObservable();
   }
+  getAuditUpdateListener() {
+    return this.auditLogUpdated.asObservable();
+  }
+
   /**
    * Retrives All Inventory & Sorts Devices
    */
@@ -106,9 +113,7 @@ export class InventoryControlService {
       serial: newDevice.serial,
       rma: newDevice.rma,
       note: newDevice.note,
-      time: new Date(),
-      user: this.auth.user,
-      change: 'Added New Device'
+      user: this.auth.user
     };
     console.log(this.auth.user);
     this.http.post<{ message: string, deviceId: string }>(API_ENDPOINT, device)
@@ -138,9 +143,7 @@ export class InventoryControlService {
       if (child.note === '') {
         child.note = editValues.note;
       }
-      editValues.time = new Date();
       editValues.user = this.auth.user;
-      editValues.change = 'Updated';
 
       idList.push(child._id);
     });
@@ -170,6 +173,19 @@ export class InventoryControlService {
           }
         });
         this.getInventory('All');
+      });
+  }
+
+  getAuditLog() {
+    this.http.get<{ audit: object[]}>(API_ENDPOINT + 'audit')
+      .subscribe(responseData => {
+        this.auditLog = responseData.audit;
+        this.auditLog.forEach((device: any) => {
+          const formatDate = new Date(device.time);
+          device.time = formatDate.getMonth() + '/' + formatDate.getDate() + '/' + formatDate.getFullYear() + '\n'
+            + formatDate.getHours() + ':' + formatDate.getMinutes() + ':' + formatDate.getSeconds();
+        });
+        this.auditLogUpdated.next([...this.auditLog]);
       });
   }
 }

@@ -8,7 +8,5 @@ export interface Device {
   serial: string;
   rma: string;
   note: string;
-  time: Date;
   user: string;
-  change: string; // Added, Edit, Removed
 }

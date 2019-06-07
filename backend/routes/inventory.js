@@ -30,5 +30,9 @@ router.patch('/:idList', checkAuth, InventoryController.updateDevice);
  * Delete Device In Inventory
  */
 router.delete('/:idList', checkAuth, InventoryController.deleteDevice);
+/**
+ * Retrieve Audit Log
+ */
+router.get('/audit', checkAuth, InventoryController.getAudit);
 
 module.exports = router;
