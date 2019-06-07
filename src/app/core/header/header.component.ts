@@ -15,10 +15,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private authListenerSubs: Subscription;
 
   tabs = [
-    {id: 'InStockTab', name: 'In Stock', path: 'instock'},
-    {id: 'InboundTab', name: 'Inbound', path: 'inbound'},
-    {id: 'OutboundTab', name: 'Outbound', path: 'outbound'},
-    {id: 'ModifyTab', name: 'Modify', path: 'modify'},
+    {name: 'In Stock', path: 'instock'},
+    {name: 'Inbound', path: 'inbound'},
+    {name: 'Outbound', path: 'outbound'},
+    {name: 'Modify', path: 'modify'},
+    {name: 'Audit Log', path: 'audit'}
   ];
 
   ngOnInit() {

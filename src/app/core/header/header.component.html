@@ -6,8 +6,7 @@
     *ngFor="let tab of tabs"
     routerLinkActive="mat-primary"
     [routerLinkActiveOptions]="{exact: true}"
-    [routerLink]="'/' + tab.path"
-    [id]="tab.id">{{ tab.name }}</button>
+    [routerLink]="'/' + tab.path">{{ tab.name }}</button>
   </div>
   <span *ngIf="!userIsAuthenticated"></span>
   <button *ngIf="!userIsAuthenticated" mat-raised-button routerLinkActive="mat-primary" [routerLink]="'/login'">Login</button>

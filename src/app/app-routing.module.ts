@@ -8,6 +8,7 @@ import { TrafficComponent } from './inventory/traffic/traffic.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { AuthGuard } from './auth/auth.guard';
+import { AuditComponent } from './inventory/audit/audit.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard]},
@@ -15,6 +16,7 @@ const appRoutes: Routes = [
     { path: 'inbound', component: TrafficComponent, canActivate: [AuthGuard] },
     { path: 'outbound', component: TrafficComponent, canActivate: [AuthGuard] },
     { path: 'modify', component: AllInvComponent, canActivate: [AuthGuard] },
+    { path:  'audit', component: AuditComponent, canActivate: [AuthGuard] },
     { path: 'not-found', component: PageNotFoundComponent },
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },

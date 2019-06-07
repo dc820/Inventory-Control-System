@@ -16,6 +16,7 @@ export class AuthService {
   private token: string;
   private tokenTimer: any;
   private authStatusListener = new Subject<boolean>();
+  user: string;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -42,6 +43,7 @@ export class AuthService {
   }
 
   login(email: string, password: string) {
+    this.user = email;
     const authData: AuthData = { email, password };
     this.http.post<{token: string, expiresIn: number}>(API_ENDPOINT + 'login', authData)
       .subscribe(response => {

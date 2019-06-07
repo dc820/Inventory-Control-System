@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Device } from '../shared/models/device.model';
+import { AuthService } from '../auth/auth.service';
 
 const API_ENDPOINT = 'http://localhost:3000/api/inventory/';
 
@@ -28,7 +29,7 @@ export class InventoryControlService {
   childSelection: object[];
   dialogDeviceGroupCheck = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private auth: AuthService) { }
   /**
    * Update Listeners
    */
@@ -104,9 +105,13 @@ export class InventoryControlService {
       brand: newDevice.brand,
       serial: newDevice.serial,
       rma: newDevice.rma,
-      note: newDevice.note
+      note: newDevice.note,
+      time: new Date(),
+      user: this.auth.user,
+      change: 'Added New Device'
     };
-    this.http.post<{ message: string, deviceId: string, auditLog: object }>(API_ENDPOINT, device)
+    console.log(this.auth.user);
+    this.http.post<{ message: string, deviceId: string }>(API_ENDPOINT, device)
         .subscribe((responseData) => {
           const deviceId = responseData.deviceId;
           device._id = deviceId;
@@ -118,6 +123,7 @@ export class InventoryControlService {
    * Find Device By ID & Update Specified Device Properties
    */
   updateDevice(editValues) {
+    console.log(editValues);
     const idList: string[] = [];
     this.childSelection.forEach((child: Device) => {
       if (child.condition === '') {
@@ -132,9 +138,13 @@ export class InventoryControlService {
       if (child.note === '') {
         child.note = editValues.note;
       }
+      editValues.time = new Date();
+      editValues.user = this.auth.user;
+      editValues.change = 'Updated';
+
       idList.push(child._id);
     });
-    this.http.patch<{ message: string, device: object, auditLog: object }>(API_ENDPOINT + idList, editValues)
+    this.http.patch<{ message: string, device: object }>(API_ENDPOINT + idList, editValues)
       .subscribe((responseData) => {
         for (let i = 0; i < this.devices.length ; i++) {
           if (this.devices[i]._id === editValues.id ) {
@@ -148,8 +158,8 @@ export class InventoryControlService {
    * Delete Device By ID
    */
   deleteSelection(deleteCheckedArr) {
-    console.log(deleteCheckedArr);
-    this.http.delete<{ message: string, auditLog: object }>(API_ENDPOINT + deleteCheckedArr)
+    deleteCheckedArr.push(this.auth.user);
+    this.http.delete<{ message: string }>(API_ENDPOINT + deleteCheckedArr)
       .subscribe((responseData) => {
         console.log(responseData);
         deleteCheckedArr.forEach(deletedID => {

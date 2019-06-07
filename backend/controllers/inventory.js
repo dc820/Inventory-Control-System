@@ -1,4 +1,6 @@
 const Device = require('../models/device');
+const Audit = require('../models/audit');
+
 /**
  * Retrieve All Devices From Inventory
  */
@@ -96,6 +98,20 @@ exports.createDevice = (req, res, next) => {
     rma: req.body.rma,
     note: req.body.note
   });
+  const addToAudit = new Audit({
+    traffic: req.body.traffic,
+    condition: req.body.condition,
+    type: req.body.type,
+    brand: req.body.brand,
+    model: req.body.model,
+    serial: req.body.serial,
+    rma: req.body.rma,
+    note: req.body.note,
+    time: new Date,
+    user: req.body.user,
+    change: 'Added to Inventory'
+  });
+  addToAudit.save();
   device.save()
   .then(document => {
     res.status(201).json({
@@ -115,21 +131,59 @@ exports.createDevice = (req, res, next) => {
  */
 exports.updateDevice = (req, res, next) => {
   let devicesToUpdateArr = req.params.idList.split(',');
-  console.log('HERE==========' + devicesToUpdateArr);
   let propertiesToUpdate = {};
-  if (req.body.condition !== ''){
+  if (req.body.condition !== '') {
     propertiesToUpdate.condition = req.body.condition;
   }
-  if (req.body.traffic !== ''){
+  if (req.body.traffic !== '') {
     propertiesToUpdate.traffic = req.body.traffic;
   }
-  if (req.body.rma !== ''){
+  if (req.body.rma !== '') {
     propertiesToUpdate.rma = req.body.rma;
   }
-  if (req.body.note !== ''){
+  if (req.body.note !== '') {
     propertiesToUpdate.note = req.body.note;
   }
-  console.log(devicesToUpdateArr);
+
+  devicesToUpdateArr.forEach(id => {
+    Device.findOne().where('_id').equals(id)
+      .then(result => {
+        if (req.body.condition !== '') {
+          propertiesToUpdate.condition = req.body.condition;
+        } else {
+          propertiesToUpdate.condition = result.condition;
+        }
+        if (req.body.traffic !== '') {
+          propertiesToUpdate.traffic = req.body.traffic;
+        } else {
+          propertiesToUpdate.traffic = result.traffic;
+        }
+        if (req.body.rma !== '') {
+          propertiesToUpdate.rma = req.body.rma;
+        } else {
+          propertiesToUpdate.rma = result.rma;
+        }
+        if (req.body.note !== '') {
+          propertiesToUpdate.note = req.body.note;
+        } else {
+          propertiesToUpdate.note = result.note;
+        }
+        const addToAudit = new Audit({
+          traffic: propertiesToUpdate.traffic,
+          condition: propertiesToUpdate.condition,
+          type: result.type,
+          brand: result.brand,
+          model: result.model,
+          serial: result.serial,
+          rma: propertiesToUpdate.rma,
+          note: propertiesToUpdate.note,
+          time: new Date,
+          user: req.body.user,
+          change: 'Updated Device Properties'
+        });
+        addToAudit.save();
+      });
+  });
   Device.bulkWrite([
     {
       updateMany: {
@@ -139,7 +193,6 @@ exports.updateDevice = (req, res, next) => {
     }
   ])
   .then(updated => {
-    console.log(updated);
     if (updated.modifiedCount > 0) {
       res.status(200).json({
         message: 'Update Successful',
@@ -162,10 +215,29 @@ exports.updateDevice = (req, res, next) => {
  * Delete Device In Inventory
  */
 exports.deleteDevice = (req, res, next) => {
-  console.log('Params Here');
-  console.log(req.params.idList);
   let devicesToDeleteArr = req.params.idList.split(',');
-  console.log(devicesToDeleteArr);
+  let user = devicesToDeleteArr[devicesToDeleteArr.length - 1]
+  devicesToDeleteArr.pop();
+
+  devicesToDeleteArr.forEach(id => {
+    Device.findOne().where('_id').equals(id)
+      .then(result => {
+        const addToAudit = new Audit({
+          traffic: result.traffic,
+          condition: result.condition,
+          type: result.type,
+          brand: result.brand,
+          model: result.model,
+          serial: result.serial,
+          rma: result.rma,
+          note: result.note,
+          time: new Date,
+          user: user,
+          change: 'Removed From Inventory'
+        });
+        addToAudit.save()
+   });
+  });
 
   Device.deleteMany( { _id: {$in: devicesToDeleteArr}} )
   .then(document => {

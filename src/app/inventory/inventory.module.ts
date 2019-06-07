@@ -6,12 +6,14 @@ import { AppRoutingModule } from '../app-routing.module';
 import { AllInvComponent } from './all-inventory/all-inv.component';
 import { DialogComponent } from './dialog/dialog.component';
 import { TrafficComponent } from './traffic/traffic.component';
+import { AuditComponent } from './audit/audit.component';
 
 @NgModule({
   declarations: [
     AllInvComponent,
     DialogComponent,
     TrafficComponent,
+    AuditComponent,
   ],
   imports: [
     AngularMaterialModule,

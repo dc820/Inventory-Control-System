@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const deviceSchema = new Schema({
+const auditSchema = new Schema({
   traffic: { type: String, required: true },
   condition: { type: String, required: true },
   type: { type: String, required: true },
@@ -10,6 +10,9 @@ const deviceSchema = new Schema({
   serial: String,
   rma: String,
   note: String,
+  time: Date,
+  user: String,
+  change: String // Added, Edit, Removed
 });
 
-module.exports = mongoose.model('Device', deviceSchema);
+module.exports = mongoose.model('Audit', auditSchema);
