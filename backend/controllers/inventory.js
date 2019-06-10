@@ -30,10 +30,10 @@ exports.getAllInventory = (req, res, next) => {
   });
 };
 /**
- * Retrieve Stock Devices From Inventory
+ * Retrieve In Stock Devices From Inventory
  */
 exports.getInStockInventory = (req, res, next) => {
-  Device.find().where('traffic').equals('Stock')
+  Device.find().where('traffic').equals('In Stock')
   .then(result => {
     res.status(200).json({
       message: 'Inbound Inventory Fetched Successfully',

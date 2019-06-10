@@ -29,7 +29,7 @@
               (change)="selectTraffic(deviceGroup)"
               [checked]="selection.isSelected(deviceGroup) && selection.hasValue()"
               [indeterminate]="indeterminateSelection.isSelected(deviceGroup)"
-              [aria-label]="">
+              [aria-label]="checkboxLabel()">
             </mat-checkbox>
           </td>
         </ng-container>
@@ -77,7 +77,7 @@
                       (change)="selectChildren(deviceGroup, header)"
                       [checked]="trafficSelection.isSelected(header + deviceGroup.model)"
                       [indeterminate]="indeterminateTrafficSelection.isSelected(header + deviceGroup.model)"
-                      [aria-label]="">
+                      [aria-label]="checkboxLabel()">
                     </mat-checkbox>
                   </th>
                   <th>Condition</th>
@@ -92,6 +92,7 @@
                       (change)="$event ? childSelection.toggle(device) : null"
                       (change)="onChildChecked(device, deviceGroup, header)"
                       [checked]="childSelection.isSelected(device) && childSelection.hasValue()"
+                      [aria-label]="checkboxLabel()"
                       labelPosition="before">
                     </mat-checkbox>
                   </td>

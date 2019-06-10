@@ -27,12 +27,13 @@ export class InventoryControlService {
   private inboundInventoryUpdated = new Subject<Device[]>();
   private outboundInventoryUpdated = new Subject<Device[]>();
   private auditLogUpdated = new Subject<object[]>();
+
   // Mode Selected From Table
   mode: string;
   childSelection: object[];
   dialogDeviceGroupCheck = [];
 
-  constructor(private http: HttpClient, private auth: AuthService) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
   /**
    * Update Listeners
    */
@@ -103,6 +104,7 @@ export class InventoryControlService {
    * Add Device To Inventory
    */
   addDevice(newDevice) {
+    console.log(this.authService.getUserEmail());
     const device: Device = {
       _id: null,
       traffic: newDevice.traffic,
@@ -113,9 +115,8 @@ export class InventoryControlService {
       serial: newDevice.serial,
       rma: newDevice.rma,
       note: newDevice.note,
-      user: this.auth.user
+      user: this.authService.getUserEmail()
     };
-    console.log(this.auth.user);
     this.http.post<{ message: string, deviceId: string }>(API_ENDPOINT, device)
         .subscribe((responseData) => {
           const deviceId = responseData.deviceId;
@@ -143,7 +144,7 @@ export class InventoryControlService {
       if (child.note === '') {
         child.note = editValues.note;
       }
-      editValues.user = this.auth.user;
+      editValues.user = this.authService.getUserEmail();
 
       idList.push(child._id);
     });
@@ -161,7 +162,7 @@ export class InventoryControlService {
    * Delete Device By ID
    */
   deleteSelection(deleteCheckedArr) {
-    deleteCheckedArr.push(this.auth.user);
+    deleteCheckedArr.push(this.authService.getUserEmail());
     this.http.delete<{ message: string }>(API_ENDPOINT + deleteCheckedArr)
       .subscribe((responseData) => {
         console.log(responseData);

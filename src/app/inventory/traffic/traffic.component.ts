@@ -38,7 +38,7 @@ export class TrafficComponent implements OnInit, OnDestroy {
           this.inventoryControlService.getInventory(this.traffic);
           break;
         default:
-          this.traffic = 'In Stock';
+          this.traffic = 'InStock';
           this.inventoryControlService.getInventory(this.traffic);
       }
     });
